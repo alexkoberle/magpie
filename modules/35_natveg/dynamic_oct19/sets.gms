@@ -5,5 +5,15 @@
 *** |  MAgPIE License Exception, version 1.0 (see LICENSE file).
 *** |  Contact: magpie@pik-potsdam.de
 
-vm_nr_som.fx(j)=0;
-vm_costs_overrate_cropdiff.fx(i)=0;  
+sets
+  pol35 Land protection policy
+  / none, npi, ndc /
+
+  prot_type Conservation priority areas
+  / BH, CPD, FF, LW, WDPA /
+
+  pol_stock35 Land types for land protection policies
+  / forest, other /
+;
+
+alias(ac,ac2);
