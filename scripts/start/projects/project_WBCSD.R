@@ -96,12 +96,7 @@ cfg$gms$c73_build_demand <- "BAU"
 cfg$gms$c13_tccost <- "high"  # def = medium
 
 results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
-if (file.exists(results_folder)) {
-  message(paste0("Results folder ", results_folder,
-                 " already exists. Jumping to next scenario"))
-} else {
-  start_run(cfg,codeCheck=FALSE)    
-}
+start_run(cfg,codeCheck=FALSE)    
 
 
 
@@ -143,12 +138,7 @@ cfg$gms$c73_build_demand <- "10pc"
 cfg$gms$c13_tccost <- "medium"  # def = medium
 
 results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
-if (file.exists(results_folder)) {
-  message(paste0("Results folder ", results_folder,
-                 " already exists. Jumping to next scenario"))
-} else {
-  start_run(cfg,codeCheck=FALSE)    
-}
+start_run(cfg,codeCheck=FALSE)    
 
 
 
@@ -190,12 +180,7 @@ cfg$gms$c73_build_demand <- "10pc"
 cfg$gms$c13_tccost <- "medium"  # def = medium
 
 results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
-if (file.exists(results_folder)) {
-  message(paste0("Results folder ", results_folder,
-                 " already exists. Jumping to next scenario"))
-} else {
-  start_run(cfg,codeCheck=FALSE)    
-}
+start_run(cfg,codeCheck=FALSE)    
 
 
 
@@ -237,12 +222,7 @@ cfg$gms$c73_build_demand <- "10pc"
 cfg$gms$c13_tccost <- "medium"  # def = medium
 
 results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
-if (file.exists(results_folder)) {
-  message(paste0("Results folder ", results_folder,
-                 " already exists. Jumping to next scenario"))
-} else {
-  start_run(cfg,codeCheck=FALSE)    
-}
+start_run(cfg,codeCheck=FALSE)    
 
 
 
@@ -284,9 +264,4 @@ cfg$gms$c73_build_demand <- "50pc"
 cfg$gms$c13_tccost <- "low"  # def = medium
 
 results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
-if (file.exists(results_folder)) {
-  message(paste0("Results folder ", results_folder,
-                 " already exists. Jumping to next scenario"))
-} else {
-  start_run(cfg,codeCheck=FALSE)    
-}
+start_run(cfg,codeCheck=FALSE)    
