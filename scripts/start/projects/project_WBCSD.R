@@ -45,9 +45,9 @@ cfg$gms$crop <- "penalty_apr22"
 cfg$gms$past <- "grasslands_apr22"
 
 #input file vector (for BAU)
-cfg$input <- c(regional = "rev4.87_FSEC_magpie.tgz",
-               cellular = "rev4.87_FSEC_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz",
-               validation = "rev4.87_FSEC_validation.tgz",
+cfg$input <- c(regional = "rev4.88_e2bdb6cd_magpie.tgz",
+               cellular = "rev4.88_e2bdb6cd_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz",
+               validation = "rev4.88_e2bdb6cd_validation.tgz",
                calibration = "calibration_FSEC_07Aug23.tgz",
                additional = "additional_data_rev4.43.tgz",
                patch = "WBCSD.tgz")
@@ -64,7 +64,7 @@ cfg$title <- paste(prefix,"BAU",sep="_")
 #1 set all options to SSP2 defaults including Pop and GDP + NPI
 cfg <- setScenario(cfg,c("SSP2","NPI","ForestryEndo","cc","rcp4p5"))
 #overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.87_FSEC_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz"
+cfg$input[["cellular"]] <- "rev4.88_e2bdb6cd_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
 cfg$gms$c60_1stgen_biodem <- "const2020"
@@ -111,7 +111,7 @@ cfg$title <- paste(prefix,"2degForecastPol",sep="_")
 #1 set all options to SSP2 defaults including Pop and GDP + NDC
 cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
 #overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.87_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
+cfg$input[["cellular"]] <- "rev4.88_e2bdb6cd_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
 cfg$gms$c60_1stgen_biodem <- "phaseout2020"
@@ -158,7 +158,7 @@ cfg$title <- paste(prefix,"2degCoordPol",sep="_")
 #1 set all options to SSP2 defaults including Pop and GDP + NDC
 cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
 #overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.87_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
+cfg$input[["cellular"]] <- "rev4.88_e2bdb6cd_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
 cfg$gms$c60_1stgen_biodem <- "phaseout2020"
@@ -205,7 +205,7 @@ cfg$title <- paste(prefix,"1p5degSocialTrans",sep="_")
 #1 set all options to SSP2 defaults including Pop and GDP + NDC
 cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
 #overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.87_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
+cfg$input[["cellular"]] <- "rev4.88_e2bdb6cd_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
 cfg$gms$c60_1stgen_biodem <- "phaseout2020"
@@ -252,7 +252,7 @@ cfg$title <- paste(prefix,"1p5degInnovation",sep="_")
 #1 set all options to SSP2 defaults including Pop and GDP + NDC
 cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
 #overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.87_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
+cfg$input[["cellular"]] <- "rev4.88_e2bdb6cd_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
 cfg$gms$c60_1stgen_biodem <- "phaseout2020"
