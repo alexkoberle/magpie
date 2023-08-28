@@ -26,7 +26,9 @@ source("scripts/start_functions.R")
 source("config/default.cfg")
 
 #repos
-cfg$repositories <- append(list("./patch_inputdata"=NULL, "https://rse.pik-potsdam.de/data/magpie/public"=NULL), getOption("magpie_repos"))
+cfg$repositories <- append(list("./patch_inputdata"=NULL,
+                             "https://rse.pik-potsdam.de/data/magpie/public"=NULL,
+                                "./tradePatch"=NULL), getOption("magpie_repos"))
 
 #output folder
 cfg$results_folder <- "output/:title:"
@@ -44,13 +46,19 @@ cfg$gms$c38_fac_req <- "reg"        # default "glo"
 cfg$gms$crop <- "penalty_apr22"
 cfg$gms$past <- "grasslands_apr22"
 
+#reduce interest rates of HIC to 0.02 to incentivize investment in tau
+cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
+cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
+
 #input file vector (for BAU)
 cfg$input <- c(regional = "rev4.88_e2bdb6cd_magpie.tgz",
                cellular = "rev4.88_e2bdb6cd_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz",
                validation = "rev4.88_e2bdb6cd_validation.tgz",
                calibration = "calibration_FSEC_07Aug23.tgz",
                additional = "additional_data_rev4.43.tgz",
-               patch = "WBCSD.tgz")
+               patch = "WBCSD.tgz",
+               patchTrade = "tradePatch.tgz"
+)
 
 highIncomeCountries  <- "ALA,AUS,AUT,BEL,BGR,CAN,CHN,CYP,EST,ESP,GBR,FRA,FRO,GGY,HUN,GIB,GRC,HRV,IMN,IRL,JEY,LTU,MLT,
                          NLD,POL,PRT,ROU,AND,ISL,LIE,MCO,SJM,SMR,VAT,ALB,BIH,MKD,MNE,SRB,TUR,GRL,HKG,TWN,CZE,DEU,DNK,
