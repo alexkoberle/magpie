@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T05"
+prefix <- "T06"
 
 library(gms)
 library(magclass)
@@ -54,7 +54,7 @@ cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
 cfg$input <- c(regional = "rev4.88_e2bdb6cd_magpie.tgz",
                cellular = "rev4.88_e2bdb6cd_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz",
                validation = "rev4.88_e2bdb6cd_validation.tgz",
-               calibration = "calibration_FSEC_07Aug23.tgz",
+               calibration = "calibration_WBCSD_28Aug23.tgz",
                additional = "additional_data_rev4.43.tgz",
                patch = "WBCSD.tgz",
                patchTrade = "tradePatch.tgz"
@@ -103,7 +103,7 @@ cfg$gms$c73_build_demand <- "BAU"
 #7 Yields
 cfg$gms$c13_tccost <- "high"  # def = medium
 
-results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
+
 start_run(cfg,codeCheck=FALSE)    
 
 
@@ -145,7 +145,7 @@ cfg$gms$c73_build_demand <- "10pc"
 #7 Yields
 cfg$gms$c13_tccost <- "medium"  # def = medium
 
-results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
+
 start_run(cfg,codeCheck=FALSE)    
 
 
@@ -187,7 +187,7 @@ cfg$gms$c73_build_demand <- "10pc"
 #7 Yields
 cfg$gms$c13_tccost <- "medium"  # def = medium
 
-results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
+
 start_run(cfg,codeCheck=FALSE)    
 
 
@@ -229,7 +229,7 @@ cfg$gms$c73_build_demand <- "10pc"
 #7 Yields
 cfg$gms$c13_tccost <- "medium"  # def = medium
 
-results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
+
 start_run(cfg,codeCheck=FALSE)    
 
 
@@ -271,5 +271,5 @@ cfg$gms$c73_build_demand <- "50pc"
 #7 Yields
 cfg$gms$c13_tccost <- "low"  # def = medium
 
-results_folder <- gsub(":title:", cfg$title, cfg$results_folder, fixed=TRUE)
+
 start_run(cfg,codeCheck=FALSE)    
