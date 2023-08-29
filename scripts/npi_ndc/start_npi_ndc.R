@@ -319,7 +319,7 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
   } else if(pol_type=="ad") {
     magpie_policy <- madrat::toolAggregate(x=magpie_policy, rel=rel)
     t_periods <- calc_tperiods(c(tp[1],tp))
-    magpie_policy <- magpie_policy * flow * t_periods + stock
+    magpie_policy <- stock - magpie_policy * flow * t_periods
   }
 
   map <- readRDS(map_file)
