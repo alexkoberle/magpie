@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T11"
+prefix <- "T12"
 
 library(gms)
 library(magclass)
@@ -54,7 +54,7 @@ cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
 cfg$input <- c(regional = "rev4.88_e2bdb6cd_magpie.tgz",
                cellular = "rev4.88_e2bdb6cd_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz",
                validation = "rev4.88_e2bdb6cd_validation.tgz",
-               calibration = "calibration_WBCSD_30Aug23_lowerBound.tgz",
+               calibration = "calibration_WBCSD_30Aug23_manual.tgz",
                additional = "additional_data_rev4.43.tgz",
                patch = "WBCSD.tgz",
                patchTrade = "tradePatch.tgz"
