@@ -34,8 +34,8 @@ cfg$repositories <- append(list("./patch_inputdata"=NULL,
 cfg$results_folder <- "output/:title:"
 cfg$results_folder_highres <- "output"
 cfg$output <- c("extra/disaggregation","rds_report")
-#cfg$force_replace <- TRUE
-#cfg$force_download <- TRUE
+cfg$force_replace <- TRUE
+cfg$force_download <- TRUE
 cfg$qos <- "priority"
 cfg$sequential <- FALSE
 
