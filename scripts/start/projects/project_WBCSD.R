@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T16"
+prefix <- "T17"
 
 library(gms)
 library(magclass)
@@ -218,7 +218,7 @@ cfg$gms$c22_protect_scenario <- "30by30"      # def = None
 cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
 cfg$gms$policy_countries22  <- all_iso_countries
 cfg$gms$s22_conservation_start <- 2020       # def = 2020
-cfg$gms$s22_conservation_target <- 2050       # def = 2030
+cfg$gms$s22_conservation_target <- 2030       # def = 2030
 
 #5 SNUPE
 cfg$gms$c50_scen_neff <- "maxeff_add3_glo65_glo75"
