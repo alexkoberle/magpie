@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T23"
+prefix <- "T17"
 
 library(gms)
 library(magclass)
@@ -57,7 +57,7 @@ cfg$input <- c(regional = "rev4.88_e2bdb6cd_magpie.tgz",
                calibration = "calibration_WBCSD_30Aug23_manual5.tgz",
                additional = "additional_data_rev4.43.tgz",
                patch = "WBCSD.tgz",
-               patchTrade = "tradePatchSoy6.tgz"
+               patchTrade = "tradePatch.tgz"
 )
 
 highIncomeCountries  <- "ALA,AUS,AUT,BEL,BGR,CAN,CHN,CYP,EST,ESP,GBR,FRA,FRO,GGY,HUN,GIB,GRC,HRV,IMN,IRL,JEY,LTU,MLT,
