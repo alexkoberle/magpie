@@ -40,13 +40,3 @@ else
   i58_cost_drain_rewet_onetime(t) = s58_cost_drain_rewet_onetime;
   i58_cost_rewet_onetime(t) = s58_cost_rewet_onetime;
 );
-
-*' @code
-*' Peatland scaling factor for reduction: currentPeatland / currentManagedLand
-
-p58_scalingFactorRed(t,j,manPeat58) = 
-    (pc58_peatland(j,manPeat58)/pc58_manLand(j,manPeat58))
-    $(pc58_peatland(j,manPeat58) > 1e-8 AND pc58_manLand(j,manPeat58) > 1e-8)
-    + 0$(pc58_peatland(j,manPeat58) <= 1e-8 OR pc58_manLand(j,manPeat58) <= 1e-8);
-
-*' @stop

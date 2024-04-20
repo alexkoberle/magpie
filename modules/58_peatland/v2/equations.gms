@@ -31,7 +31,7 @@
   v58_manLandRed(j2,manPeat58) =e= m58_LandMerge(vm_landreduction,vm_landreduction_forestry,"j2");
 
 *' Future peatland dynamics (`v58_peatland`) depend on changes in managed land (`v58_manLandExp`, `v58_manLandRed`), 
-*' multiplied with corresponding scaling factors for expansion (`v58_scalingFactorExp`) and reduction (`p58_scalingFactorRed`). 
+*' multiplied with corresponding scaling factors for expansion (`v58_scalingFactorExp`) and reduction (`v58_scalingFactorRed`). 
 *' The scaling factor for expansion makes sure that in case the full cell area consists of 
 *' managed land (cropland, pasture, forestry plantations), the full peatland area is drained. 
 *' Likewise, the scaling factor for reduction makes sure that in case no area is used for managed land, 
@@ -41,8 +41,8 @@
  q58_peatlandMan(j2,manPeat58)$(sum(ct, m_year(ct)) > s58_fix_peatland) ..
   v58_peatland(j2,manPeat58) =e= 
     pc58_peatland(j2,manPeat58) 
-    + v58_manLandExp(j2,manPeat58) * v58_scalingFactorExp(j2,manPeat58)
-    - v58_manLandRed(j2,manPeat58) * sum(ct, p58_scalingFactorRed(ct,j2,manPeat58)); 
+    + v58_manLandExp(j2,manPeat58) * v58_scalingFactorExp(j2,manPeat58) + v58_balanceExp(j2,manPeat58)
+    - v58_manLandRed(j2,manPeat58) * v58_scalingFactorRed(j2,manPeat58) - v58_balanceRed(j2,manPeat58); 
 
 *' Peatland scaling factor for expansion: (maxPeatland - totalManagedPeatland) / (maxLand - totalManagedLand). 
 *' See macro `m58_LandLeft` for details.
@@ -51,12 +51,18 @@ q58_scalingFactorExp(j2,manPeat58)$(sum(ct, m_year(ct)) > s58_fix_peatland) ..
   v58_scalingFactorExp(j2,manPeat58) * m58_LandLeft(pcm_land,"land",v58_manLand,pc58_manLand) =e= 
     m58_LandLeft(pc58_peatland,"land58",v58_peatland,pc58_peatland) ;
 
+*' Peatland scaling factor for reduction: currentPeatland / currentManagedLand
+
+q58_scalingFactorRed(j2,manPeat58)$(sum(ct, m_year(ct)) > s58_fix_peatland) ..
+  v58_scalingFactorRed(j2,manPeat58) * pc58_manLand(j2,manPeat58) =e= pc58_peatland(j2,manPeat58);
+
 *' Costs for peatland degradation and rewetting
 
  q58_peatland_cost(j2) ..
   vm_peatland_cost(j2) =e= sum(cost58, v58_peatland_cost_annuity(j2,cost58))
               + v58_peatland(j2,"rewetted") * sum(ct, i58_cost_rewet_recur(ct))
-              + sum(manPeat58, v58_peatland(j2,manPeat58)) * sum(ct, i58_cost_drain_recur(ct));
+              + sum(manPeat58, v58_peatland(j2,manPeat58)) * sum(ct, i58_cost_drain_recur(ct))
+              + sum(manPeat58, v58_balanceExp(j2,manPeat58) + v58_balanceRed(j2,manPeat58)) * s58_balance_penalty;
 
  q58_peatland_cost_annuity(j2,cost58) ..
   v58_peatland_cost_annuity(j2,cost58) =g=
