@@ -14,7 +14,7 @@ fsecScenario <- function(scenario) {
   source("config/default.cfg")
 
   # Version number
-  v <- "v39k_FSEC"
+  v <- "Roadmap"    # based on "v39k_FSEC"
 
   x <- list(c_BAU            = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "RCP60")),
@@ -196,14 +196,24 @@ fsecScenario <- function(scenario) {
             b_Protection          = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "waterSparing", "landSparing", "peatland", "RCP60")),
             b_NatureSparing       = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
-                                  fsec = c("FSEC", "waterSparing", "landSparing", "peatland", "biodiversity", "REDDaff", "RCP60"))
+                                  fsec = c("FSEC", "waterSparing", "landSparing", "peatland", "biodiversity", "REDDaff", "RCP60")),
             
             # Exponential Roadmap for NCS scenarios config start here
             
             b_AT5                 = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
-                                  fsec = c("FSEC", "a_NitrogenEff", "nueMAC", "riceMAC", "cropefficiency", "landSharing"
-                                   "waterSparing", "landSparing", "peatland", "biodiversity", "REDDaff", "RCP60"))
-            
+                                  fsec = c("FSEC", "nueMAC", "riceMAC", "cropefficiency", "landSharing",
+                                   "waterSparing", "landSparing", "peatland", "biodiversity", "RCP60")),
+
+            b_AT5_soil            = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "nueMAC", "riceMAC", "cropefficiency", "landSharing",
+                                   "waterSparing", "landSparing", "peatland", "biodiversity", "RCP60",
+                                   "soil")),
+
+            b_AT5_snvShr          = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "nueMAC", "riceMAC", "cropefficiency", "landSharing",
+                                   "waterSparing", "landSparing", "peatland", "biodiversity", "RCP60",
+                                   "landscapeElements"))
+
             
             )
   # Assign selected scenario to cfg

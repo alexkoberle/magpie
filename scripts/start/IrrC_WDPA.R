@@ -103,15 +103,93 @@ cons_scen <- c("none","30by30",
                 "IrrC_75pc_30by30","IrrC_95pc_30by30","IrrC_99pc_30by30") # 
 
 #start MAgPIE runs
-for (w in wdpa_scen) {
-    for(cons in cons_scen[2:length(cons_scen)]) {
+# for (w in wdpa_scen) {
+#     for(cons in cons_scen) {     # 2:length(cons_scen)
 
-    cfg$title <- paste0("IrrC_",runID,"_",w,"_",cons)        # ,"_sticky_grass"
-    cfg$gms$c22_base_protect <- w      # def = None
+#     cfg$title <- paste0("IrrC_",runID,"_",w,"_",cons)        # ,"_sticky_grass"
+#     cfg$gms$c22_base_protect <- w      # def = None
+#     cfg$gms$c22_protect_scenario <- cons      # def = None
+    
+#     start_run(cfg=cfg)
+# # calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"_grass"))
+# # calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"sticky_grass"))
+#     }
+# }
+
+# Run none base protection scenarios using specific calibration
+for (cons in cons_scen) {
+
+    cfg$input <- c(regional    = "rev4.105_h12_magpie.tgz",
+               cellular    = "rev4.105_h12_fd712c0b_cellularmagpie_c200_MRI-ESM2-0-ssp370_lpjml-8e6c5eb1.tgz",
+               validation  = "rev4.105_h12_validation.tgz",
+               additional  = "additional_data_rev4.48.tgz",
+               calibration = "calibration_calib_WDPA_none_20May24.tgz")  # "calibration_H12_26Mar24.tgz"
+
+    cfg$title <- paste0("IrrC_",runID,"_none_",cons)        # ,"_sticky_grass"
+    
+    cfg$gms$c22_base_protect <- "none"      # def = None
     cfg$gms$c22_protect_scenario <- cons      # def = None
     
     start_run(cfg=cfg)
 # calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"_grass"))
 # calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"sticky_grass"))
     }
-}
+
+
+# Run WDPA_I-II-III base protection scenarios using specific calibration
+for (cons in cons_scen) {
+
+    cfg$input <- c(regional    = "rev4.105_h12_magpie.tgz",
+               cellular    = "rev4.105_h12_fd712c0b_cellularmagpie_c200_MRI-ESM2-0-ssp370_lpjml-8e6c5eb1.tgz",
+               validation  = "rev4.105_h12_validation.tgz",
+               additional  = "additional_data_rev4.48.tgz",
+               calibration = "calibration_calib_WDPA_WDPA_I-II-III_20May24.tgz")  # "calibration_H12_26Mar24.tgz"
+
+    cfg$title <- paste0("IrrC_",runID,"_WDPA_I-II-III_",cons)        # ,"_sticky_grass"
+    
+    cfg$gms$c22_base_protect <- "WDPA_I-II-III"      # def = None
+    cfg$gms$c22_protect_scenario <- cons      # def = None
+    
+    start_run(cfg=cfg)
+# calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"_grass"))
+# calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"sticky_grass"))
+    }
+
+# Run WDPA_IV-V-VI base protection scenarios using specific calibration
+for (cons in cons_scen) {
+
+    cfg$input <- c(regional    = "rev4.105_h12_magpie.tgz",
+               cellular    = "rev4.105_h12_fd712c0b_cellularmagpie_c200_MRI-ESM2-0-ssp370_lpjml-8e6c5eb1.tgz",
+               validation  = "rev4.105_h12_validation.tgz",
+               additional  = "additional_data_rev4.48.tgz",
+               calibration = "calibration_calib_WDPA_WDPA_IV-V-VI_20May24.tgz")  # "calibration_H12_26Mar24.tgz"
+
+    cfg$title <- paste0("IrrC_",runID,"_WDPA_IV-V-VI_",cons)        # ,"_sticky_grass"
+    
+    cfg$gms$c22_base_protect <- "WDPA_IV-V-VI"      # def = None
+    cfg$gms$c22_protect_scenario <- cons      # def = None
+    
+    start_run(cfg=cfg)
+# calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"_grass"))
+# calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"sticky_grass"))
+    }
+
+
+# Run full WDPA base protection scenarios using specific calibration
+for (cons in cons_scen) {
+
+    cfg$input <- c(regional    = "rev4.105_h12_magpie.tgz",
+               cellular    = "rev4.105_h12_fd712c0b_cellularmagpie_c200_MRI-ESM2-0-ssp370_lpjml-8e6c5eb1.tgz",
+               validation  = "rev4.105_h12_validation.tgz",
+               additional  = "additional_data_rev4.48.tgz",
+               calibration = "calibration_calib_WDPA_none_20May24.tgz")  # "calibration_H12_26Mar24.tgz"
+
+    cfg$title <- paste0("IrrC_",runID,"_WDPA",cons)        # ,"_sticky_grass"
+    
+    cfg$gms$c22_base_protect <- "WDPA"      # def = None
+    cfg$gms$c22_protect_scenario <- cons      # def = None
+    
+    start_run(cfg=cfg)
+# calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"_grass"))
+# calib_grass_tgz <- magpie4::submitCalibration(paste0("IrrC_",runID,"sticky_grass"))
+    }
