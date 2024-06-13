@@ -18,7 +18,7 @@ codeCheck <- FALSE
 
 for (scenarioName in c(
   # Scenario combination runs
-  "c_BAU", 
+  # "c_BAU", 
   # "d_SSP2fsdp", 
   # "e_FSDP",
   # "b_Diet", "b_Livelihoods", "b_NatureSparing", "b_AgroMngmt", "b_ExternalPressures",
@@ -38,12 +38,16 @@ for (scenarioName in c(
   # "f_BAUlabor8p5", "f_FSDPlabor1p9", "d_SSP1PLUSbau",
 
   # CI Roadmap Action Tracks and Roadmap
-  # "NCSRoadmap_AT1","NCSRoadmap_AT2",	"NCSRoadmap_AT3",	"NCSRoadmap_AT4",	
-  # "NCSRoadmap_AT5",	"NCSRoadmap_AT5_soil", "NCSRoadmap_AT5_snvShr"#,
-  # "NCSRoadmap_AT6",	"NCSRoadmap_AT7", "NCSRoadmap_AT8",	
+  # "NCSRoadmap_AT1","NCSRoadmap_AT2", "NCSRoadmap_AT3", "NCSRoadmap_AT4", 
+  # "NCSRoadmap_AT5", "NCSRoadmap_AT5_soil", "NCSRoadmap_AT5_snvShr"#,
+  # "NCSRoadmap_AT6", "NCSRoadmap_AT7", "NCSRoadmap_AT8", 
   # "NCSRoadmap_ATall"
 
-  "b_AT5", "b_AT5_soil", "b_AT5_snvShr"
+  "b_AT2",
+  "b_AT4", 
+  "b_AT5", "b_AT5_soil", "b_AT5_snvShr",
+  "b_AT6",
+  "b_AT7", "b_AT7_AP"
 
 )) {
 

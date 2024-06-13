@@ -199,7 +199,16 @@ fsecScenario <- function(scenario) {
                                   fsec = c("FSEC", "waterSparing", "landSparing", "peatland", "biodiversity", "REDDaff", "RCP60")),
             
             # Exponential Roadmap for NCS scenarios config start here
-            
+          
+            # AT2: Climate critical PAs  
+            b_AT2                 = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "NCSRoadmap_AT2", "RCP60")),
+
+            # AT4: Climate-Smart Forestry  
+            b_AT4                 = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "NCSRoadmap_AT4", "RCP60")),
+
+            #  AT5: Climate-Smart Farming
             b_AT5                 = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "nueMAC", "riceMAC", "cropefficiency", "landSharing",
                                    "waterSparing", "landSparing", "peatland", "biodiversity", "RCP60")),
@@ -212,13 +221,27 @@ fsecScenario <- function(scenario) {
             b_AT5_snvShr          = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "nueMAC", "riceMAC", "cropefficiency", "landSharing",
                                    "waterSparing", "landSparing", "peatland", "biodiversity", "RCP60",
-                                   "landscapeElements"))
+                                   "landscapeElements")),
+            
+            # AT6: Climate-Smart Grazing
+            b_AT6                 = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "livestock", "RCP60")),
+
+            # 2.7 AT7: Diet Shift and Food Waste
+            b_AT7                 = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "allDietAndWaste", "RCP60")),
+
+            b_AT7_AP              = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "allDietAndWaste", "RCP60",
+                                  "NCSRoadmap_AT7_AP"))
+
+            
 
             
             )
   # Assign selected scenario to cfg
   cfg <- setScenario(cfg, x[[scenario]]$standard)
-  cfg <- setScenario(cfg, x[[scenario]]$fsec, scenario_config = "config/scenario_fsec.csv")
+  cfg <- setScenario(cfg, x[[scenario]]$fsec, scenario_config = "config/scenario_ncsroadmap.csv")    #  "config/scenario_fsec.csv"
 
   # Download gridded population data
   gms::download_unpack(input = "FSEC_populationScenarios_v2_22-08-22.tgz",
@@ -232,7 +255,7 @@ fsecScenario <- function(scenario) {
   # general
   cfg$title       <- paste(v, scenario, sep = "")
   cfg$recalibrate <- FALSE
-  cfg$qos         <- "standby_maxMem_dayMax"
+  cfg$qos         <- "priority" # "standby_maxMem_dayMax"
   cfg$output      <- c("extra/highres",
                        "extra/disaggregation",
                        "projects/FSEC_nitrogenPollution",
