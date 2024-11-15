@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -7,7 +7,7 @@
 
 *' @title Agricultural trade
 *'
-*' @description This module represents agricutlural trade among world regions.
+*' @description This module represents agricultural trade among world regions.
 *' It ensures that the regional demand is met by domestic production and imports from other regions.
 *' The global trade balance dictates that global production must be larger than or equal to global demand.
 *' For non-traded goods, the regional production must be larger than or equal to regional demand.

@@ -1,4 +1,4 @@
-# |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -14,10 +14,12 @@ fsecScenario <- function(scenario) {
   source("config/default.cfg")
 
   # Version number
-  v <- "v36_FSEC"
+  v <- "v39k_FSEC"
 
   x <- list(c_BAU            = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "RCP60")),
+            f_BAUlabor8p5    = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC", "RCP60", "labor8p5")),
             d_SSP1bau        = list(standard = c("cc", "SSP1", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "SSP1", "RCP45")),
             d_SSP1PLUSbau    = list(standard = c("cc", "SSP1", "NDC", "ForestryEndo"),
@@ -26,7 +28,7 @@ fsecScenario <- function(scenario) {
             d_SSP3bau        = list(standard = c("cc", "SSP3", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "SSP3", "RCP70")),
             d_SSP4bau        = list(standard = c("cc", "SSP4", "NDC", "ForestryEndo"),
-                                  fsec = c("FSEC", "SSP4", "RCP45")),
+                                  fsec = c("FSEC", "SSP4", "RCP60")),
             d_SSP5bau        = list(standard = c("cc", "SSP5", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "SSP5", "RCP85")),
             # FSDP (all transformations active)
@@ -35,7 +37,13 @@ fsecScenario <- function(scenario) {
                                   "energy", "bioplastics", "population", "institutions", "timberCities",
                                   "awms", "livestock", "nueMAC", "riceMAC", "biodiversity", "fairTrade", "capitalSubst", "minWage",
                                   "REDDaff", "REDD", "landscapeElements", "landSharing", "landSparing", "waterSparing", "peatland",
-                                  "soil", "allDietAndWaste", "allEnvPrice", "SSP1energy", "RCP19")),
+                                  "soil", "allDietAndWaste", "allEnvPrice", "SDPenergy", "RCP19")),
+            f_FSDPlabor1p9 = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
+                                  fsec = c("FSEC",
+                                  "energy", "bioplastics", "population", "institutions", "timberCities",
+                                  "awms", "livestock", "nueMAC", "riceMAC", "biodiversity", "fairTrade", "capitalSubst", "minWage",
+                                  "REDDaff", "REDD", "landscapeElements", "landSharing", "landSparing", "waterSparing", "peatland",
+                                  "soil", "allDietAndWaste", "allEnvPrice", "SDPenergy", "RCP19", "labor1p9")),
             # FSDPs (without external)
             d_SSP1fsdp       = list(standard = c("cc", "SSP1", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "SSP1",
@@ -127,7 +135,7 @@ fsecScenario <- function(scenario) {
                                         fsec = c("FSEC", "soil", "RCP60")),
             # Scenarios (combinations of transformation clusters)
             b_ExternalPressures   = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
-                                  fsec = c("FSEC", "population", "institutions", "energy", "bioplastics", "timberCities", "SSP1energy", "RCP26")),
+                                  fsec = c("FSEC", "population", "institutions", "energy", "bioplastics", "timberCities", "SDPenergy", "RCP26")),
             b_WaterSoil           = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "waterSparing", "soil", "RCP60")),
             b_REDDaffRuminants    = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
@@ -188,25 +196,25 @@ fsecScenario <- function(scenario) {
             b_Protection          = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
                                   fsec = c("FSEC", "waterSparing", "landSparing", "peatland", "RCP60")),
             b_NatureSparing       = list(standard = c("cc", "SSP2", "NDC", "ForestryEndo"),
-                                  fsec = c("FSEC", "waterSparing", "landSparing", "peatland", "biodiversity", "REDDaff", "RCP45"))
+                                  fsec = c("FSEC", "waterSparing", "landSparing", "peatland", "biodiversity", "REDDaff", "RCP60"))
             )
   # Assign selected scenario to cfg
   cfg <- setScenario(cfg, x[[scenario]]$standard)
-  cfg <- setScenario(cfg, x[[scenario]]$fsec, scenario_config = "config/scenario_fsec.csv")
+  cfg <- setScenario(cfg, x[[scenario]]$fsec, scenario_config = "config/projects/scenario_config_fsec.csv")
 
   # Download gridded population data
   gms::download_unpack(input = "FSEC_populationScenarios_v2_22-08-22.tgz",
                        targetdir = "./input",
                        repositories = cfg$repositories)
   # Download gridded RCP temperature data
-  gms::download_unpack(input = "FSEC_GlobalSurfaceTempPerRCP_v3_04-05-23.tgz",
+  gms::download_unpack(input = "FSEC_GlobalSurfaceTempPerRCP_v4_19-03-24.tgz",
                        targetdir = "./input",
                        repositories = cfg$repositories)
 
   # general
   cfg$title       <- paste(v, scenario, sep = "")
   cfg$recalibrate <- FALSE
-  cfg$qos         <- "standby_maxMem_dayMax"
+  cfg$qos         <- "standby_highMem_dayMax"
   cfg$output      <- c("extra/highres",
                        "extra/disaggregation",
                        "projects/FSEC_nitrogenPollution",
@@ -217,7 +225,8 @@ fsecScenario <- function(scenario) {
                        "rds_report_iso",
                        "rds_report")
   cfg$force_download  <- TRUE
-  cfg$gms$s80_optfile <- 1
+  cfg$gms$s80_optfile <- 0
+  cfg$gms$s80_maxiter <- 30
 
   return(cfg)
 }

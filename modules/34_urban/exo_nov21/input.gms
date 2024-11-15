@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -10,7 +10,7 @@ $setglobal c34_urban_scenario  SSP2
 
 
 scalars
-  s34_urban_deviation_cost Artificial cost for urban deviation variables (USD05MER per ha) / 1e+06 /
+  s34_urban_deviation_cost Artificial cost for urban deviation variables (USD17MER per ha) / 1e+06 /
 ;
 
 table f34_urbanland(t_all, j, urban_scen34)     Urban land

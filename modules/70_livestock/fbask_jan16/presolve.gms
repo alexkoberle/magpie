@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -35,13 +35,13 @@ p70_cattle_feed_pc_proxy(t,i,kli_rd) = pm_kcal_pc_initial(t,i,kli_rd)*im_feed_ba
 *' The parameter `p70_incr_cattle` describes the changes in the number of cattle
 *' relative to the previous time step:
 
-p70_incr_cattle(t,i)  =  1$(ord(t)=1)
-     + (
-          ( p70_cattle_feed_pc_proxy(t,i,"livst_rum") * (p70_cattle_stock_proxy(t,i)/p70_cattle_stock_proxy(t-1,i))
-            +
-            p70_cattle_feed_pc_proxy(t,i,"livst_milk") * (p70_milk_cow_proxy(t,i)/p70_milk_cow_proxy(t-1,i)) )
-          / sum(kli_rd, p70_cattle_feed_pc_proxy(t,i,kli_rd) )
-       )$(ord(t)>1);
+if (ord(t)>1,
+   p70_incr_cattle(t,i) = ( (p70_cattle_feed_pc_proxy(t,i,"livst_rum")  + 10**(-6))* (p70_cattle_stock_proxy(t,i)/p70_cattle_stock_proxy(t-1,i))
+                                          +  (p70_cattle_feed_pc_proxy(t,i,"livst_milk") + 10**(-6)) * (p70_milk_cow_proxy(t,i)/p70_milk_cow_proxy(t-1,i)) )
+                                        / sum(kli_rd, p70_cattle_feed_pc_proxy(t,i,kli_rd) + 10**(-6));
+else
+   p70_incr_cattle(t,i) = 1;
+);
 
 *' The pasture management factor is calculated by applying a linear relationship 
 *' that links changes in pasture management with changes in the number of cattle:
@@ -55,16 +55,6 @@ else
 
 *' @stop
 
-p70_cost_share_calibration(i) = f70_hist_cap_share("y2010",i)-(f70_cap_share_reg("slope")*log10(sum(i_to_iso(i,iso),im_gdp_pc_ppp_iso("y2010",iso)))+f70_cap_share_reg("intercept"));
-
-if (m_year(t)<2010,
- p70_cost_share_livst(t,i,"capital") = f70_hist_cap_share(t,i);
- p70_cost_share_livst(t,i,"labor")   = 1 - f70_hist_cap_share(t,i);
-
-elseif (m_year(t)>=2010),
- p70_cost_share_livst(t,i,"capital") = f70_cap_share_reg("slope")*log10(sum(i_to_iso(i,iso),im_gdp_pc_ppp_iso(t,iso)))+f70_cap_share_reg("intercept")+p70_cost_share_calibration(i);
- p70_cost_share_livst(t,i,"labor")   = 1 - p70_cost_share_livst(t,i,"capital");
-);
 
 
 

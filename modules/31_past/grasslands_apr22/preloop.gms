@@ -1,19 +1,10 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
 *** |  MAgPIE License Exception, version 1.0 (see LICENSE file).
 *** |  Contact: magpie@pik-potsdam.de
 
-$ifthen "%c31_past_suit_scen%" == "nocc" 
-  i31_manpast_suit(t_all,j) = f31_pastr_suitability("y1995",j,"ssp245");
-$elseif "%c31_past_suit_scen%" == "nocc_hist" 
-  i31_manpast_suit(t_all,j) = f31_pastr_suitability(t_all,j,"ssp245");
-  i31_manpast_suit(t_all,j)$(m_year(t_all) > sm_fix_cc) = f31_pastr_suitability(t_all,j,"ssp245")$(m_year(t_all) = sm_fix_cc);
-$else 
-  i31_manpast_suit(t_all,j) = f31_pastr_suitability(t_all,j,"%c31_past_suit_scen%");
-  i31_manpast_suit(t_all,j)$(m_year(t_all) <= sm_fix_SSP2) = f31_pastr_suitability(t_all,j,"ssp245");
-$endif
 
 pc31_grass(j,grassland) = f31_LUH2v2("y1995",j,grassland);
 
@@ -102,3 +93,12 @@ i31_grass_yields(t,j,"pastr") = i31_grass_yields(t,j,"pastr") * i31_grass_calib(
 
 *' Note that the calculation is split into two parts for better readability.
 *' @stop
+
+* Initialize biodiversity value
+vm_bv.l(j,"manpast",potnatveg) = 
+  pcm_land(j,"past") * fm_luh2_side_layers(j,"manpast") * fm_bii_coeff("manpast",potnatveg) * fm_luh2_side_layers(j,potnatveg);
+
+vm_bv.l(j,"rangeland",potnatveg) = 
+  pcm_land(j,"past") * fm_luh2_side_layers(j,"rangeland") * fm_bii_coeff("rangeland",potnatveg) * fm_luh2_side_layers(j,potnatveg);
+
+

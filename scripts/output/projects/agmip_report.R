@@ -1,4 +1,4 @@
-# |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -15,6 +15,8 @@ library(magpie4)
 library(lucode2)
 library(quitte)
 library(gms)
+library(piamInterfaces)
+library(piamutils)
 options("magclass.verbosity" = 1)
 
 ############################# BASIC CONFIGURATION #############################
@@ -29,10 +31,17 @@ mif <- paste0(outputdir, "/agmip_report.mif")
 rds <- paste0(outputdir, "/agmip_report.rds")
 ###############################################################################
 
+report <- getReportAgMIP(gdx, scenario = cfg$title, dir = outputdir)
 
-report <- getReportAgMIP(gdx, scenario = cfg$title)
+for (mapping in c("AgMIP")) {
+  missingVariables <- sort(setdiff(unique(deletePlus(getMappingVariables(mapping,"M"))),unique(deletePlus(getNames(report,dim="variable")))))
+  if (length(missingVariables) > 0) {
+    warning("# The following ", length(missingVariables), " variables are expected in the piamInterfaces package ",
+            "for mapping ", mapping, ", but cannot be found in the MAgPIE report.\nPlease either fix in magpie4 or adjust the mapping in piamInterfaces.\n- ",
+            paste(missingVariables, collapse = ",\n- "), "\n")
+  }
+}
 
-###regional aggregation
-
-write.report(report, file = mif)
+### regional aggregation
+write.report(report, file = mif, skipempty = FALSE)
 saveRDS(as.quitte(report), file = rds)

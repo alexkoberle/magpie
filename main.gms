@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -148,25 +148,25 @@ $title magpie
 
 *##################### R SECTION START (VERSION INFO) ##########################
 * 
-* Used data set: rev4.87_h12_magpie.tgz
-* md5sum: 658398f1dcbef89198bd85d61b1db9ad
-* Repository: /p/projects/rd3mod/inputdata/output
-* 
-* Used data set: rev4.87_h12_fd712c0b_cellularmagpie_c200_MRI-ESM2-0-ssp370_lpjml-8e6c5eb1.tgz
-* md5sum: 8a1d668acfe66a700eb5da2143b31cb2
-* Repository: /p/projects/rd3mod/inputdata/output
-* 
-* Used data set: rev4.87_h12_validation.tgz
-* md5sum: d02217d791b58400e6e3be7186527ed5
-* Repository: /p/projects/rd3mod/inputdata/output
-* 
-* Used data set: additional_data_rev4.43.tgz
+* Used data set: rev4.116_h12_magpie.tgz
 * md5sum: NA
 * Repository: https://rse.pik-potsdam.de/data/magpie/public
 * 
-* Used data set: calibration_H12_per_ton_fao_may22_glo_08Jul23.tgz
-* md5sum: 7315d0f268d6225805a4c1f1c3c05b13
-* Repository: /p/projects/landuse/data/input/calibration
+* Used data set: rev4.116_h12_fd712c0b_cellularmagpie_c200_MRI-ESM2-0-ssp370_lpjml-8e6c5eb1.tgz
+* md5sum: NA
+* Repository: https://rse.pik-potsdam.de/data/magpie/public
+* 
+* Used data set: rev4.116_h12_validation.tgz
+* md5sum: NA
+* Repository: https://rse.pik-potsdam.de/data/magpie/public
+* 
+* Used data set: additional_data_rev4.57.tgz
+* md5sum: NA
+* Repository: https://rse.pik-potsdam.de/data/magpie/public
+* 
+* Used data set: calibration_H12_27Sep24.tgz
+* md5sum: NA
+* Repository: https://rse.pik-potsdam.de/data/magpie/public
 * 
 * Low resolution: c200
 * High resolution: 0.5
@@ -175,15 +175,15 @@ $title magpie
 * 
 * Number of cells per region:
 *   CAZ  CHA  EUR  IND  JPN  LAM  MEA  NEU  OAS  REF  SSA  USA
-*     6   17    9    8    1   44   26    7   10   13   38   21
+*    14   23   10    7    4   26   21    9   16   23   32   15
 * 
 * Regionscode: 62eff8f7
 * 
-* Regions data revision: 4.87
+* Regions data revision: 4.114
 * 
 * lpj2magpie settings:
 * * LPJmL data: MRI-ESM2-0:ssp370
-* * Revision: 4.87
+* * Revision: 4.114
 * 
 * aggregation settings:
 * * Input resolution: 0.5
@@ -191,11 +191,11 @@ $title magpie
 * * Regionscode: 62eff8f7
 * * Number of clusters per region:
 *   CAZ  CHA  EUR  IND  JPN  LAM  MEA  NEU  OAS  REF  SSA  USA
-*     6   17    9    8    1   44   26    7   10   13   38   21
+*    14   23   10    7    4   26   21    9   16   23   32   15
 * * Call: withCallingHandlers(expr, message = messageHandler, warning = warningHandler,     error = errorHandler)
 * 
 * 
-* Last modification (input data): Thu Jul 13 10:36:10 2023
+* Last modification (input data): Sun Oct 27 00:37:36 2024
 * 
 *###################### R SECTION END (VERSION INFO) ###########################
 
@@ -247,15 +247,16 @@ $setglobal processing  substitution_may21
 $setglobal trade  selfsuff_reduced
 $setglobal land_conservation  area_based_apr22
 
-$setglobal ageclass  feb21
+$setglobal ageclass  oct24
 
-$setglobal crop  endo_apr21
+$setglobal cropland  simple_apr24
+$setglobal croparea  simple_apr24
 $setglobal past  endo_jun13
 
-$setglobal forestry  dynamic_feb21
+$setglobal forestry  dynamic_may24
 
 $setglobal urban  exo_nov21
-$setglobal natveg  dynamic_feb21
+$setglobal natveg  pot_forest_may24
 
 $setglobal employment  exo_may22
 $setglobal labor_prod  off
@@ -266,7 +267,7 @@ $setglobal transport  gtap_nov12
 $setglobal area_equipped_for_irrigation  endo_apr13
 $setglobal water_demand  all_sectors_aug13
 $setglobal water_availability  total_water_aug13
-$setglobal biodiversity  bii_target
+$setglobal biodiversity  bii_target_apr24
 $setglobal climate  static
 
 $setglobal nr_soil_budget  macceff_aug22
@@ -277,14 +278,14 @@ $setglobal phosphorus  off
 $setglobal awms  ipcc2006_aug16
 $setglobal ghg_policy  price_aug22
 $setglobal maccs  on_aug22
-$setglobal peatland  on
+$setglobal peatland  v2
 $setglobal som  static_jan19
 
 $setglobal bioenergy  1stgen_priced_dec18
 $setglobal material  exo_flexreg_apr16
 $setglobal livestock  fbask_jan16
 
-$setglobal disagg_lvst  foragebased_aug18
+$setglobal disagg_lvst  foragebased_jul23
 
 $setglobal timber  default
 

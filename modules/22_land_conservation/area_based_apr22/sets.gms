@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -6,6 +6,12 @@
 *** |  Contact: magpie@pik-potsdam.de
 
 sets
+
+  base22 All baseline protection options
+    / none, WDPA, WDPA_I-II-III, WDPA_IV-V-VI /
+
+  wdpa_cat22(base22) Protected area categories
+    / WDPA, WDPA_I-II-III, WDPA_IV-V-VI /
 
   consv22_all All conservation options
   / none, 30by30, KBA, GSN_DSA, GSN_RarePhen, GSN_AreaIntct, GSN_ClimTier1, GSN_ClimTier2,

@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -19,5 +19,6 @@
 
 
 *###################### R SECTION START (MODULETYPES) ##########################
+$Ifi "%bioenergy%" == "1st2ndgen_priced_feb24" $include "./modules/60_bioenergy/1st2ndgen_priced_feb24/realization.gms"
 $Ifi "%bioenergy%" == "1stgen_priced_dec18" $include "./modules/60_bioenergy/1stgen_priced_dec18/realization.gms"
 *###################### R SECTION END (MODULETYPES) ############################

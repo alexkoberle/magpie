@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -27,7 +27,7 @@ $offdelim
 
 $setglobal c13_tccost  medium
 
-table f13_tc_factor(t_all,scen13) Regression factor (USD05PPP per ha)
+table f13_tc_factor(t_all,scen13) Regression factor (USD17MER per ha)
 $ondelim
 $include "./modules/13_tc/input/f13_tc_factor.cs3"
 $offdelim

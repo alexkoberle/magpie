@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -23,8 +23,8 @@ else
                                  + f15_demand_paras(regr15,"%c15_food_scenario_noselect%","non_saturation")*(1-p15_country_dummy(iso));
 );
 
-option nlp = conopt4
-
+option nlp = conopt4;
+option threads = 1;
 
 *' @code
 *' Within the major food groups determined by the regressions
@@ -241,7 +241,7 @@ solve m15_food_demand USING nlp MAXIMIZING v15_objective;
 * in case of problems try CONOPT3
 if(m15_food_demand.modelstat > 2,
   display "Modelstat > 2 | Retry solve with CONOPT3";
-  option nlp = conopt;
+  option nlp = conopt3;
   solve m15_food_demand USING nlp MAXIMIZING v15_objective;
   option nlp = conopt4;
 );
@@ -317,7 +317,7 @@ $include "./modules/15_food/anthro_iso_jun22/exodietmacro.gms";
 * some calculations for postprocessing and other modules
 p15_kcal_pc_initial_iso(t,iso,kfo) = p15_kcal_pc_iso(t,iso,kfo);
 pm_kcal_pc_initial(t,i,kfo) =  p15_kcal_pc(t,i,kfo);
-o15_kcal_regr_initial(t,iso,kfo)=v15_kcal_regr.l(iso,kfo);
+o15_kcal_regr_initial(t,iso,kfo) = v15_kcal_regr.l(iso,kfo);
 
 
 *' @stop
