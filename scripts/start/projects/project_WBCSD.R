@@ -44,7 +44,7 @@ cfg$gms$c_timesteps <- "5year2050"
 cfg$gms$factor_costs <- "sticky_labor"        # default = per_ton_fao_may22
 cfg$gms$c38_fac_req <- "reg"        # default "glo"
 cfg$gms$crop <- "penalty_apr22"
-cfg$gms$past <- "grasslands_apr22"
+#cfg$gms$past <- "grasslands_apr22"
 
 #reduce interest rates of HIC to 0.02 to incentivize investment in tau
 cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
@@ -57,8 +57,7 @@ cfg$input <- c(regional = "rev4.116_FSEC_magpie.tgz",
                calibration = "calibration_FSEC_27Sep24.tgz",
                additional = "additional_data_rev4.57.tgz",
                patch = "WBCSD.tgz",
-               patchTrade = "tradePatch.tgz",
-               patchGrassland = "patch_grassland.tgz"
+               patchTrade = "tradePatch.tgz"
 )
 
 highIncomeCountries  <- "ALA,AUS,AUT,BEL,BGR,CAN,CHN,CYP,EST,ESP,GBR,FRA,FRO,GGY,HUN,GIB,GRC,HRV,IMN,IRL,JEY,LTU,MLT,
