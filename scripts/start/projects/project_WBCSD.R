@@ -56,7 +56,7 @@ cfg$input <- c(regional = "rev4.116_FSEC_magpie.tgz",
                validation = "rev4.116_FSEC_validation.tgz",
                calibration = "calibration_FSEC_27Sep24.tgz",
                additional = "additional_data_rev4.57.tgz",
-               patch = "WBCSD.tgz",
+               patch = "WBCSD2.tgz",
                patchTrade = "tradePatch.tgz"
 )
 
