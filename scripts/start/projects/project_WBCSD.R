@@ -23,7 +23,9 @@ library(gdx)
 source("scripts/start_functions.R")
 
 #start MAgPIE run
-source("config/default.cfg")
+#source("config/default.cfg")
+source("scripts/projects/fsec.R")
+cfg       <- fsecScenario(scenario = "c_BAU")
 
 #repos
 cfg$repositories <- append(list("./patch_inputdata"=NULL,
@@ -51,14 +53,9 @@ cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
 cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
 
 #input file vector (for BAU)
-cfg$input <- c(regional = "rev4.116_FSEC_magpie.tgz",
-               cellular = "rev4.116_FSEC_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz",
-               validation = "rev4.116_FSEC_validation.tgz",
-               calibration = "calibration_FSEC_27Sep24.tgz",
-               additional = "additional_data_rev4.57.tgz",
-               patch = "WBCSD2.tgz",
-               patchTrade = "tradePatch.tgz"
-)
+
+cfg$input[["patchInput"]] <- "WBCSD2.tgz"
+cfg$input[["patchTrade"]] <- "tradePatch.tgz"
 
 highIncomeCountries  <- "ALA,AUS,AUT,BEL,BGR,CAN,CHN,CYP,EST,ESP,GBR,FRA,FRO,GGY,HUN,GIB,GRC,HRV,IMN,IRL,JEY,LTU,MLT,
                          NLD,POL,PRT,ROU,AND,ISL,LIE,MCO,SJM,SMR,VAT,ALB,BIH,MKD,MNE,SRB,TUR,GRL,HKG,TWN,CZE,DEU,DNK,
