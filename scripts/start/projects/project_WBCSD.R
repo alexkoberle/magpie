@@ -31,11 +31,10 @@ cfg$repositories <- append(list("./patch_inputdata"=NULL,
 
 source("scripts/projects/fsec.R")
 cfg       <- fsecScenario(scenario = "c_BAU")
-
 #output folder
 cfg$results_folder <- "output/:title:"
 cfg$results_folder_highres <- "output"
-#cfg$output <- c("extra/disaggregation","rds_report")
+cfg$output <- c("extra/disaggregation","rds_report","rds_report_iso")
 cfg$force_replace <- TRUE
 cfg$force_download <- TRUE
 cfg$qos <- "standby"
@@ -43,14 +42,12 @@ cfg$sequential <- FALSE
 
 #general settings
 cfg$gms$c_timesteps <- "5year2050"
-cfg$gms$factor_costs <- "sticky_labor"        # default = per_ton_fao_may22
-cfg$gms$c38_fac_req <- "reg"        # default "glo"
-cfg$gms$crop <- "penalty_apr22"
-#cfg$gms$past <- "grasslands_apr22"
+# cfg$gms$c38_fac_req <- "reg"        # default "glo"
+# cfg$gms$past <- "grasslands_apr22"
 
 #reduce interest rates of HIC to 0.02 to incentivize investment in tau
-cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
-cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
+#cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
+#cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
 
 #input file vector (for BAU)
 
