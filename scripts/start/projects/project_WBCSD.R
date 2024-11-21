@@ -34,7 +34,7 @@ cfg       <- fsecScenario(scenario = "c_BAU")
 #output folder
 cfg$results_folder <- "output/:title:"
 cfg$results_folder_highres <- "output"
-cfg$output <- c("extra/disaggregation","rds_report","rds_report_iso")
+cfg$output <- c("extra/disaggregation","rds_report")
 cfg$force_replace <- TRUE
 cfg$force_download <- TRUE
 cfg$qos <- "standby"
