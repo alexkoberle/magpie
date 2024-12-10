@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -17,5 +17,5 @@
 *' @authors Florian Humpenöder, Abhijeet Mishra, Patrick v. Jeetze
 
 *###################### R SECTION START (MODULETYPES) ##########################
-$Ifi "%natveg%" == "dynamic_feb21" $include "./modules/35_natveg/dynamic_feb21/realization.gms"
+$Ifi "%natveg%" == "pot_forest_may24" $include "./modules/35_natveg/pot_forest_may24/realization.gms"
 *###################### R SECTION END (MODULETYPES) ############################

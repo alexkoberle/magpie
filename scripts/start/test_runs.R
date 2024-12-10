@@ -1,4 +1,4 @@
-# |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -26,7 +26,6 @@ download_and_update(cfg)
 # create additional information to describe the runs
 cfg$info$flag <- "weeklyTests"
 
-cfg$output <- c("rds_report") # Only run rds_report after model run
 cfg$results_folder <- "output/:title:"
 cfg$force_replace <- TRUE
 
@@ -47,23 +46,22 @@ for(ssp in c("SSP1","SSP2","SSP5")) {
   cfg$title <- .title(cfg, paste(ssp,"Ref",sep="-"))
   cfg <- setScenario(cfg,c(ssp,"NPI","rcp7p0"))
   cfg$gms$c56_mute_ghgprices_until <- "y2150"
-  cfg$gms$c56_pollutant_prices <- paste0("R21M42-",ssp,"-NPi")
-  cfg$gms$c60_2ndgen_biodem    <- paste0("R21M42-",ssp,"-NPi")
+  cfg$gms$c56_pollutant_prices <- paste0("R32M46-", if (ssp=="SSP2") "SSP2EU" else ssp,"-NPi")
+  cfg$gms$c60_2ndgen_biodem    <- paste0("R32M46-", if (ssp=="SSP2") "SSP2EU" else ssp,"-NPi")
   start_run(cfg, codeCheck = FALSE)
 
   cfg$title <- .title(cfg, paste(ssp,"NDC",sep="-"))
   cfg <- setScenario(cfg,c(ssp,"NDC","rcp4p5"))
   cfg$gms$c56_mute_ghgprices_until <- "y2150"
-# Input for NDC from R21M42 is not available, therefore NPi is used.
-  cfg$gms$c56_pollutant_prices <- paste0("R21M42-",ssp,"-NPi")
-  cfg$gms$c60_2ndgen_biodem    <- paste0("R21M42-",ssp,"-NPi")
+  cfg$gms$c56_pollutant_prices <- paste0("R32M46-", if (ssp=="SSP2") "SSP2EU" else ssp,"-NDC")
+  cfg$gms$c60_2ndgen_biodem    <- paste0("R32M46-", if (ssp=="SSP2") "SSP2EU" else ssp,"-NDC")
   start_run(cfg, codeCheck = FALSE)
 
-  cfg$title <- .title(cfg, paste(ssp,"PkBudg900",sep="-"))
+  cfg$title <- .title(cfg, paste(ssp,"PkBudg650",sep="-"))
   cfg <- setScenario(cfg,c(ssp,"NDC","rcp1p9"))
   cfg$gms$c56_mute_ghgprices_until <- "y2030"
-  cfg$gms$c56_pollutant_prices <- paste0("R21M42-",ssp,"-PkBudg900")
-  cfg$gms$c60_2ndgen_biodem    <- paste0("R21M42-",ssp,"-PkBudg900")
+  cfg$gms$c56_pollutant_prices <- paste0("R32M46-", if (ssp=="SSP2") "SSP2EU" else ssp,"-PkBudg650")
+  cfg$gms$c60_2ndgen_biodem    <- paste0("R32M46-", if (ssp=="SSP2") "SSP2EU" else ssp,"-PkBudg650")
   start_run(cfg, codeCheck = FALSE)
 
 }
@@ -80,8 +78,17 @@ cfg <- fsecScenario(scenario = "c_BAU")
 cfg$results_folder_highres <- "output"
 start_run(cfg = cfg, codeCheck = codeCheck)
 
+### NatureSparing
+cfg <- fsecScenario(scenario = "b_NatureSparing")
+cfg$results_folder_highres <- "output"
+start_run(cfg = cfg, codeCheck = codeCheck)
+
+### LandscapeElements
+cfg <- fsecScenario(scenario = "a_LandscapeElements")
+cfg$results_folder_highres <- "output"
+start_run(cfg = cfg, codeCheck = codeCheck)
+
 ### FSDP Scenario
 cfg <- fsecScenario(scenario = "e_FSDP")
 cfg$results_folder_highres <- "output"
 start_run(cfg = cfg, codeCheck = codeCheck)
-

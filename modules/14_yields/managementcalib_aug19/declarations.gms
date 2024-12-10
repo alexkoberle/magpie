@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -14,10 +14,7 @@ parameters
  i14_fao_yields_hist(t,i,kcr)                            FAO yields per region at the historical referende year (tDM per ha per yr)
  i14_lambda_yields(t,i,kcr)                              Scaling factor for non-linear management calibration (1)
  i14_managementcalib(t,j,kcr,w)                          Regional management calibration factor accounting for FAO yield levels (1)
- p14_growing_stock(t,j,ac,forest_land,forest_type)       Forest growing stock (tDM per ha per yr)
- pm_timber_yield(t,j,ac,forest_land)                     Forest growing stock (tDM per ha per yr)
- p14_growing_stock_initial(j,ac,forest_land,forest_type) Initial Forest growing stock (tDM per ha per yr)
- pm_timber_yield_initial(j,ac,forest_land)               Initial Forest yield (tDM per ha per yr)
+ pm_timber_yield(t,j,ac,land_timber)                     Forest growing stock (tDM per ha per yr)
  pm_yields_semi_calib(j,kve,w)                           Potential yields calibrated to FAO regional levels (tDM per ha per yr)
  i14_calib_yields_hist(i,w)                              Calibrated yields average over region and crop type at the historical reference year (tDM per ha per yr)
  i14_calib_yields_ratio(i)                               Irrigated to rainfed yield ratio for calibrated yields (1)

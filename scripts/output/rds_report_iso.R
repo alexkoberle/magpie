@@ -1,4 +1,4 @@
-# |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -31,7 +31,17 @@ rds_iso <- paste0(outputdir, "/report_iso.rds")
 ###############################################################################
 
 report <- getReportIso(gdx, scenario = cfg$title, dir = outputdir)
+
+mif <- sub(".rds",".mif",rds_iso)
+write.report(report, file = mif, scenario = cfg$title)
+report <- read.report(file = mif, as.list = FALSE)
+
 q <- as.quitte(report)
+# as.quitte converts "World" into "GLO". But we want to keep "World" and therefore undo these changes
+q <- droplevels(q)
+levels(q$region)[levels(q$region) == "GLO"] <- "World"
+q$region <- factor(q$region,levels = sort(levels(q$region)))
+
 if (all(is.na(q$value))) {
   stop("No values in reporting!")
 }

@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -72,8 +72,8 @@ q15_regr_bmi_shr(iso,sex,agegroup15,bmi_tree15) ..
         v15_regr_overgroups(iso,sex,agegroup15,bmi_tree15)
         =e=
         i15_bmi_intercept(sex,agegroup15,bmi_tree15)
-        + (i15_bmi_saturation(sex,agegroup15,bmi_tree15) * v15_income_pc_real_ppp_iso(iso))
-        / (i15_bmi_halfsat(sex,agegroup15,bmi_tree15) + v15_income_pc_real_ppp_iso(iso));
+        + (i15_bmi_saturation(sex,agegroup15,bmi_tree15) * (v15_income_pc_real_ppp_iso(iso) * fm_gdp_defl_ppp(iso)))
+        / (i15_bmi_halfsat(sex,agegroup15,bmi_tree15) + (v15_income_pc_real_ppp_iso(iso) * fm_gdp_defl_ppp(iso)));
 
 *' Then, these regression shares are applied to parameterize the
 *' hierarchical tree structure:
@@ -169,8 +169,8 @@ q15_regr_kcal(iso) ..
 q15_regr(iso, regr15) ..
          v15_demand_regr(iso, regr15) =e=
          i15_dem_intercept(iso,regr15)
-         + (i15_dem_saturation(iso,regr15) * v15_income_pc_real_ppp_iso(iso))
-         / (i15_dem_halfsat(iso,regr15) + v15_income_pc_real_ppp_iso(iso)**i15_dem_nonsat(iso,regr15));
+         + (i15_dem_saturation(iso,regr15) * (v15_income_pc_real_ppp_iso(iso) * fm_gdp_defl_ppp(iso)))
+         / (i15_dem_halfsat(iso,regr15) + (v15_income_pc_real_ppp_iso(iso) * fm_gdp_defl_ppp(iso) )**i15_dem_nonsat(iso,regr15));
 
 *' In the subsequent equations, those parameters
 *' are used to determine the dietary composition using a hierachical tree:

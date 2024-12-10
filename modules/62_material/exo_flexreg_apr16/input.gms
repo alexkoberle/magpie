@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -27,5 +27,6 @@ $offdelim
 /
 ;
 
+scalar s62_include_bioplastic switch whether future bioplastic demand should be included (0 or 1) / 1 /;
 scalar s62_max_dem_bioplastic maximum demand for bioplastics (mio. tDM per yr) / 0 /;
 scalar s62_midpoint_dem_bioplastic midpoint of logistic function for bioplastic demand (yr) / 2050 /;

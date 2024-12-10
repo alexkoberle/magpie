@@ -1,4 +1,4 @@
-# |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -59,3 +59,7 @@ watStressViolations <- watStress
 # mark violations in different color
 watStressViolations[efvViolation == 1] <- 100
 write.magpie(watStressViolations, file_name = file.path(outputdir, "watStressViolations.mz"))
+
+# Water EFV ratio (EFV to EFR)
+watEFVratio <- waterEFVratio(gdx, level = "grid", dir = outputdir)
+write.magpie(watEFVratio, file_name = file.path(outputdir, "watEFVratio.mz"))

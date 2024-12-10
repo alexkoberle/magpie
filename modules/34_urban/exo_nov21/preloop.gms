@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -15,3 +15,7 @@ i34_urban_area(t_all, j) = f34_urbanland(t_all, j,"%c34_urban_scenario%");
 );
 
 pcm_land(j,"urban") = i34_urban_area("y1995",j);
+
+* Initialize biodiversity value
+vm_bv.l(j2,"urban", potnatveg) = 
+  pcm_land(j2,"urban") * fm_bii_coeff("urban",potnatveg) * fm_luh2_side_layers(j2,potnatveg);

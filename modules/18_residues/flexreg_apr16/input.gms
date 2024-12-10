@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -41,7 +41,7 @@ $include "./modules/18_residues/input/f18_res_combust_eff.cs4"
 $offdelim
 /;
 
-parameter f18_fac_req_kres(kres) Factor requirements (USD05MER per tDM)
+parameter f18_fac_req_kres(kres) Factor requirements (USD17MER per tDM)
 /
 $ondelim
 $include "./modules/18_residues/flexreg_apr16/input/f18_fac_req_kres.csv"

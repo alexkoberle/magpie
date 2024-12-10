@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -33,6 +33,7 @@
 *'   efficiency times management factor") from @PIK_report104_2007.
 *'   Here, irrigated area from @siebert_FAO_2007 has been used as aggregation
 *'   weight.
+*'   Contraction of AEI happens if a depreciation rate is set in the switch `s41_AEI_depreciation`. 
 *'
 *' * A regression of country values of the "conveyance efficiency times
 *'   management factor" from @PIK_report104_2007 on GDP.

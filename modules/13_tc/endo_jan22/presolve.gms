@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -10,7 +10,7 @@ pc13_land(i,"pastr") = sum(cell(i,j),pcm_land(j,"past"));
 pc13_land(i,"crop") = sum(cell(i,j),pcm_land(j,"crop"));
 
 if (sum(sameas(t_past,t),1) = 1 AND s13_ignore_tau_historical = 0,
-  vm_tau.lo(h,"pastr") =   fm_pastr_tau_hist(t,h);
+  vm_tau.lo(h,"pastr") =   f13_pastr_tau_hist(t,h);
   vm_tau.lo(h,"crop") =    f13_tau_historical(t,h);
 else
   vm_tau.lo(h, tautype) =    pcm_tau(h, tautype);

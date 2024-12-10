@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -22,12 +22,12 @@ $ondelim
 $include "./modules/20_processing/input/f20_processing_shares.cs3"
 $offdelim       ;
 
-table f20_processing_unitcosts(ksd,kpr)   Costs of transforming x units kpr into 1 unit ksd (USD05MER per tDM)
+table f20_processing_unitcosts(ksd,kpr)   Costs of transforming x units kpr into 1 unit ksd (USD17MER per tDM)
 $ondelim
 $include "./modules/20_processing/input/f20_processing_unitcosts.cs3"
 $offdelim       ;
 
-table f20_quality_cost(ksd,kpr)   Costs for difference in quality between secondary products from diverging origins (USD per tDM)
+table f20_quality_cost(ksd,kpr)   Costs for difference in quality between secondary products from diverging origins (USD17MER per tDM)
 $ondelim
 $include "./modules/20_processing/substitution_may21/input/f20_quality_cost.cs3"
 $offdelim       ;
@@ -42,7 +42,7 @@ $ondelim
 $include "./modules/20_processing/input/f20_scp_processing_shares.csv"
 $offdelim;
 
-parameter f20_scp_unitcosts(scptype) Costs of production of one unit of SCP exclusive of feedstock costs (USD per tDM)
+parameter f20_scp_unitcosts(scptype) Costs of production of one unit of SCP exclusive of feedstock costs (USD17MER per tDM)
 /
 $ondelim
 $include "./modules/20_processing/input/f20_scp_unitcosts.csv"

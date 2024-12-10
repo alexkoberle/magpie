@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -84,5 +84,5 @@ q16_seed_demand(i2,kcr) ..
 
 q16_supply_forestry(i2,kforestry) ..  vm_supply(i2,kforestry)
                                        =e=
-                                       sum(ct,pm_demand_ext(ct,i2,kforestry))
+                                       vm_dem_material(i2,kforestry)
                                        ;

@@ -1,4 +1,4 @@
-# |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+# |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 # |  authors, and contributors see CITATION.cff file. This file is part
 # |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 # |  AGPL-3.0, you are granted additional permissions described in the
@@ -121,8 +121,8 @@ calc_NPI_NDC <- function(policyregions = "iso",
                         map_file=map_file)
   getNames(ndc_ad) <- "ndc.forest"
   #Set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
-  ndc_ad[,which(getYears(ndc_ad,as.integer=TRUE)<=2020),] <-
-    npi_ad[,which(getYears(npi_ad,as.integer=TRUE)<=2020),]
+  ndc_ad[,which(getYears(ndc_ad,as.integer=TRUE)<=2025),] <-
+    npi_ad[,which(getYears(npi_ad,as.integer=TRUE)<=2025),]
   cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
 
 
@@ -155,8 +155,8 @@ calc_NPI_NDC <- function(policyregions = "iso",
                           pol_mapping=pol_mapping, map_file=map_file)
   getNames(ndc_aolc) <- "ndc.other"
   #Set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
-  ndc_aolc[,which(getYears(ndc_aolc,as.integer=TRUE)<=2020),] <-
-    npi_aolc[,which(getYears(npi_aolc,as.integer=TRUE)<=2020),]
+  ndc_aolc[,which(getYears(ndc_aolc,as.integer=TRUE)<=2025),] <-
+    npi_aolc[,which(getYears(npi_aolc,as.integer=TRUE)<=2025),]
 
   #write AD and AOLC policies together
   none_ad_aolc_pol <- mbind(npi_ad,npi_aolc)
@@ -182,7 +182,7 @@ calc_NPI_NDC <- function(policyregions = "iso",
   npi_aff <- droplevels(subset(pol_def, policy=="npi" & landpool=="affore"))
   addtable(npi_aff[,c(-2,-3)])
   npi_aff <- calc_policy(npi_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
-                         weight=dimSums(land_stock[,2005,c("crop","past")]),
+                         weight=dimSums(land_stock[,2005,c("crop","past")]) + 10^-10,
                          map_file=map_file)
   getNames(npi_aff) <- "npi"
   cat(paste0(" (time elapsed: ",format(proc.time()["elapsed"]-ptm,width=6,nsmall=2,digits=2),"s)\n"))
@@ -195,12 +195,12 @@ calc_NPI_NDC <- function(policyregions = "iso",
   ndc_aff <- droplevels(subset(pol_def, policy=="ndc" & landpool=="affore"))
   addtable(ndc_aff[,c(-2,-3)])
   ndc_aff <- calc_policy(ndc_aff, land_stock, pol_type="aff", pol_mapping=pol_mapping,
-                         weight=dimSums(land_stock[,2005,c("crop","past")]),
+                         weight=dimSums(land_stock[,2005,c("crop","past")]) + 10^-10,
                          map_file=map_file)
   getNames(ndc_aff) <- "ndc"
   #set all values before 2015 to NPI values; copy the values til 2010 from the NPI data
-  ndc_aff[,which(getYears(ndc_aff,as.integer=TRUE)<=2020),] <-
-    npi_aff[,which(getYears(npi_aff,as.integer=TRUE)<=2020),]
+  ndc_aff[,which(getYears(ndc_aff,as.integer=TRUE)<=2025),] <-
+    npi_aff[,which(getYears(npi_aff,as.integer=TRUE)<=2025),]
 
   #write AFF policies
   none_aff_pol <- npi_aff
@@ -258,7 +258,11 @@ calc_policy <- function(policy, stock, pol_type="aff", pol_mapping=pol_mapping,
   #set stock to zero or Inf for countries without policies
   # (representing no constraint for min and max constraints)
   if(pol_type=="ad"){
-    stock[!(sub("\\..*$","",getCells(stock)) %in% policy_countries),,] <- 0
+    if(dim(stock)[1] == 59199) {
+      stock[!(sub("\\..*$","",getCells(stock)) %in% policy_countries),,] <- 0
+    } else {
+      stock[!(getItems(stock, "iso", full = TRUE) %in% policy_countries),,] <- 0
+    }
     #calculate flows
     flow <- calc_flows(stock)
     #account only for positive flows, i.e. deforestation

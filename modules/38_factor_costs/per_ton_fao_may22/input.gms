@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -8,7 +8,7 @@
 $setglobal c38_fac_req  glo
 * spatial disaggregation of factor requirements (options: glo, reg)
 
-parameter f38_fac_req(kcr) Factor requirement costs in 2005 (USD05MER per tDM)
+parameter f38_fac_req(kcr) Factor requirement costs in 2005 (USD17MER per tDM)
 /
 $ondelim
 $include "./modules/38_factor_costs/input/f38_fac_req_fao.csv"
@@ -16,7 +16,7 @@ $offdelim
 /
 ;
 
-parameter f38_fac_req_fao_reg(t_all,i,kcr) Factor requirement costs (USD05MER per tDM)
+parameter f38_fac_req_fao_reg(t_all,i,kcr) Factor requirement costs (USD17MER per tDM)
 /
 $ondelim
 $include "./modules/38_factor_costs/input/f38_fac_req_fao_regional.cs4"
@@ -33,8 +33,14 @@ $offdelim
 /
 ;
 
-table f38_historical_share(t_all,i) Historical capital share
+table f38_historical_share(t_all,iso) Historical capital share
 $ondelim
-$include "./modules/38_factor_costs/input/f38_historical_share.csv"
+$include "./modules/38_factor_costs/input/f38_historical_share_iso.csv"
+$offdelim
+;
+
+table f38_hist_factor_costs(t_all,iso) Historical factor costs for crop and livestock (mio USD17MER)
+$ondelim
+$include "./modules/38_factor_costs/input/f38_hist_factor_costs_iso.csv"
 $offdelim
 ;

@@ -1,4 +1,4 @@
-*** |  (C) 2008-2023 Potsdam Institute for Climate Impact Research (PIK)
+*** |  (C) 2008-2024 Potsdam Institute for Climate Impact Research (PIK)
 *** |  authors, and contributors see CITATION.cff file. This file is part
 *** |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
 *** |  AGPL-3.0, you are granted additional permissions described in the
@@ -7,7 +7,7 @@
 
 
 scalars
-  s40_pasture_transport_costs  Transport costs for pasture (USD05MER per tDM per min)     / 0 /
+  s40_pasture_transport_costs  Transport costs for pasture (USD17MER per tDM per min)     / 0 /
 ;
 
 
@@ -20,7 +20,7 @@ $offdelim
 /
 ;
 
-parameter f40_transport_costs(kall) Relative transport costs (USD05MER per tDM per min)
+parameter f40_transport_costs(kall) Relative transport costs (USD17MER per tDM per min)
 /
 $ondelim
 $include "./modules/40_transport/gtap_nov12/input/f40_transport_costs.csv"
