@@ -24,12 +24,14 @@ source("scripts/start_functions.R")
 
 #start MAgPIE run
 source("config/default.cfg")
+source("scripts/projects/fsec.R")
+
 #repos
 cfg$repositories <- append(list("./patch_inputdata"=NULL,
-                             "https://rse.pik-potsdam.de/data/magpie/public"=NULL,
-                                "./tradePatch"=NULL), getOption("magpie_repos"))
+                                "./tradePatch"=NULL,
+                                "https://rse.pik-potsdam.de/data/magpie/public"=NULL),
+                           getOption("magpie_repos"))
 
-source("scripts/projects/fsec.R")
 cfg       <- fsecScenario(scenario = "c_BAU")
 #output folder
 cfg$results_folder <- "output/:title:"
