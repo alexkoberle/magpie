@@ -11,7 +11,7 @@
 
 fsecScenario <- function(scenario) {
 
-  # source("config/default.cfg")
+  source("config/default.cfg")
 
   # Version number
   v <- "v39k_FSEC"

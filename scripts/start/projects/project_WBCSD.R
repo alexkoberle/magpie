@@ -24,7 +24,6 @@ source("scripts/start_functions.R")
 
 #start MAgPIE run
 source("config/default.cfg")
-source("scripts/projects/fsec.R")
 
 #repos
 cfg$repositories <- append(list("./patch_inputdata"=NULL,
@@ -32,7 +31,18 @@ cfg$repositories <- append(list("./patch_inputdata"=NULL,
                                 "https://rse.pik-potsdam.de/data/magpie/public"=NULL),
                            getOption("magpie_repos"))
 
-cfg       <- fsecScenario(scenario = "c_BAU")
+# Use FSEC c_BAU as basis
+cfg <- setScenario(cfg, c("cc", "SSP2", "NDC", "ForestryEndo"))
+cfg <- setScenario(cfg, c("FSEC", "RCP60"), scenario_config = "config/projects/scenario_config_fsec.csv")
+# Download gridded population data
+gms::download_unpack(input = "FSEC_populationScenarios_v2_22-08-22.tgz",
+                     targetdir = "./input",
+                     repositories = cfg$repositories)
+# Download gridded RCP temperature data
+gms::download_unpack(input = "FSEC_GlobalSurfaceTempPerRCP_v4_19-03-24.tgz",
+                     targetdir = "./input",
+                     repositories = cfg$repositories)
+
 #output folder
 cfg$results_folder <- "output/:title:"
 cfg$results_folder_highres <- "output"
