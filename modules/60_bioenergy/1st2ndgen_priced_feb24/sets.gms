@@ -83,6 +83,9 @@ sets
       SSPDB-SSP5-60-REMIND-MAGPIE,
       SSPDB-SSP5-Ref-REMIND-MAGPIE /
 
+   scen1st60 first generation bioenergy scenarios
+       / const2020, const2030, phaseout2020 /
+
 ;
 *######################### R SECTION END (SETS) ################################
 *###############################################################################
@@ -94,9 +97,6 @@ sets
 
    k1st60(kall) 1st generation bioenergy carriers
         / oils, ethanol /
-
-   scen1st60 first generation bioenergy scenarios
-       / const2020, const2030, phaseout2020 /
 
    scen2ndres60 residues for second generation bioenergy scenarios
        / ssp1, ssp2, ssp3, ssp4, ssp5, sdp, off /
