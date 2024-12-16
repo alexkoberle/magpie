@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T03"
+prefix <- "T04"
 
 library(gms)
 library(magclass)
@@ -63,6 +63,7 @@ cfg$gms$c_timesteps <- "5year2050"
 #input file vector (for BAU)
 
 cfg$input[["patchInput"]] <- "WBCSD2.tgz"
+cfg$input[["patch1stgenbio"]] <- "1stgenbioen.tgz"
 cfg$input[["patchTrade"]] <- "tradePatch.tgz"
 
 highIncomeCountries  <- "ALA,AUS,AUT,BEL,BGR,CAN,CHN,CYP,EST,ESP,GBR,FRA,FRO,GGY,HUN,GIB,GRC,HRV,IMN,IRL,JEY,LTU,MLT,

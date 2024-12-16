@@ -91,10 +91,16 @@
   gms::writeSets(sets, "modules/56_ghg_policy/price_aug22/sets.gms")
 
   ### 60_bioenergy
+  scen1st60 <- magclass::read.magpie("modules/60_bioenergy/input/f60_1stgen_bioenergy_dem.cs3")
+  scen1st60 <- magclass::getNames(scen1st60,dim=1)
+  
   scen2nd60 <- magclass::read.magpie("modules/60_bioenergy/input/f60_bioenergy_dem.cs3")
   scen2nd60 <- magclass::getNames(scen2nd60,dim=1)
 
-  sets <- list(list(name = "scen2nd60",
+  sets <- list(list(name = "scen1st60",
+                    desc = "first generation bioenergy scenarios",
+                    items = scen1st60),
+               list(name = "scen2nd60",
                     desc = "second generation bioenergy scenarios",
                     items = scen2nd60))
 
