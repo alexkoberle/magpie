@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T05"
+prefix <- "T06"
 
 library(gms)
 library(magclass)
@@ -53,12 +53,11 @@ cfg$sequential <- FALSE
 
 #general settings
 cfg$gms$c_timesteps <- "5year2050"
-# cfg$gms$c38_fac_req <- "reg"        # default "glo"
-# cfg$gms$past <- "grasslands_apr22"
+c56_emis_policy <- "redd+natveg_nosoil"
 
 #reduce interest rates of HIC to 0.02 to incentivize investment in tau
-#cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
-#cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
+cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
+cfg$gms$s12_hist_interest_hic <- "0.02"    # def = 0.04
 
 #input file vector (for BAU)
 
@@ -81,7 +80,7 @@ cfg <- setScenario(cfg,c("SSP2","NPI","ForestryEndo","cc","rcp4p5"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "NPi"
+cfg$gms$c60_1stgen_biodem <- "constant2030"
 cfg$gms$c60_2ndgen_biodem <- "BAU"
 cfg$gms$c56_pollutant_prices <- "BAU"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -123,7 +122,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "phaseout2020"
+cfg$gms$c60_1stgen_biodem <- "constant2030"
 cfg$gms$c60_2ndgen_biodem <- "2degForecastPol"
 cfg$gms$c56_pollutant_prices <- "2degForecastPol"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -165,7 +164,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "phaseout2020"
+cfg$gms$c60_1stgen_biodem <- "constant2030"
 cfg$gms$c60_2ndgen_biodem <- "2degCoordPol"
 cfg$gms$c56_pollutant_prices <- "2degCoordPol"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -207,7 +206,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "NPi_1000_noBECCS"
+cfg$gms$c60_1stgen_biodem <- "constant2030"
 cfg$gms$c60_2ndgen_biodem <- "1p5degSocialTrans"
 cfg$gms$c56_pollutant_prices <- "1p5degSocialTrans"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -249,7 +248,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "NPi_1000"
+cfg$gms$c60_1stgen_biodem <- "constant2030"
 cfg$gms$c60_2ndgen_biodem <- "1p5degInnovation"
 cfg$gms$c56_pollutant_prices <- "1p5degInnovation"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
