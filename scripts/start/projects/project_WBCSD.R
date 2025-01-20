@@ -53,7 +53,7 @@ cfg$sequential <- FALSE
 
 #general settings
 cfg$gms$c_timesteps <- "5year2050"
-c56_emis_policy <- "reddnatveg_nosoil"
+cfg$gms$c56_emis_policy <- "reddnatveg_nosoil"
 
 #reduce interest rates of HIC to 0.02 to incentivize investment in tau
 cfg$gms$s12_interest_hic <- "0.02"         # def = 0.04
