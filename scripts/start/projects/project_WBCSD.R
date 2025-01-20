@@ -80,7 +80,7 @@ cfg <- setScenario(cfg,c("SSP2","NPI","ForestryEndo","cc","rcp4p5"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "constant2030"
+cfg$gms$c60_1stgen_biodem <- "const2030"
 cfg$gms$c60_2ndgen_biodem <- "BAU"
 cfg$gms$c56_pollutant_prices <- "BAU"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -122,7 +122,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "constant2030"
+cfg$gms$c60_1stgen_biodem <- "const2030"
 cfg$gms$c60_2ndgen_biodem <- "2degForecastPol"
 cfg$gms$c56_pollutant_prices <- "2degForecastPol"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -164,7 +164,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "constant2030"
+cfg$gms$c60_1stgen_biodem <- "const2030"
 cfg$gms$c60_2ndgen_biodem <- "2degCoordPol"
 cfg$gms$c56_pollutant_prices <- "2degCoordPol"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -206,7 +206,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "constant2030"
+cfg$gms$c60_1stgen_biodem <- "const2030"
 cfg$gms$c60_2ndgen_biodem <- "1p5degSocialTrans"
 cfg$gms$c56_pollutant_prices <- "1p5degSocialTrans"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
@@ -248,7 +248,7 @@ cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
 cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
 
 #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "constant2030"
+cfg$gms$c60_1stgen_biodem <- "const2030"
 cfg$gms$c60_2ndgen_biodem <- "1p5degInnovation"
 cfg$gms$c56_pollutant_prices <- "1p5degInnovation"
 cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
