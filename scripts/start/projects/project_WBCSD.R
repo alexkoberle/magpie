@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T06"
+prefix <- "T07"
 
 library(gms)
 library(magclass)
@@ -71,210 +71,220 @@ highIncomeCountries  <- "ALA,AUS,AUT,BEL,BGR,CAN,CHN,CYP,EST,ESP,GBR,FRA,FRO,GGY
 
 #### START scenarios
 
-## BAU
-cfg$title <- paste(prefix,"BAU",sep="_")
+for (ssp in c("SSP1","SSP2","SSP3")) {
 
-#1 set all options to SSP2 defaults including Pop and GDP + NPI
-cfg <- setScenario(cfg,c("SSP2","NPI","ForestryEndo","cc","rcp4p5"))
-#overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.116_FSEC_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz"
+  ## BAU
+  title <- "BAU"
+  cfg$title <- paste(prefix,paste(ssp,title,sep="-"),sep="_")
+  
+  #1 set all options to SSP defaults including Pop and GDP + NPI
+  cfg <- setScenario(cfg,c(ssp,"NPI","ForestryEndo","cc","rcp4p5"))
+  #overwrite with FSEC region input
+  cfg$input[["cellular"]] <- "rev4.116_FSEC_1b5c3817_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1.tgz"
+  
+  #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
+  cfg$gms$c60_1stgen_biodem <- "const2030"
+  cfg$gms$c60_2ndgen_biodem <- "BAU"
+  cfg$gms$c56_pollutant_prices <- "BAU"
+  cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
+  
+  #3 Diet shift and food waste; No diet shift and food waste reduction
+  cfg$gms$s15_kcal_pc_livestock_intake_target <- "750"   # def = 430
+  cfg$gms$c15_livescen_target <- "constant"           # def = constant
+  cfg$gms$s15_exo_waste <- 1
+  cfg$gms$s15_waste_scen <- 1.33
+  cfg$gms$c70_cereal_scp_scen <- "constant"
+  
+  #4 Protected areas; WDPA only
+  cfg$gms$c22_protect_scenario <- "none"      # def = none
+  cfg$gms$c22_protect_scenario_noselect <- "none"     # def = none
+  cfg$gms$policy_countries22  <- all_iso_countries
+  cfg$gms$s22_conservation_start <- 2020       # def = 2020
+  cfg$gms$s22_conservation_target <- 2030       # def = 2030
+  
+  #5 SNUPE
+  cfg$gms$c50_scen_neff <- "maxeff_add3_glo60_glo65"
+  
+  #6 Timber
+  cfg$gms$c73_build_demand <- "BAU"
+  
+  #7 Yields
+  cfg$gms$c13_tccost <- "high"  # def = medium
+  
+  
+  start_run(cfg,codeCheck=FALSE)    
+  
+  
+  
+  ## 2degForecastPol
+  title <- "2degForecastPol"
+  cfg$title <- paste(prefix,paste(ssp,title,sep="-"),sep="_")
+  
+  #1 set all options to SSP defaults including Pop and GDP + NDC
+  cfg <- setScenario(cfg,c(ssp,"NDC","ForestryEndo","cc","rcp2p6"))
+  #overwrite with FSEC region input
+  cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
+  
+  #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
+  cfg$gms$c60_1stgen_biodem <- "const2030"
+  cfg$gms$c60_2ndgen_biodem <- "2degForecastPol"
+  cfg$gms$c56_pollutant_prices <- "2degForecastPol"
+  cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
+  
+  #3 Diet shift and food waste; Medium diet shift and food waste reduction
+  cfg$gms$s15_kcal_pc_livestock_intake_target <- "600"   # def = 430
+  cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
+  cfg$gms$s15_exo_waste <- 1
+  cfg$gms$s15_waste_scen <- 1.2
+  cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
+  
+  #4 Protected areas; BH protection
+  cfg$gms$c22_protect_scenario <- "BH"      # def = None
+  cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
+  cfg$gms$policy_countries22  <- highIncomeCountries
+  cfg$gms$s22_conservation_start <- 2025       # def = 2020
+  cfg$gms$s22_conservation_target <- 2035       # def = 2030
+  
+  #5 SNUPE
+  cfg$gms$c50_scen_neff <- "maxeff_add3_glo65_glo75"
+  
+  #6 Timber
+  cfg$gms$c73_build_demand <- "10pc"
+  
+  #7 Yields
+  cfg$gms$c13_tccost <- "medium"  # def = medium
+  
+  
+  start_run(cfg,codeCheck=FALSE)    
+  
+  
+  
+  ## 2degCoordPol
+  title <- "2degCoordPol"
+  cfg$title <- paste(prefix,paste(ssp,title,sep="-"),sep="_")
+  
+  #1 set all options to SSP defaults including Pop and GDP + NDC
+  cfg <- setScenario(cfg,c(ssp,"NDC","ForestryEndo","cc","rcp2p6"))
+  #overwrite with FSEC region input
+  cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
+  
+  #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
+  cfg$gms$c60_1stgen_biodem <- "const2030"
+  cfg$gms$c60_2ndgen_biodem <- "2degCoordPol"
+  cfg$gms$c56_pollutant_prices <- "2degCoordPol"
+  cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
+  
+  #3 Diet shift and food waste; Medium diet shift and food waste reduction
+  cfg$gms$s15_kcal_pc_livestock_intake_target <- "600"   # def = 430
+  cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
+  cfg$gms$s15_exo_waste <- 1
+  cfg$gms$s15_waste_scen <- 1.2
+  cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
+  
+  #4 Protected areas; BH protection
+  cfg$gms$c22_protect_scenario <- "BH"      # def = None
+  cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
+  cfg$gms$policy_countries22  <- all_iso_countries
+  cfg$gms$s22_conservation_start <- 2020       # def = 2020
+  cfg$gms$s22_conservation_target <- 2030       # def = 2030
+  
+  #5 SNUPE
+  cfg$gms$c50_scen_neff <- "maxeff_add3_glo65_glo75"
+  
+  #6 Timber
+  cfg$gms$c73_build_demand <- "10pc"
+  
+  #7 Yields
+  cfg$gms$c13_tccost <- "medium"  # def = medium
+  
+  
+  start_run(cfg,codeCheck=FALSE)    
+  
+  
+  
+  ## 1p5degSocialTrans
+  title <- "1p5degSocialTrans"
+  cfg$title <- paste(prefix,paste(ssp,title,sep="-"),sep="_")
+  
+  #1 set all options to SSP defaults including Pop and GDP + NDC
+  cfg <- setScenario(cfg,c(ssp,"NDC","ForestryEndo","cc","rcp1p9"))
+  #overwrite with FSEC region input
+  cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
+  
+  #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
+  cfg$gms$c60_1stgen_biodem <- "const2030"
+  cfg$gms$c60_2ndgen_biodem <- "1p5degSocialTrans"
+  cfg$gms$c56_pollutant_prices <- "1p5degSocialTrans"
+  cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
+  
+  #3 Diet shift and food waste; High diet shift and food waste reduction
+  cfg$gms$s15_kcal_pc_livestock_intake_target <- "450"   # def = 430
+  cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
+  cfg$gms$s15_exo_waste <- 1
+  cfg$gms$s15_waste_scen <- 1.165
+  cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
+  
+  #4 Protected areas; 30by30
+  cfg$gms$c22_protect_scenario <- "30by30"      # def = None
+  cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
+  cfg$gms$policy_countries22  <- all_iso_countries
+  cfg$gms$s22_conservation_start <- 2020       # def = 2020
+  cfg$gms$s22_conservation_target <- 2030       # def = 2030
+  
+  #5 SNUPE
+  cfg$gms$c50_scen_neff <- "maxeff_add3_glo65_glo75"
+  
+  #6 Timber
+  cfg$gms$c73_build_demand <- "10pc"
+  
+  #7 Yields
+  cfg$gms$c13_tccost <- "medium"  # def = medium
+  
+  
+  start_run(cfg,codeCheck=FALSE)    
+  
+  
+  
+  ## 1p5degInnovation
+  title <- "1p5degInnovation"
+  cfg$title <- paste(prefix,paste(ssp,title,sep="-"),sep="_")
+  
+  #1 set all options to SSP defaults including Pop and GDP + NDC
+  cfg <- setScenario(cfg,c(ssp,"NDC","ForestryEndo","cc","rcp1p9"))
+  #overwrite with FSEC region input
+  cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
+  
+  #2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
+  cfg$gms$c60_1stgen_biodem <- "const2030"
+  cfg$gms$c60_2ndgen_biodem <- "1p5degInnovation"
+  cfg$gms$c56_pollutant_prices <- "1p5degInnovation"
+  cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
+  
+  #3 Diet shift and food waste; Medium diet shift and food waste reduction
+  cfg$gms$s15_kcal_pc_livestock_intake_target <- "600"   # def = 430
+  cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
+  cfg$gms$s15_exo_waste <- 1
+  cfg$gms$s15_waste_scen <- 1.2
+  cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
+  
+  #4 Protected areas; BH protection
+  cfg$gms$c22_protect_scenario <- "BH"      # def = None
+  cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
+  cfg$gms$policy_countries22  <- all_iso_countries
+  cfg$gms$s22_conservation_start <- 2020       # def = 2020
+  cfg$gms$s22_conservation_target <- 2030       # def = 2030
+  
+  #5 SNUPE
+  cfg$gms$c50_scen_neff <- "maxeff_add3_glo75_glo80"
+  
+  #6 Timber
+  cfg$gms$c73_build_demand <- "50pc"
+  
+  #7 Yields
+  cfg$gms$c13_tccost <- "low"  # def = medium
+  
+  
+  start_run(cfg,codeCheck=FALSE)    
+  
+}
 
-#2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "const2030"
-cfg$gms$c60_2ndgen_biodem <- "BAU"
-cfg$gms$c56_pollutant_prices <- "BAU"
-cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
-
-#3 Diet shift and food waste; No diet shift and food waste reduction
-cfg$gms$s15_kcal_pc_livestock_intake_target <- "750"   # def = 430
-cfg$gms$c15_livescen_target <- "constant"           # def = constant
-cfg$gms$s15_exo_waste <- 1
-cfg$gms$s15_waste_scen <- 1.33
-cfg$gms$c70_cereal_scp_scen <- "constant"
-
-#4 Protected areas; WDPA only
-cfg$gms$c22_protect_scenario <- "none"      # def = none
-cfg$gms$c22_protect_scenario_noselect <- "none"     # def = none
-cfg$gms$policy_countries22  <- all_iso_countries
-cfg$gms$s22_conservation_start <- 2020       # def = 2020
-cfg$gms$s22_conservation_target <- 2030       # def = 2030
-
-#5 SNUPE
-cfg$gms$c50_scen_neff <- "maxeff_add3_glo60_glo65"
-
-#6 Timber
-cfg$gms$c73_build_demand <- "BAU"
-
-#7 Yields
-cfg$gms$c13_tccost <- "high"  # def = medium
-
-
-start_run(cfg,codeCheck=FALSE)    
-
-
-
-## 2degForecastPol
-cfg$title <- paste(prefix,"2degForecastPol",sep="_")
-
-#1 set all options to SSP2 defaults including Pop and GDP + NDC
-cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
-#overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
-
-#2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "const2030"
-cfg$gms$c60_2ndgen_biodem <- "2degForecastPol"
-cfg$gms$c56_pollutant_prices <- "2degForecastPol"
-cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
-
-#3 Diet shift and food waste; Medium diet shift and food waste reduction
-cfg$gms$s15_kcal_pc_livestock_intake_target <- "600"   # def = 430
-cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
-cfg$gms$s15_exo_waste <- 1
-cfg$gms$s15_waste_scen <- 1.2
-cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
-
-#4 Protected areas; BH protection
-cfg$gms$c22_protect_scenario <- "BH"      # def = None
-cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
-cfg$gms$policy_countries22  <- highIncomeCountries
-cfg$gms$s22_conservation_start <- 2025       # def = 2020
-cfg$gms$s22_conservation_target <- 2035       # def = 2030
-
-#5 SNUPE
-cfg$gms$c50_scen_neff <- "maxeff_add3_glo65_glo75"
-
-#6 Timber
-cfg$gms$c73_build_demand <- "10pc"
-
-#7 Yields
-cfg$gms$c13_tccost <- "medium"  # def = medium
-
-
-start_run(cfg,codeCheck=FALSE)    
-
-
-
-## 2degCoordPol
-cfg$title <- paste(prefix,"2degCoordPol",sep="_")
-
-#1 set all options to SSP2 defaults including Pop and GDP + NDC
-cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp2p6"))
-#overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.116_FSEC_6819938d_cellularmagpie_c200_MRI-ESM2-0-ssp126_lpjml-8e6c5eb1.tgz"
-
-#2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "const2030"
-cfg$gms$c60_2ndgen_biodem <- "2degCoordPol"
-cfg$gms$c56_pollutant_prices <- "2degCoordPol"
-cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
-
-#3 Diet shift and food waste; Medium diet shift and food waste reduction
-cfg$gms$s15_kcal_pc_livestock_intake_target <- "600"   # def = 430
-cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
-cfg$gms$s15_exo_waste <- 1
-cfg$gms$s15_waste_scen <- 1.2
-cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
-
-#4 Protected areas; BH protection
-cfg$gms$c22_protect_scenario <- "BH"      # def = None
-cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
-cfg$gms$policy_countries22  <- all_iso_countries
-cfg$gms$s22_conservation_start <- 2020       # def = 2020
-cfg$gms$s22_conservation_target <- 2030       # def = 2030
-
-#5 SNUPE
-cfg$gms$c50_scen_neff <- "maxeff_add3_glo65_glo75"
-
-#6 Timber
-cfg$gms$c73_build_demand <- "10pc"
-
-#7 Yields
-cfg$gms$c13_tccost <- "medium"  # def = medium
-
-
-start_run(cfg,codeCheck=FALSE)    
-
-
-
-## 1p5degSocialTrans
-cfg$title <- paste(prefix,"1p5degSocialTrans",sep="_")
-
-#1 set all options to SSP2 defaults including Pop and GDP + NDC
-cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
-#overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
-
-#2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "const2030"
-cfg$gms$c60_2ndgen_biodem <- "1p5degSocialTrans"
-cfg$gms$c56_pollutant_prices <- "1p5degSocialTrans"
-cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
-
-#3 Diet shift and food waste; High diet shift and food waste reduction
-cfg$gms$s15_kcal_pc_livestock_intake_target <- "450"   # def = 430
-cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
-cfg$gms$s15_exo_waste <- 1
-cfg$gms$s15_waste_scen <- 1.165
-cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
-
-#4 Protected areas; 30by30
-cfg$gms$c22_protect_scenario <- "30by30"      # def = None
-cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
-cfg$gms$policy_countries22  <- all_iso_countries
-cfg$gms$s22_conservation_start <- 2020       # def = 2020
-cfg$gms$s22_conservation_target <- 2030       # def = 2030
-
-#5 SNUPE
-cfg$gms$c50_scen_neff <- "maxeff_add3_glo65_glo75"
-
-#6 Timber
-cfg$gms$c73_build_demand <- "10pc"
-
-#7 Yields
-cfg$gms$c13_tccost <- "medium"  # def = medium
-
-
-start_run(cfg,codeCheck=FALSE)    
-
-
-
-## 1p5degInnovation
-cfg$title <- paste(prefix,"1p5degInnovation",sep="_")
-
-#1 set all options to SSP2 defaults including Pop and GDP + NDC
-cfg <- setScenario(cfg,c("SSP2","NDC","ForestryEndo","cc","rcp1p9"))
-#overwrite with FSEC region input
-cfg$input[["cellular"]] <- "rev4.116_FSEC_0bd54110_cellularmagpie_c200_MRI-ESM2-0-ssp119_lpjml-8e6c5eb1.tgz"
-
-#2 GHG price and Bioenergy Demand from https://climatescenariocatalogue.org/explore-the-data/
-cfg$gms$c60_1stgen_biodem <- "const2030"
-cfg$gms$c60_2ndgen_biodem <- "1p5degInnovation"
-cfg$gms$c56_pollutant_prices <- "1p5degInnovation"
-cfg$gms$c56_mute_ghgprices_until <- "y2020"   # def = y2030
-
-#3 Diet shift and food waste; Medium diet shift and food waste reduction
-cfg$gms$s15_kcal_pc_livestock_intake_target <- "600"   # def = 430
-cfg$gms$c15_livescen_target <- "lin_zero_20_50"           # def = constant
-cfg$gms$s15_exo_waste <- 1
-cfg$gms$s15_waste_scen <- 1.2
-cfg$gms$c70_cereal_scp_scen <- "lin_99-98-90pc_20_50-60-100"
-
-#4 Protected areas; BH protection
-cfg$gms$c22_protect_scenario <- "BH"      # def = None
-cfg$gms$c22_protect_scenario_noselect <- "none"     # def = None
-cfg$gms$policy_countries22  <- all_iso_countries
-cfg$gms$s22_conservation_start <- 2020       # def = 2020
-cfg$gms$s22_conservation_target <- 2030       # def = 2030
-
-#5 SNUPE
-cfg$gms$c50_scen_neff <- "maxeff_add3_glo75_glo80"
-
-#6 Timber
-cfg$gms$c73_build_demand <- "50pc"
-
-#7 Yields
-cfg$gms$c13_tccost <- "low"  # def = medium
-
-
-start_run(cfg,codeCheck=FALSE)    
