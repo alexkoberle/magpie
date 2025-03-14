@@ -13,7 +13,7 @@
 #### Script to start a MAgPIE run ####
 ######################################
 
-prefix <- "T07"
+prefix <- "T08"
 
 library(gms)
 library(magclass)
