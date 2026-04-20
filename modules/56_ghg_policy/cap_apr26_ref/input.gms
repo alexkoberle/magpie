@@ -92,7 +92,7 @@ $setglobal c56_cap_policy                all_nosoil
 $setglobal c56_cprice_aff                secdforest_vegc
 $setglobal c56_mute_ghgprices_until      y2150
 $setglobal c56_carbon_stock_pricing      actualNoAcEst
-$setglobal c56_emis_cap_scenario         none
+$setglobal c56_emis_cap_scenario         test_tight
 
 * Pricing tables — used only when c56_pollutant_prices is not "none"
 table f56_pollutant_prices(t_all,i,pollutants,ghgscen56) GHG certificate prices (USD17MER per t)

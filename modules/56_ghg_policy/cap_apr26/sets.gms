@@ -216,5 +216,5 @@ sets
 *' placeholder = 1e6 Tg CO2eq/yr) is always present. Additional scenario
 *' columns in `f56_emis_cap.csv` must be listed here.
    capscen56 cap trajectory scenarios
-         / none /
+         / none, net0glo2055, test_tight /
 ;

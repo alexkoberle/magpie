@@ -13,15 +13,6 @@ pcm_carbon_stock(j,land,ag_pools,stockType) = vm_carbon_stock.l(j,land,ag_pools,
 *' this timestep; the platform should adjust the budget allocation accordingly.
 p56_emis_cap_slack(t) = v56_slack_emis_cap.l;
 
-* ---- cap_apr26: compute CO2eq for reporting (parameter, not optimization variable) ----
-*' v56_emis_co2eq is not an optimization variable in cap_apr26 — it is computed
-*' here from the solved vm_emissions_reg.l levels. Only the "level" type is
-*' meaningful; marginal/upper/lower are not available for this output.
-ov56_emis_co2eq(t,i,emis_source,pollutants,"level") =
-  vm_emissions_reg.l(i,emis_source,pollutants)
-  * p56_gwp(pollutants)
-  * p56_cap_mask(emis_source,pollutants);
-
 *#################### R SECTION START (OUTPUT DEFINITIONS) #####################
  ov_carbon_stock(t,j,land,c_pools,stockType,"marginal")   = vm_carbon_stock.m(j,land,c_pools,stockType);
  ov56_slack_emis_cap(t,"marginal")                        = v56_slack_emis_cap.m;

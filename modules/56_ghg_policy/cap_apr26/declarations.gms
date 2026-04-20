@@ -25,6 +25,10 @@ parameters
  p56_cap_mask(emis_source,pollutants)  Policy mask for cap scope: 1=included 0=excluded (1)
  p56_emis_cap(t_all)                   Active global AFOLU cap for this run (Tg CO2eq per yr)
  p56_emis_cap_slack(t)                 Slack variable level — platform infeasibility signal (Tg CO2eq per yr)
+* ov56_emis_co2eq declared here (not in R section) because it is computed manually
+* in postsolve rather than copied from a GAMS variable attribute (.l/.m/.up/.lo).
+* Declaring it outside the R section prevents the gms linter from stripping it.
+ ov56_emis_co2eq(t,i,emis_source,pollutants,type) CO2-equivalent emissions by source — level only, computed in postsolve (Tg CO2eq per yr)
 ;
 
 equations
@@ -65,7 +69,6 @@ parameters
  ov56_emission_cost(t,i,emis_source,type)           GHG emission cost by source (mio. USD17MER per yr)
  ov_reward_cdr_aff(t,i,type)                        Annual CDR revenue from afforestation (mio. USD17MER per yr)
  ov56_reward_cdr_aff(t,j,type)                      Cellular CDR revenue from afforestation (mio. USD17MER per yr)
- ov56_emis_co2eq(t,i,emis_source,pollutants,type)   CO2-equivalent emissions — level only, computed in postsolve (Tg CO2eq per yr)
  oq56_emission_costs(t,i,type)                      Total emission costs incl. slack penalty (mio. USD17MER per yr)
  oq56_emission_cost_annual(t,i,emis_annual,type)    Regional costs for annual emissions (mio. USD17MER per yr)
  oq56_emission_cost_oneoff(t,i,emis_oneoff,type)    Regional costs for one-off emissions (mio. USD17MER per yr)

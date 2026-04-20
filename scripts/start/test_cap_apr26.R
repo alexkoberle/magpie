@@ -62,19 +62,19 @@ cfg$results_folder    <- "output/:title:"
 # =======================================================================
 # Run 2 — full time horizon, non-binding cap
 # =======================================================================
-cfg$gms$c_timesteps <- "coup2100"  # restore full horizon (default from default.cfg)
-cfg$title           <- "cap_apr26_nonbinding_full"
-start_run(cfg, codeCheck = FALSE)
+# cfg$gms$c_timesteps <- "coup2100"  # restore full horizon (default from default.cfg)
+# cfg$title           <- "cap_apr26_nonbinding_full"
+# start_run(cfg, codeCheck = FALSE)
 
 # =======================================================================
 # Run 3 — binding cap  [UNCOMMENT AFTER COMPLETING STEPS (a)-(c) ABOVE]
 # =======================================================================
-# cfg$gms$c_timesteps          <- 1
-# cfg$gms$c56_emis_cap_scenario <- "test_tight"   # column in f56_emis_cap.csv
-# cfg$title                    <- "cap_apr26_binding_1step"
-# start_run(cfg, codeCheck = FALSE)
-# # After run: check output/cap_apr26_binding_1step/full.log for
-# #   oq56_emis_cap and ov56_slack_emis_cap to confirm constraint is active.
+cfg$gms$c_timesteps          <- 1
+cfg$gms$c56_emis_cap_scenario <- "test_tight"   # column in f56_emis_cap.csv
+cfg$title                    <- "cap_apr26_binding_1step"
+start_run(cfg, codeCheck = FALSE)
+# After run: check output/cap_apr26_binding_1step/full.log for
+#   oq56_emis_cap and ov56_slack_emis_cap to confirm constraint is active.
 
 # =======================================================================
 # Run 4 — Archetype A source bounds, single timestep  [UNCOMMENT TO TEST]

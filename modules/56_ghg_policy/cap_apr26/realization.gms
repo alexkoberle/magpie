@@ -39,12 +39,12 @@
 *' @authors NZB project
 
 *####################### R SECTION START (PHASES) ##############################
-$Ifi "%phase%" == "sets"         $include "./modules/56_ghg_policy/cap_apr26/sets.gms"
+$Ifi "%phase%" == "sets" $include "./modules/56_ghg_policy/cap_apr26/sets.gms"
 $Ifi "%phase%" == "declarations" $include "./modules/56_ghg_policy/cap_apr26/declarations.gms"
-$Ifi "%phase%" == "input"        $include "./modules/56_ghg_policy/cap_apr26/input.gms"
-$Ifi "%phase%" == "equations"    $include "./modules/56_ghg_policy/cap_apr26/equations.gms"
-$Ifi "%phase%" == "scaling"      $include "./modules/56_ghg_policy/cap_apr26/scaling.gms"
-$Ifi "%phase%" == "preloop"      $include "./modules/56_ghg_policy/cap_apr26/preloop.gms"
-$Ifi "%phase%" == "presolve"     $include "./modules/56_ghg_policy/cap_apr26/presolve.gms"
-$Ifi "%phase%" == "postsolve"    $include "./modules/56_ghg_policy/cap_apr26/postsolve.gms"
+$Ifi "%phase%" == "input" $include "./modules/56_ghg_policy/cap_apr26/input.gms"
+$Ifi "%phase%" == "equations" $include "./modules/56_ghg_policy/cap_apr26/equations.gms"
+$Ifi "%phase%" == "scaling" $include "./modules/56_ghg_policy/cap_apr26/scaling.gms"
+$Ifi "%phase%" == "preloop" $include "./modules/56_ghg_policy/cap_apr26/preloop.gms"
+$Ifi "%phase%" == "presolve" $include "./modules/56_ghg_policy/cap_apr26/presolve.gms"
+$Ifi "%phase%" == "postsolve" $include "./modules/56_ghg_policy/cap_apr26/postsolve.gms"
 *######################## R SECTION END (PHASES) ###############################
