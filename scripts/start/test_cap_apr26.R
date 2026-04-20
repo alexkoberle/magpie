@@ -69,9 +69,9 @@ cfg$results_folder    <- "output/:title:"
 # =======================================================================
 # Run 3 — binding cap  [UNCOMMENT AFTER COMPLETING STEPS (a)-(c) ABOVE]
 # =======================================================================
-cfg$gms$c_timesteps          <- 1
-cfg$gms$c56_emis_cap_scenario <- "test_tight"   # column in f56_emis_cap.csv
-cfg$title                    <- "cap_apr26_binding_1step"
+cfg$gms$c_timesteps          <- "5year2050" 
+cfg$gms$c56_emis_cap_scenario <- "net0glo2055"   # column in f56_emis_cap.csv
+cfg$title                    <- "cap_apr26_net0glo2050"
 start_run(cfg, codeCheck = FALSE)
 # After run: check output/cap_apr26_binding_1step/full.log for
 #   oq56_emis_cap and ov56_slack_emis_cap to confirm constraint is active.
