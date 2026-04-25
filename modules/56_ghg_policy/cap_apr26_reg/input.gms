@@ -128,7 +128,7 @@ $offdelim
 *' Columns are composite i.capscen56 (e.g. BRA.none, LAM.cap_nzb2050).
 table f56_emis_cap(t_all,i,capscen56) Regional AFOLU emissions cap per region (Tg CO2eq per yr)
 $ondelim
-$include "./modules/56_ghg_policy/cap_apr26_reg/input/f56_emis_cap.cs3"
+$include "./modules/56_ghg_policy/cap_apr26_reg/input/f56_emis_cap_reg.cs3"
 $offdelim
 ;
 
