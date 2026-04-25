@@ -214,6 +214,6 @@ sets
 
 * ---- cap_apr26_reg specific ----
    capscen56 regional AFOLU emissions cap scenarios
-         / none /
+         / none, user_scen /
 
 ;
