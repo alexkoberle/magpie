@@ -1,0 +1,237 @@
+# |  (C) 2008-2025 Potsdam Institute for Climate Impact Research (PIK)
+# |  authors, and contributors see CITATION.cff file. This file is part
+# |  of MAgPIE and licensed under AGPL-3.0-or-later. Under Section 7 of
+# |  AGPL-3.0, you are granted additional permissions described in the
+# |  MAgPIE License Exception, version 1.0 (see LICENSE file).
+# |  Contact: magpie@pik-potsdam.de
+
+# --------------------------------------------------------------
+# description: extract report in rds and mif format from run, using only variables relevant for NZB project
+# comparison script: FALSE
+# position: 2
+
+Adapted by: Alexandre Köberle
+# ---------------------------------------------------------------
+
+
+library(magclass)
+library(magpie4)
+library(gms)
+library(piamInterfaces)
+library(quitte)
+source("scripts/helper.R")
+options("magclass.verbosity" = 1)
+
+############################# BASIC CONFIGURATION #############################
+if (!exists("source_include")) {
+  readArgs("outputdir")
+  stopifnot(exists("outputdir"))
+}
+
+cfg <- gms::loadConfig(file.path(outputdir, "config.yml"))
+gdx <- file.path(outputdir, "fulldata.gdx")
+rds <- file.path(outputdir, "report.rds")
+mif <- sub(".rds", ".mif", rds)
+runstatistics  <- file.path(outputdir, "runstatistics.rda")
+###############################################################################
+
+############################# Function getReport_NZB() ########################
+getReport_NZB <- function(gdx, file = NULL, scenario = NULL, filter = c(1, 2, 7),
+                      detail = TRUE, level = "regglo", ...) {
+
+  message("Start getReport(gdx)...")
+
+  t <- system.time(
+    output <- tryList(
+      "reportPopulation(gdx, level = level)",
+      "reportWorkingAgePopulation(gdx, level = level)",
+      "reportIncome(gdx,type='ppp', level = level)",
+      "reportIncome(gdx,type='mer', level = level)",
+      "reportPriceGHG(gdx, level = level)",
+      "reportFoodExpenditure(gdx, level = level)",
+      # "reportKcal(gdx, detail = detail, level = level)",
+      # "reportProtein(gdx, detail = detail, level = level)",
+      # "reportIntakeDetailed(gdx, detail = detail, level = level)",
+      # "reportAnthropometrics(gdx, level = level)",
+      "reportLivestockShare(gdx, level = level)",
+      "reportLivestockDemStructure(gdx, level = level)",
+      # "reportVegfruitShare(gdx, level = level)",
+      # "reportPriceShock(gdx, level = level)",
+      "reportPriceElasticities(gdx, level = level)",
+      "reportDemand(gdx, detail = detail, level = level)",
+      "reportDemandBioenergy(gdx, detail = detail, level = level)",
+      "reportFeed(gdx, detail = detail, level = level)",
+      "reportProduction(gdx, detail = detail, level = level)",
+      "reportProductionBioenergy(gdx, detail = detail, level = level)",
+      "reportTrade(gdx, detail = detail, level = level)",
+      "reportLandUse(gdx, level = level)",
+      "reportLandUseChange(gdx, level = level)",
+      "reportNetForestChange(gdx, level = level)",
+      "reportLandTransitionMatrix(gdx, level = level)",
+      "reportPeatland(gdx, level = level)",
+      "reportLandConservation(gdx, level = level)",
+      "reportCroparea(gdx, detail = detail, level = level)",
+      "reportNitrogenBudgetCropland(gdx, level = level)",
+      "reportNitrogenBudgetPasture(gdx, level = level)",
+      "reportNitrogenEfficiencies(gdx, level = level)",
+      "reportManure(gdx, level = level)",
+      "reportNitrogenPollution(gdx, level = level)",
+      "reportYields(gdx, detail = detail, physical = TRUE, level = level)",
+      "reportYields(gdx, detail = detail, physical = FALSE, level = level)",
+      "reportYieldsCropCalib(gdx, detail = detail, level = level)",
+      "reportYieldsCropRaw(gdx, detail = detail, level = level)",
+      "reportFeedConversion(gdx)",
+      "reportTau(gdx, level = level)",
+      "reportTc(gdx, level = level)",
+      "reportAgriResearchIntensity(gdx, level = level)",
+      "reportEmissions(gdx, level = level)",
+      "reportEmissionsBeforeTechnicalMitigation(gdx, level = level)",
+      "reportCosts(gdx, level = level)",
+      "reportCostsPresolve(gdx, level = level)",
+      "reportCostTransport(gdx, level = level)",
+      "reportCostsTrade(gdx, level = level)",
+      "reportCostsFertilizer(gdx, level = level)",
+      "reportCostOverall(gdx, level = level)",
+      "reportCostCapitalStocks(gdx, level = level)",
+      "reportCostCapitalInvestment(gdx, level = level)",
+      "reportCostsInputFactors(gdx, level = level)",
+      "reportCostsAccounting(gdx, level = level)",
+      "reportCostsWithoutIncentives(gdx, level = level)",
+      "reportAgGDP(gdx, level = level)",
+      # "reportConsumVal(gdx, level = level)",
+      # "reportPriceFoodIndex(gdx, baseyear = 'y2010', level = level)",
+      "reportPriceFoodIndex(gdx, baseyear = 'y2020', level = level)",
+      "reportProducerPriceIndex(gdx, level = level)",
+      "reportExpenditureFoodIndex(gdx, level = level)",
+      "reportPriceAgriculture(gdx, level = level)",
+      "reportPriceBioenergy(gdx, level = level)",
+      "reportPriceLand(gdx, level = level)",
+      # "reportPriceWater(gdx, level = level)",
+      "reportValueTrade(gdx, level = level)",
+      "reportProcessing(gdx, indicator = 'primary_to_process', level = level)",
+      "reportProcessing(gdx, indicator = 'secondary_from_primary', level = level)",
+      "reportAEI(gdx, level = level)",
+      "reportWaterUsage(gdx, detail = FALSE, level = level)",
+      "reportWaterAvailability(gdx, level = level)",
+      "reportAAI(gdx, level = level)",
+      "reportSOM(gdx, level = level)",
+      "reportGrowingStock(gdx, indicator='relative', level = level)",
+      "reportGrowingStock(gdx, indicator='absolute', level = level)",
+      # "reportSDG1(gdx, level = level)",
+      # "reportSDG2(gdx, level = level)",
+      # "reportSDG3(gdx, level = level)",
+      # "reportSDG6(gdx, level = level)",
+      # "reportSDG12(gdx, level = level)",
+      # "reportSDG15(gdx, level = level)",
+      # "reportPBwater(gdx, level = 'regglo')",
+      # "reportPBland(gdx, level = level)",
+      # "reportPBbiosphere(gdx, level = level)",
+      # "reportPBnitrogen(gdx, level = 'regglo')",
+      "reportForestYield(gdx, level = level)",
+      "reportharvested_area_timber(gdx, level = level)",
+      "reportPlantationEstablishment(gdx, level = level)",
+      "reportRotationLength(gdx, level = level)",
+      "reportTimber(gdx, level = level)",
+      "reportProcessingResiduesForestry(gdx, level = level)",
+      "reportBII(gdx, level = level)",
+      "reportCropDiversity(gdx, level = level)",
+      "reportPriceWoodyBiomass(gdx, level = level)",
+      "reportCarbonstock(gdx, level = level)",
+      "reportAgEmployment(gdx, type = 'absolute', detail = TRUE, level = level)",
+      "reportAgEmployment(gdx, type = 'share', detail = TRUE, level = level)",
+      "reportHourlyLaborCosts(gdx, level = level)",
+      "reportRelativeHourlyLaborCosts(gdx, level = level)",
+      "reportTotalHoursWorked(gdx, level = level)",
+      "reportOutputPerWorker(gdx, level = level)",
+      "reportValueMaterialDemand(gdx, level = level)",
+      # "reportFactorCostShares(gdx, type = 'requirements', level = level)",
+      # "reportFactorCostShares(gdx, type = 'optimization', level = level)",
+      # "reportFactorCostShares(gdx, type = 'accounting', level = level)",
+      # "reportWageDevelopment(gdx, baseYear = 2000, level = level)",
+      # "reportWageDevelopment(gdx, baseYear = 2010, level = level)",
+      # "reportWageDevelopment(gdx, baseYear = 2020, level = level)",
+      "reportWaterIndicators(gdx, level = level)",
+      "reportBioplasticDemand(gdx, level = level)",
+      "reportCostsMACCS(gdx, level = level)",
+      "reportLaborCostsEmpl(gdx, level = level)",
+      "reportLaborProductivity(gdx, level = level)",
+      "reportRuralDemandShares(gdx, type = 'tradOnly')",
+      "reportCostsWholesale(gdx, level = level)",
+      "reportFit(gdx, type = 'R2', level = 'grid')",
+      "reportFit(gdx, type = 'R2', level = 'cell')",
+      "reportExtraResidueEmissions(gdx, level = level)",
+      "reportFireEmissions(gdx, level = level)",
+      "reportBiochar(gdx, level = level)",
+      gdx = gdx,
+      level = level
+    )
+  )
+
+  message(paste0("Total runtime:  ", format(t["elapsed"], nsmall = 2, digits = 2), "s"))
+
+  # Unify regions, as we might have used different levels
+  output <- Filter(Negate(is.null), output)
+  regList <- lapply(output, function(m) getItems(m, 1))
+  allRegs <- Reduce(union, regList)
+  output <- lapply(output, function(m) add_columns(m, setdiff(allRegs, getItems(m, 1)), dim = 1))
+
+  # Bind and remove incomplete timesteps
+  output <- .filtermagpie(mbind(output), gdx, filter = filter)
+
+  getSets(output, fulldim = FALSE)[3] <- "variable"
+
+  if (!is.null(scenario)) {
+    output <- add_dimension(output,
+      dim = 3.1,
+      add = "scenario",
+      nm = gsub(".", "_", scenario, fixed = TRUE)
+    )
+  }
+  output <- add_dimension(output, dim = 3.1, add = "model", nm = "MAgPIE")
+
+  #
+  # Validation
+  #
+
+  missingUnit <- !grepl("\\(.*\\)", getNames(output))
+  if (any(missingUnit)) {
+    warning("Some units are missing in getReport!")
+    warning("Missing units in:", getNames(output)[which(!grepl("\\(.*\\)", getNames(output)) == TRUE)])
+    getNames(output)[missingUnit] <- paste(getNames(output)[missingUnit], "( )")
+  }
+
+  if (!all(grepl(" \\(([^\\()]*)\\)($|\\.)", getNames(output, fulldim = TRUE)$variable))) {
+    warning("Variables should be in the format 'name (unit)' (the space between name and unit is important), ",
+            "but the following are not:\n",
+            paste(grep(" \\(([^\\()]*)\\)($|\\.)",
+                       getNames(output, fulldim = TRUE)$variable,
+                       invert = TRUE, value = TRUE),
+                  collapse = "\n"))
+  }
+
+  #
+  # Output
+  #
+  if (!is.null(file)) {
+    write.report2(output, file = file, ...)
+  } else {
+    return(output)
+  }
+}
+
+###############################################################################
+
+
+report <- getReport_NZB(gdx, scenario = cfg$title)
+
+# for (mapping in c("AR6", "NAVIGATE", "SHAPE", "AR6_MAgPIE")) {
+#   expectVariablesPresent(report, getMappingVariables(mapping, "M"))
+# }
+
+write.report(report, file = mif)
+
+qu <- useWorld(as.quitte(report))
+
+saveRDS(qu, file = rds, version = 2)
+
+# saveToResultsArchive(qu, runstatistics, submit = cfg$runstatistics)
