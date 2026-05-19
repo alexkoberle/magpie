@@ -1,0 +1,14 @@
+* Source-specific emission upper bounds for Archetype A overlay.
+* Activate with: cfg$gms$s56_source_bounds_on <- 1
+*
+* Format (cs3, comma-delimited):
+* dummy,dummy,dummy,value
+*
+* One row per (year, region, source) combination you want to bound.
+* Any (region, source) pair not listed remains unconstrained (+INF).
+* Bound units match vm_emissions_reg native units (Tg per yr).
+*
+* Example rows:
+* y2020,BRA,secdforest_vegc,500
+* y2025,BRA,secdforest_vegc,450
+* y2020,BRA,ent_ferm,200
