@@ -10,11 +10,12 @@ library(data.table)
 source("add_cap_scenario.R")
 
 CS3_FILE_IN  <- "f56_emis_cap_reg_H13_template.cs3"
-CS3_FILE_OUT  <- "f56_emis_cap.cs3"
+CS3_FILE_OUT  <- "f56_emis_cap_reg.cs3"
 SCEN_NAME <- "user_scen"   # must match an entry you will add to capscen56
 
 # ---- 1. Read ----------------------------------------------------------------
 x <- read.magpie(CS3_FILE_IN)
+write.magpie(x, CS3_FILE_OUT, col.names = TRUE)
 
 # ---- 2. Convert to data.table (via as.data.frame to avoid NA column issue) -
 # as.data.table(x) directly fails because the value column is unnamed.
@@ -49,7 +50,7 @@ dt_new <- copy(dt)                 # all regions, all years, value = 1e6
 
 # Modify BRA: read desired cap trajectory from CSV, units in Tg CO2eq per yr
 # Change filename of CSV for platform use as needed
-bra_caps <- x=fread("bra_emissions_path_2050_cap0.csv", sep=",")
+bra_caps <- fread("bra_emissions_path_2050_cap0.csv", sep=",")
 
 
 # dt_new[region == "BRA", value := bra_caps$value[match(year, bra_caps$year)]]
@@ -66,7 +67,7 @@ print(dt_new[region == "BRA"])
 result <- add_cap_scenario(
   scen_name = SCEN_NAME,
   scen_dt   = dt_new,
-  cs3_file  = CS3_FILE_OUT,
+  cs3_file  = CS3_FILE_OUT,   ### To write the new file directly to input folder, use "paste0(../modules/56_ghg_policy/cap_apr26_reg/input/", CS3_FILE_OUT)"
   dry_run   = FALSE
 )
 
@@ -74,12 +75,12 @@ result <- add_cap_scenario(
 cat("\nBRA in new scenario (spot-check):\n")
 yrs_sel   <- getYears(result)[getYears(result, as.integer = TRUE) >= 2025 &
                                 getYears(result, as.integer = TRUE) <= 2050]
-bra_check <- as.data.frame(result["LAM", yrs_sel, ], rev = TRUE)
+bra_check <- as.data.frame(result["BRA", yrs_sel, ], rev = TRUE)
 print(bra_check)
 
 # ---- 6. Write when satisfied ------------------------------------------------
 # Uncomment when the values look correct:
-# add_cap_scenario(SCEN_NAME, scen_dt = dt_new, cs3_file = CS3_FILE, dry_run = FALSE)
+# add_cap_scenario(SCEN_NAME, scen_dt = dt_new, cs3_file = CS3_FILE_OUT, dry_run = FALSE)
 
 # ---- 7. Register in sets.gms ------------------------------------------------
 # After writing, add the scenario name to capscen56 in:
