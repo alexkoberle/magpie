@@ -10,7 +10,7 @@
 # comparison script: FALSE
 # position: 2
 
-Adapted by: Alexandre Köberle
+# Adapted by: Alexandre Köberle
 # ---------------------------------------------------------------
 
 
