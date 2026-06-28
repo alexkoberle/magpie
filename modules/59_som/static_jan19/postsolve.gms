@@ -7,6 +7,9 @@
 
 
 
+*** Carry the soil carbon stock forward to the next timestep (as done for the above-ground pools in 56_ghg_policy).
+pcm_carbon_stock(j,land,"soilc",stockType) = vm_carbon_stock.l(j,land,"soilc",stockType);
+
 *#################### R SECTION START (OUTPUT DEFINITIONS) #####################
  ov_nr_som(t,j,"marginal")                                       = vm_nr_som.m(j);
  ov_nr_som_fertilizer(t,j,"marginal")                            = vm_nr_som_fertilizer.m(j);

@@ -7,6 +7,7 @@
 
 scalars
  s57_step_length                    Step length in MACC data (USD17MER)
+ s57_fade                           Helper for the linear phase-in of the prescribed maxmac steps (1)
 ;
 
 parameters
