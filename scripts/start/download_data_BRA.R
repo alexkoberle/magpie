@@ -12,10 +12,10 @@
 
 source("scripts/start_functions.R")
 source("config/default.cfg")
-cfg$input <- c(regional    = "rev4.129.9001NZB_BRA_H13_C200_W2_SwpFun_5638d5dc_magpie.tgz",
-               cellular    = "rev4.129.9001NZB_BRA_H13_C200_W2_SwpFun_5638d5dc_22226bc0_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1_clusterweight-917fb741.tgz",
-               validation  = "rev4.129.9001NZB_BRA_H13_C200_W2_SwpFun_5638d5dc_92e02314_validation.tgz",
+cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_magpie.tgz",
+               cellular    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_d8411e75_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1_clusterweight-d0236589.tgz",
+               validation  = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_92e02314_validation.tgz",
                additional  = "additional_data_rev4.65.tgz",
-               calibration = "calibration_BRA_H13_C200_W2_SwpFun_Feb26.tgz")
+               calibration = "calibration_BRA_H13_C200_W3_MapbiomasIBGE_18Jun26.tgz")
 
 download_and_update(cfg)
