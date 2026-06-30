@@ -6,7 +6,9 @@
 *** |  Contact: magpie@pik-potsdam.de
 
 parameters
- i21_trade_bal_reduction(t_all,k_trade)         Trade balance reduction (1)
+ p21_country_switch(iso)                        Switch: country selected for forced wood self-sufficiency (1)
+ p21_selfsuff_region(h)                         Superregions forced to wood self-sufficiency (1=forced derived from policy_countries21) (1)
+ i21_trade_bal_reduction(t_all,h,k_trade)       Trade balance reduction (1)
  i21_exp_shr(t_all,h,k_trade)                   Trade export shr (1)
  i21_trade_margin(h,k_trade)                    Trade margins (USD17MER per tDM)
  i21_trade_tariff(h,k_trade)                    Trade tariffs (USD17MER per tDM)

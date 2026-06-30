@@ -10,13 +10,29 @@
 *' with sm_fix_SSP2 to keep values matching historical data until then.
 loop(t_all,
  if(m_year(t_all) <= sm_fix_SSP2,
- i21_trade_bal_reduction(t_all,k_trade)=f21_trade_bal_reduction(t_all,"easytrade","l909090r808080");
- i21_trade_bal_reduction(t_all,k_hardtrade21)=f21_trade_bal_reduction(t_all,"hardtrade","l909090r808080");
+ i21_trade_bal_reduction(t_all,h,k_trade)=f21_trade_bal_reduction(t_all,"easytrade","l909090r808080");
+ i21_trade_bal_reduction(t_all,h,k_hardtrade21)=f21_trade_bal_reduction(t_all,"hardtrade","l909090r808080");
  else
- i21_trade_bal_reduction(t_all,k_trade)=f21_trade_bal_reduction(t_all,"easytrade","%c21_trade_liberalization%");
-i21_trade_bal_reduction(t_all,k_hardtrade21)=f21_trade_bal_reduction(t_all,"hardtrade","%c21_trade_liberalization%");
+ i21_trade_bal_reduction(t_all,h,k_trade)=f21_trade_bal_reduction(t_all,"easytrade","%c21_trade_liberalization%");
+i21_trade_bal_reduction(t_all,h,k_hardtrade21)=f21_trade_bal_reduction(t_all,"hardtrade","%c21_trade_liberalization%");
  );
 );
+
+*' Optionally force full wood & woodfuel self-sufficiency for the regions selected
+*' via policy_countries21, to suppress wood-harvest leakage when those regions'
+*' land-use emissions are constrained. s21_force_wood_selfsuff = 1 pins
+*' the selected regions' wood/woodfuel production band to baseline demand (trade
+*' balance reduction = 1) from sm_fix_SSP2 onwards; = 0 reproduces unchanged develop
+*' behaviour. A region is forced only if ALL its countries are in policy_countries21
+*' (forcing self-sufficiency on a partial superregion is not meaningful), mirroring
+*' the region mask in module 56. A superregion h is forced only if every country in
+*' every region it contains (supreg(h,i), i_to_iso(i,iso)) is in policy_countries21;
+*' empty / no fully-selected superregion makes it a no-op.
+p21_country_switch(iso) = 0;
+p21_country_switch(policy_countries21) = 1;
+p21_selfsuff_region(h) = 1$(sum((supreg(h,i), i_to_iso(i,iso)), 1 - p21_country_switch(iso)) = 0);
+i21_trade_bal_reduction(t_all,h,"wood")$(s21_force_wood_selfsuff = 1 AND p21_selfsuff_region(h) AND m_year(t_all) > sm_fix_SSP2)     = 1;
+i21_trade_bal_reduction(t_all,h,"woodfuel")$(s21_force_wood_selfsuff = 1 AND p21_selfsuff_region(h) AND m_year(t_all) > sm_fix_SSP2) = 1;
 
 i21_exports(t_all,h,k_trade) =  ((f21_self_suff(t_all,h,k_trade) * f21_dom_supply(t_all,h,k_trade)) - f21_dom_supply(t_all,h,k_trade))$(f21_self_suff(t_all,h,k_trade) > 1);
 i21_exp_glo(t_all,k_trade) = sum(h, i21_exports(t_all,h,k_trade));

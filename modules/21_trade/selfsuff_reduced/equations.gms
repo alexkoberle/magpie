@@ -31,7 +31,7 @@
  q21_trade_reg(h2,k_trade)..
  sum(supreg(h2,i2),vm_prod_reg(i2,k_trade)) =g=
   m21_baseline_production(vm_supply, v21_excess_prod, f21_self_suff)
-  * sum(ct,i21_trade_bal_reduction(ct,k_trade))
+  * sum(ct,i21_trade_bal_reduction(ct,h2,k_trade))
   - v21_import_for_feasibility(h2,k_trade);
 
 *' Upper bound for production.
@@ -39,7 +39,7 @@
  q21_trade_reg_up(h2,k_trade) ..
  sum(supreg(h2,i2),vm_prod_reg(i2,k_trade)) =l=
   m21_baseline_production(vm_supply, v21_excess_prod, f21_self_suff)
-  / sum(ct,i21_trade_bal_reduction(ct,k_trade));
+  / sum(ct,i21_trade_bal_reduction(ct,h2,k_trade));
 
 *' The global excess demand of each tradable good `v21_excess_demad` equals to
 *' the sum over all the imports of importing superregions.

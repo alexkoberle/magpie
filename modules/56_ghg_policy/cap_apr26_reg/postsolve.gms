@@ -22,7 +22,6 @@ p56_emis_cap_slack(t,i) = v56_slack_emis_cap.l(i);
  ov56_emission_cost(t,i,emis_source,"marginal")           = v56_emission_cost.m(i,emis_source);
  ov_reward_cdr_aff(t,i,"marginal")                        = vm_reward_cdr_aff.m(i);
  ov56_reward_cdr_aff(t,j,"marginal")                      = v56_reward_cdr_aff.m(j);
- ov56_emis_co2eq(t,i,emis_source,pollutants,"marginal")   = 0;
  oq56_emission_costs(t,i,"marginal")                      = q56_emission_costs.m(i);
  oq56_emission_cost_annual(t,i,emis_annual,"marginal")    = q56_emission_cost_annual.m(i,emis_annual);
  oq56_emission_cost_oneoff(t,i,emis_oneoff,"marginal")    = q56_emission_cost_oneoff.m(i,emis_oneoff);
@@ -39,12 +38,6 @@ p56_emis_cap_slack(t,i) = v56_slack_emis_cap.l(i);
  ov56_emission_cost(t,i,emis_source,"level")              = v56_emission_cost.l(i,emis_source);
  ov_reward_cdr_aff(t,i,"level")                           = vm_reward_cdr_aff.l(i);
  ov56_reward_cdr_aff(t,j,"level")                         = v56_reward_cdr_aff.l(j);
-*' ov56_emis_co2eq: CO2eq computed from solved emissions, GWP factors and cap mask.
-*' Only "level" is meaningful; marginal/upper/lower are set to 0.
- ov56_emis_co2eq(t,i,emis_source,pollutants,"level")      =
-   vm_emissions_reg.l(i,emis_source,pollutants)
-   * p56_gwp(pollutants)
-   * p56_cap_mask(emis_source,pollutants);
  oq56_emission_costs(t,i,"level")                         = q56_emission_costs.l(i);
  oq56_emission_cost_annual(t,i,emis_annual,"level")       = q56_emission_cost_annual.l(i,emis_annual);
  oq56_emission_cost_oneoff(t,i,emis_oneoff,"level")       = q56_emission_cost_oneoff.l(i,emis_oneoff);
@@ -61,7 +54,6 @@ p56_emis_cap_slack(t,i) = v56_slack_emis_cap.l(i);
  ov56_emission_cost(t,i,emis_source,"upper")              = v56_emission_cost.up(i,emis_source);
  ov_reward_cdr_aff(t,i,"upper")                           = vm_reward_cdr_aff.up(i);
  ov56_reward_cdr_aff(t,j,"upper")                         = v56_reward_cdr_aff.up(j);
- ov56_emis_co2eq(t,i,emis_source,pollutants,"upper")      = 0;
  oq56_emission_costs(t,i,"upper")                         = q56_emission_costs.up(i);
  oq56_emission_cost_annual(t,i,emis_annual,"upper")       = q56_emission_cost_annual.up(i,emis_annual);
  oq56_emission_cost_oneoff(t,i,emis_oneoff,"upper")       = q56_emission_cost_oneoff.up(i,emis_oneoff);
@@ -78,7 +70,6 @@ p56_emis_cap_slack(t,i) = v56_slack_emis_cap.l(i);
  ov56_emission_cost(t,i,emis_source,"lower")              = v56_emission_cost.lo(i,emis_source);
  ov_reward_cdr_aff(t,i,"lower")                           = vm_reward_cdr_aff.lo(i);
  ov56_reward_cdr_aff(t,j,"lower")                         = v56_reward_cdr_aff.lo(j);
- ov56_emis_co2eq(t,i,emis_source,pollutants,"lower")      = 0;
  oq56_emission_costs(t,i,"lower")                         = q56_emission_costs.lo(i);
  oq56_emission_cost_annual(t,i,emis_annual,"lower")       = q56_emission_cost_annual.lo(i,emis_annual);
  oq56_emission_cost_oneoff(t,i,emis_oneoff,"lower")       = q56_emission_cost_oneoff.lo(i,emis_oneoff);
