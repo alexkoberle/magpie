@@ -57,9 +57,29 @@ im_growing_stock(t,j,ac,"other") =
     )
     ;
 
+*' Young secondary forest on other land (`youngsecdf` in [35_natveg]) is forest
+*' regrowth from natural succession. Its carbon stock follows the uncalibrated
+*' natveg curve `pm_carbon_density_secdforest_ac_uncalib` (set in [52_carbon]),
+*' NOT the FRA-calibrated secondary-forest curve. The harvestable growing stock
+*' must be derived from the SAME (uncalibrated) curve so that wood yield and
+*' carbon stock are consistent; using the calibrated `secdforest` growing stock
+*' would decouple high wood yield from low booked carbon. The aboveground
+*' fraction is that of secondary forest, because youngsecdf is forest biomass.
+
+im_growing_stock_ysf(t,j,ac) =
+    (
+     pm_carbon_density_secdforest_ac_uncalib(t,j,ac,"vegc")
+     / sm_carbon_fraction
+     * fm_aboveground_fraction("secdforest")
+     / sum(clcl, pm_climate_class(j,clcl) * fm_ipcc_bef(clcl))
+    )
+    ;
+
 *' @stop
 
 ** Hard constraint to always have a positive number in im_growing_stock
 im_growing_stock(t,j,ac,land_timber) = im_growing_stock(t,j,ac,land_timber)$(im_growing_stock(t,j,ac,land_timber) > 0) + 0.0001$(im_growing_stock(t,j,ac,land_timber) = 0);
+im_growing_stock_ysf(t,j,ac) = im_growing_stock_ysf(t,j,ac)$(im_growing_stock_ysf(t,j,ac) > 0) + 0.0001$(im_growing_stock_ysf(t,j,ac) = 0);
 ** Set growing stock to 0 where it does not exceed a minimum for harvest
 im_growing_stock(t,j,ac,land_natveg)$(im_growing_stock(t,j,ac,land_natveg) < s14_minimum_growing_stock) = 0;
+im_growing_stock_ysf(t,j,ac)$(im_growing_stock_ysf(t,j,ac) < s14_minimum_growing_stock) = 0;
