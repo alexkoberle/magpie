@@ -7,12 +7,15 @@
 ## then verify core/sets.gms shows `Regionscode: 5638d5dc` + 13 regions (incl. BRA).
 ##
 ## Launch:  Rscript start.R runscripts=nzb_hpc_grid submit=direct
+##   re-run a subset:  NZB_FAMILIES=A Rscript start.R runscripts=nzb_hpc_grid submit=direct
 ##
 ## ---- TIER SWITCHES (edit these 2 lines to flip medium <-> light) -------------------
-##   medium (~71 runs): STEP_AB=50 ; B_AR=c(TRUE,FALSE)
-##   light  (~49 runs): STEP_AB=100; B_AR=c(TRUE)
+##   medium (~63 runs): STEP_AB=50 ; B_AR=c(TRUE,FALSE)
+##   light  (~43 runs): STEP_AB=100; B_AR=c(TRUE)
 STEP_AB <- 100            # cap-ladder step for families A & B (C is always 50)  [LIGHT]
 B_AR    <- c(TRUE)        # A/R on/off in family B                              [LIGHT]
+## which families to run (env override for partial re-runs); default = all
+FAMILIES <- strsplit(Sys.getenv("NZB_FAMILIES", "C,A,B,0"), ",")[[1]]
 ## ------------------------------------------------------------------------------------
 ##
 ## DESIGN (indexed by ACHIEVED reported GWP100AR6|Land BRA AFOLU 2050; nocc; AR6 GWP
@@ -21,9 +24,11 @@ B_AR    <- c(TRUE)        # A/R on/off in family B                              
 ##           dashboard re-indexes on achieved).
 ##   Fam C : conservation {WDPA, 30by30, HalfEarth} x cap ladder + ref. Cap ALONE
 ##           (forced 1.5C MACC, no price). HalfEarth = current dashboard corner (redo).
-##   Fam A : global-policy context. RoW priced 2C (PkBudg1000, noselect); BRA capped.
-##           Global context {A/R (RoW aff) + 2nd-gen bioenergy demand} toggled ON/OFF
-##           together. Cons=HalfEarth.
+##   Fam A : "BRA does not act alone" - RoW pursues 2C (PkBudg1000 price + price-induced
+##           A/R + 2C 2nd-gen bioenergy demand); BRA capped, unpriced, and BRA's own
+##           bioenergy demand held at BASELINE (NPi2025; in NZB it comes from MACRO).
+##           RoW-only via policy_countries56 / scen_countries60 = BRA split. Cons=HalfEarth.
+##           'context-off' == Family C HalfEarth (RoW at current policies), so not re-run.
 ##   Fam B : cap PLUS a BRA 1.5C CO2 price (PkBudg650) driving price-induced A/R and
 ##           price-driven MACC; A/R on/off. Cons=HalfEarth. Tests whether the price
 ##           deepens CO2 below the cap alone (compare B vs C-HalfEarth).
@@ -57,6 +62,7 @@ cfg$gms$policy_countries21   <- "BRA"
 cfg$gms$c32_aff_policy  <- "npi"; cfg$gms$c35_ad_policy <- "npi"; cfg$gms$c35_aolc_policy <- "npi"
 cfg$gms$c_timesteps <- "5year2050"                # <-- HORIZON knob: "coup2100" for 2100
 cfg$output     <- c("rds_report")
+cfg$results_folder <- "output/:title:"            # undated folders (drops :date:) -> stable names
 cfg$sequential <- FALSE
 cfg$qos        <- "standby"                       # many runs > priority MaxJobsPU cap
 
@@ -105,9 +111,9 @@ ladder <- function(base, fam, reps) {              # ref (no-cap) + cap ladder
 }
 
 # ============================ Family C: conservation (cap alone) ====================
-for (cons in list(list(tag="wdpa", scen="none"),
-                  list(tag="30by30", scen="30by30"),
-                  list(tag="half", scen="PBL_HalfEarth"))) {
+if ("C" %in% FAMILIES) for (cons in list(list(tag="wdpa", scen="none"),
+                                         list(tag="30by30", scen="30by30"),
+                                         list(tag="half", scen="PBL_HalfEarth"))) {
   base <- conservation(macc_forced(cfg), cons$scen)
   base$gms$c56_pollutant_prices          <- "none"
   base$gms$c56_pollutant_prices_noselect <- "R34M410-SSP2-NPi2025"
@@ -115,21 +121,20 @@ for (cons in list(list(tag="wdpa", scen="none"),
   ladder(base, sprintf("gC_%s", cons$tag), reps_main)
 }
 
-# ===================== Family A: global-policy context (RoW priced 2C) ==============
-# A/R (RoW afforestation) + 2nd-gen bioenergy demand toggled ON/OFF together.
-for (ctx in c(TRUE, FALSE)) {
+# ===================== Family A: RoW pursues 2C, BRA capped (BRA bioen baseline) =====
+if ("A" %in% FAMILIES) {
   base <- conservation(macc_forced(cfg), "PBL_HalfEarth")
-  base$gms$c56_pollutant_prices          <- "none"                     # BRA capped
-  base$gms$c56_pollutant_prices_noselect <- "R34M410-SSP2-PkBudg1000"  # RoW 2C
-  base$gms$s56_c_price_induced_aff       <- if (ctx) 1 else 0
-  bioscen <- if (ctx) "R34M410-SSP2-PkBudg1000" else "none"
-  base$gms$c60_2ndgen_biodem             <- bioscen
-  base$gms$c60_2ndgen_biodem_noselect    <- bioscen
-  ladder(base, sprintf("gA_ctx%s", if (ctx) "ON" else "OFF"), reps_ab)
+  base$gms$c56_pollutant_prices          <- "none"                     # BRA capped, not priced
+  base$gms$c56_pollutant_prices_noselect <- "R34M410-SSP2-PkBudg1000"  # RoW 2C price
+  base$gms$s56_c_price_induced_aff       <- 1                          # price-induced A/R (RoW)
+  base$gms$scen_countries60              <- "BRA"                      # split BRA vs RoW bioenergy
+  base$gms$c60_2ndgen_biodem             <- "R34M410-SSP2-NPi2025"     # BRA baseline (MACRO in NZB)
+  base$gms$c60_2ndgen_biodem_noselect    <- "R34M410-SSP2-PkBudg1000"  # RoW 2C bioenergy demand
+  ladder(base, "gA_RoW2C", reps_ab)
 }
 
 # ===================== Family B: cap + BRA 1.5C price (drives A/R + MACC) ============
-for (ar in B_AR) {
+if ("B" %in% FAMILIES) for (ar in B_AR) {
   base <- conservation(macc_pricedriven(cfg), "PBL_HalfEarth")
   base$gms$c56_pollutant_prices          <- "R34M410-SSP2-PkBudg650"   # BRA priced 1.5C
   base$gms$c56_pollutant_prices_noselect <- "R34M410-SSP2-NPi2025"     # RoW current policies
@@ -138,14 +143,17 @@ for (ar in B_AR) {
 }
 
 # ===================== Anchor: NPI only (no MACC / restore / price / cap) ============
-anchor <- set_nocap(conservation(macc_pricedriven(cfg), "none"))
-anchor$gms$c56_pollutant_prices          <- "none"
-anchor$gms$c56_pollutant_prices_noselect <- "R34M410-SSP2-NPi2025"
-anchor$gms$s56_c_price_induced_aff       <- 0
-launch(anchor, "nzb_g0_npi")
+if ("0" %in% FAMILIES) {
+  anchor <- set_nocap(conservation(macc_pricedriven(cfg), "none"))
+  anchor$gms$c56_pollutant_prices          <- "none"
+  anchor$gms$c56_pollutant_prices_noselect <- "R34M410-SSP2-NPi2025"
+  anchor$gms$s56_c_price_induced_aff       <- 0
+  launch(anchor, "nzb_g0_npi")
+}
 
-nC <- 3 * (length(reps_main) + 1)
-nA <- 2 * (length(reps_ab) + 1)
-nB <- length(B_AR) * (length(reps_ab) + 1)
-cat(sprintf("== nzb_hpc_grid launched: C(%d) + A(%d) + B(%d) + anchor(1) = %d SLURM jobs ==\n",
-            nC, nA, nB, nC + nA + nB + 1))
+nC <- if ("C" %in% FAMILIES) 3 * (length(reps_main) + 1) else 0
+nA <- if ("A" %in% FAMILIES) 1 * (length(reps_ab) + 1) else 0
+nB <- if ("B" %in% FAMILIES) length(B_AR) * (length(reps_ab) + 1) else 0
+n0 <- if ("0" %in% FAMILIES) 1 else 0
+cat(sprintf("== nzb_hpc_grid launched [%s]: C(%d)+A(%d)+B(%d)+anchor(%d) = %d jobs ==\n",
+            paste(FAMILIES, collapse=","), nC, nA, nB, n0, nC + nA + nB + n0))
