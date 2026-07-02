@@ -18,21 +18,25 @@ i21_trade_bal_reduction(t_all,h,k_hardtrade21)=f21_trade_bal_reduction(t_all,"ha
  );
 );
 
-*' Optionally force full wood & woodfuel self-sufficiency for the regions selected
-*' via policy_countries21, to suppress wood-harvest leakage when those regions'
-*' land-use emissions are constrained. s21_force_wood_selfsuff = 1 pins
-*' the selected regions' wood/woodfuel production band to baseline demand (trade
-*' balance reduction = 1) from sm_fix_SSP2 onwards; = 0 reproduces unchanged develop
-*' behaviour. A region is forced only if ALL its countries are in policy_countries21
-*' (forcing self-sufficiency on a partial superregion is not meaningful), mirroring
-*' the region mask in module 56. A superregion h is forced only if every country in
-*' every region it contains (supreg(h,i), i_to_iso(i,iso)) is in policy_countries21;
-*' empty / no fully-selected superregion makes it a no-op.
+*' Region mask for the optional self-sufficiency floor (below): a superregion h is
+*' eligible only if ALL its countries are in policy_countries21 (forcing self-sufficiency
+*' on a partial superregion is not meaningful) -- i.e. every country in every region it
+*' contains (supreg(h,i), i_to_iso(i,iso)) is selected; an empty / partially-selected
+*' superregion makes it a no-op. Mirrors the region mask in module 56.
 p21_country_switch(iso) = 0;
 p21_country_switch(policy_countries21) = 1;
 p21_selfsuff_region(h) = 1$(sum((supreg(h,i), i_to_iso(i,iso)), 1 - p21_country_switch(iso)) = 0);
-i21_trade_bal_reduction(t_all,h,"wood")$(s21_force_wood_selfsuff = 1 AND p21_selfsuff_region(h) AND m_year(t_all) > sm_fix_SSP2)     = 1;
-i21_trade_bal_reduction(t_all,h,"woodfuel")$(s21_force_wood_selfsuff = 1 AND p21_selfsuff_region(h) AND m_year(t_all) > sm_fix_SSP2) = 1;
+
+*' Optional minimum self-sufficiency floor: for the commodities in forcesuff21 (empty by
+*' default) and the fully-selected regions in policy_countries21, hold self-sufficiency at
+*' (s21_forcesuff_value x) its 2025 baseline level from sm_fix_SSP2 onwards, enforced by
+*' q21_min_selfsuff. The floor tracks the input f21_self_suff (constant over time), so it
+*' holds each commodity's 2025 export/import intensity. This subsumes the former wood-only
+*' switch: to force wood/woodfuel self-sufficiency simply include them in forcesuff21.
+*' s21_forcesuff_value = 1 freezes exactly at 2025; < 1 allows some erosion. Empty
+*' forcesuff21 / s21_force_selfsuff = 0 keeps develop behaviour unchanged.
+i21_min_selfsuff(t_all,h,k_trade) = 0;
+i21_min_selfsuff(t_all,h,forcesuff21)$(s21_force_selfsuff = 1 AND p21_selfsuff_region(h) AND m_year(t_all) > sm_fix_SSP2) = s21_forcesuff_value * f21_self_suff(t_all,h,forcesuff21);
 
 i21_exports(t_all,h,k_trade) =  ((f21_self_suff(t_all,h,k_trade) * f21_dom_supply(t_all,h,k_trade)) - f21_dom_supply(t_all,h,k_trade))$(f21_self_suff(t_all,h,k_trade) > 1);
 i21_exp_glo(t_all,k_trade) = sum(h, i21_exports(t_all,h,k_trade));

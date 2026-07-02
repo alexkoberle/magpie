@@ -57,7 +57,8 @@ cfg$gms$ghg_policy           <- "cap_apr26_reg"   # AR6 GWP baked in (preloop.gm
 cfg$gms$c56_cap_policy       <- "all"             # soil incl. (PR #904)
 cfg$gms$s56_source_bounds_on <- 0
 cfg$gms$policy_countries56   <- "BRA"
-cfg$gms$s21_force_wood_selfsuff <- 1              # forced BRA wood self-sufficiency (no leakage)
+cfg$gms$s21_force_selfsuff <- 1                 # wood self-suff via the general floor (former s21_force_wood_selfsuff)
+cfg$gms$forcesuff21        <- "wood, woodfuel"
 cfg$gms$policy_countries21   <- "BRA"
 cfg$gms$c32_aff_policy  <- "npi"; cfg$gms$c35_ad_policy <- "npi"; cfg$gms$c35_aolc_policy <- "npi"
 cfg$gms$c_timesteps <- "5year2050"                # <-- HORIZON knob: "coup2100" for 2100

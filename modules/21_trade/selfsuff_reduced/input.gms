@@ -12,7 +12,10 @@ sets
   k_import21(k_trade) Commodities that can have additional imports to maintain feasibility
                     / wood, woodfuel /
 
-  policy_countries21(iso) countries whose (fully selected) region is forced to wood and woodfuel self-sufficiency
+  forcesuff21(k_trade) Commodities forced to a minimum self-sufficiency floor for the (fully selected) regions in policy_countries21 (empty by default)
+                    / /
+
+  policy_countries21(iso) ISO codes of the region(s) subject to the self-sufficiency floor (like policy_countries56)
                     / ABW,AFG,AGO,AIA,ALA,ALB,AND,ARE,ARG,ARM,
                       ASM,ATA,ATF,ATG,AUS,AUT,AZE,BDI,BEL,BEN,
                       BES,BFA,BGD,BGR,BHR,BHS,BIH,BLM,BLR,BLZ,
@@ -44,7 +47,8 @@ scalars
   s21_trade_tariff Trade tariff switch (1=on 0=off)  (1)                   / 1 /
   s21_cost_import Cost for additional imports to maintain feasibility (USD17MER per tDM) / 1500 /
   s21_min_trade_margin_forestry Minimum trade margin for forestry products (USD17MER per tDM) / 62 /
-  s21_force_wood_selfsuff Force full wood and woodfuel self-sufficiency for the regions selected via policy_countries21 (1=on 0=off) (1) / 0 /
+  s21_force_selfsuff Force a minimum self-sufficiency floor (s21_forcesuff_value) on the forcesuff21 commodities for the regions selected via policy_countries21 (1=on 0=off) (1) / 0 /
+  s21_forcesuff_value Fraction of the 2025 baseline self-sufficiency (f21_self_suff) held as a floor when s21_force_selfsuff=1 (1=freeze exports and imports at their 2025 intensity) (1) / 1 /
 ;
 
 table f21_trade_bal_reduction(t_all,trade_groups21,trade_regime21) Share of inelastic trade pool (1)
