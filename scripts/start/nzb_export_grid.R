@@ -1,13 +1,13 @@
 ## nzb_export_grid.R ============================================================
-## NZB export-protection grid for the PIK HPC (SLURM). One start script; each
-## start_run() -> one SLURM job. Launch on the LOGIN node with submit=direct.
+## NZB export-protection grid: one start script that launches the whole 61-run
+## comparison (7 policy families x a reported-AFOLU cap ladder). Each start_run()
+## submits one MAgPIE run.
 ##
-## PREREQUISITE (once, on login, to warm the input cache / avoid the H12-fallback):
-##   Rscript scripts/start/download_data_BRA.R
-##   then verify core/sets.gms shows `Regionscode: 5638d5dc` + 13 regions (incl. BRA).
+## PREREQUISITE: the BRA-H13 W3 input data (the tarballs listed under cfg$input
+##   below) must be available to start_run / download_distribute.
 ##
-## Launch:  Rscript start.R runscripts=nzb_export_grid submit=direct
-##   subset: NZB_FAMILIES=F Rscript start.R runscripts=nzb_export_grid submit=direct
+## Launch:  Rscript start.R runscripts=nzb_export_grid
+##   subset a family:  NZB_FAMILIES=F Rscript start.R runscripts=nzb_export_grid
 ##
 ## FAMILIES (7; all: cap_apr26_reg, nocc, AR6 GWP, c56_cap_policy=all, BRA cap,
 ##           s21_force_selfsuff=1 (BRA), WDPA base conservation, forest NPI, 5year2050;
@@ -26,21 +26,19 @@
 ##   Reachability: +250/+500 saturate at each family's no-cap plateau; -500/-1000 sit at/
 ##   below the feasibility frontier (may run on slack). Both are informative endpoints.
 ##
-## RUN COUNT: C(3x11) + A(11) + F(11) + B(5) + anchor(1) = 61 jobs.
+## RUN COUNT: C(3x11) + A(11) + F(11) + B(5) + anchor(1) = 61 runs.
 ## ============================================================================
 FAMILIES <- strsplit(Sys.getenv("NZB_FAMILIES", "C,A,B,F,0"), ",")[[1]]
 
 library(lucode2); library(gms); library(magpie4)
 source("config/default.cfg"); source("scripts/start_functions.R")
 
-# ---- input + infra (BRA-H13 W3; on HPC download_distribute falls back to local mirrors) ----
+# ---- input (BRA-H13 W3) ------------------------------------------------------------
 cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_magpie.tgz",
                cellular    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_d8411e75_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1_clusterweight-d0236589.tgz",
                validation  = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_92e02314_validation.tgz",
                additional  = "additional_data_rev4.65.tgz",
                calibration = "calibration_BRA_H13_C200_W3_MapbiomasIBGE_18Jun26.tgz")
-cfg$repositories <- append(list("https://rse.pik-potsdam.de/data/magpie/public" = NULL),
-                           getOption("magpie_repos"))
 cfg$force_download <- FALSE; cfg$force_replace <- TRUE
 cfg$recalibrate <- FALSE; cfg$recalibrate_landconversion_cost <- FALSE
 cfg <- setScenario(cfg, "nocc")
@@ -51,23 +49,25 @@ cfg$gms$c56_cap_policy       <- "all"             # soil incl. (PR #904)
 cfg$gms$s56_source_bounds_on <- 0
 cfg$gms$policy_countries56   <- "BRA"
 cfg$gms$s21_force_selfsuff   <- 1                 # min self-sufficiency floor (general mechanism)
-cfg$gms$forcesuff21          <- "wood, woodfuel"  # default (overridden for gF_freeze)
+## common baseline: raw domestic feedstocks BRA should not import (model imports them
+## even with no cap despite f21~1.0 -> artifacts). wood/woodfuel + cane/cassava/molasses.
+cfg$gms$forcesuff21          <- "wood, woodfuel, sugr_cane, cassav_sp, molasses"  # (overridden for gF_freeze)
 cfg$gms$policy_countries21   <- "BRA"
 cfg$gms$c32_aff_policy  <- "npi"; cfg$gms$c35_ad_policy <- "npi"; cfg$gms$c35_aolc_policy <- "npi"
 cfg$gms$c_timesteps <- "5year2050"                # <-- HORIZON knob: "coup2100" for 2100
 cfg$output     <- c("rds_report")
 cfg$results_folder <- "output/:title:"            # undated folders -> stable names
 cfg$sequential <- FALSE
-cfg$qos        <- "standby"                       # many runs > priority MaxJobsPU cap
 
 CAPOFFSET  <- 50                                            # nominal reported->cap offset
 reps_main  <- c(-1000, -500, -250, -100, -50, 0, 50, 100, 250, 500)   # C, A, F
 reps_B     <- c(-1000, -500, -250, -100)                             # B trimmed (<= -63 floor)
 
-# all BRA commodities with f21_self_suff > 1 (net exporters) + wood/woodfuel (gF_freeze)
-FREEZE_LIST <- paste("wood, woodfuel, fibres, soybean, groundnut, sugar, oilcakes,",
-                     "livst_pig, maiz, livst_chick, others, livst_rum, alcohol, oils,",
-                     "rice_pro, livst_milk, cottn_pro, brans, cassav_sp, livst_egg")
+# all BRA commodities with f21_self_suff >= 1 (net exporters + the balanced raw staples
+# sugr_cane/molasses that the model otherwise imports) + wood/woodfuel (gF_freeze)
+FREEZE_LIST <- paste("wood, woodfuel, sugr_cane, cassav_sp, molasses, fibres, soybean,",
+                     "groundnut, sugar, oilcakes, livst_pig, maiz, livst_chick, others,",
+                     "livst_rum, alcohol, oils, rice_pro, livst_milk, cottn_pro, brans, livst_egg")
 
 reptag <- function(r) if (r == 0) "rep000" else sprintf("rep%s%d", if (r < 0) "M" else "P", abs(r))
 launch <- function(cfg, title) { cfg$title <- title; start_run(cfg, codeCheck = FALSE) }
