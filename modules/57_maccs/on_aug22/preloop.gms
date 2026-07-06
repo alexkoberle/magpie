@@ -25,15 +25,27 @@ i57_mac_step_n2o(t,i,emis_source) = min(201, ceil(im_pollutant_prices(t,i,"n2o_n
 i57_mac_step_ch4(t,i,emis_source) = min(201, ceil(im_pollutant_prices(t,i,"ch4",emis_source)/25*44/12 / s57_step_length) + 1);
 
 
+*** The s57_maxmac_* scalars prescribe a non-CO2 mitigation level (MACC step 1..201)
+*** independent of the pollutant price. By default (s57_maxmac_fadein = 0) they are applied
+*** flat from sm_fix_SSP2 onwards. With s57_maxmac_fadein = 1 the prescribed step is phased
+*** in linearly from step 1 at s57_maxmac_fadein_start to the full s57_maxmac_* step at
+*** s57_maxmac_fadein_end, and held constant afterwards. With fadein = 0 the factor s57_fade
+*** equals 1 in every applicable timestep, so the original flat behaviour is reproduced
+*** bit-for-bit.
 loop(t,
 
   if(m_year(t) > sm_fix_SSP2,
 
-    if (s57_maxmac_n_soil >= 0, i57_mac_step_n2o(t,i,emis_source_inorg_fert_n2o) = s57_maxmac_n_soil);
-    if (s57_maxmac_n_awms >= 0, i57_mac_step_n2o(t,i,emis_source_awms_n2o) = s57_maxmac_n_awms);
-    if (s57_maxmac_ch4_rice >= 0, i57_mac_step_ch4(t,i,emis_source_rice_ch4) = s57_maxmac_ch4_rice);
-    if (s57_maxmac_ch4_entferm >= 0, i57_mac_step_ch4(t,i,emis_source_ent_ferm_ch4) = s57_maxmac_ch4_entferm);
-    if (s57_maxmac_ch4_awms >= 0, i57_mac_step_ch4(t,i,emis_source_awms_ch4) = s57_maxmac_ch4_awms);
+    s57_fade = 1;
+    if ((s57_maxmac_fadein = 1) and (s57_maxmac_fadein_end > s57_maxmac_fadein_start),
+      s57_fade = min(1, max(0, (m_year(t) - s57_maxmac_fadein_start) / (s57_maxmac_fadein_end - s57_maxmac_fadein_start)));
+    );
+
+    if (s57_maxmac_n_soil >= 0, i57_mac_step_n2o(t,i,emis_source_inorg_fert_n2o) = round(1 + (s57_maxmac_n_soil - 1) * s57_fade));
+    if (s57_maxmac_n_awms >= 0, i57_mac_step_n2o(t,i,emis_source_awms_n2o) = round(1 + (s57_maxmac_n_awms - 1) * s57_fade));
+    if (s57_maxmac_ch4_rice >= 0, i57_mac_step_ch4(t,i,emis_source_rice_ch4) = round(1 + (s57_maxmac_ch4_rice - 1) * s57_fade));
+    if (s57_maxmac_ch4_entferm >= 0, i57_mac_step_ch4(t,i,emis_source_ent_ferm_ch4) = round(1 + (s57_maxmac_ch4_entferm - 1) * s57_fade));
+    if (s57_maxmac_ch4_awms >= 0, i57_mac_step_ch4(t,i,emis_source_awms_ch4) = round(1 + (s57_maxmac_ch4_awms - 1) * s57_fade));
 
   );
 );

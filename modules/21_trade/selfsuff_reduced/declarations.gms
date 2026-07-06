@@ -6,7 +6,10 @@
 *** |  Contact: magpie@pik-potsdam.de
 
 parameters
- i21_trade_bal_reduction(t_all,k_trade)         Trade balance reduction (1)
+ p21_country_switch(iso)                        Switch: country selected for the forced self-sufficiency floor (1)
+ p21_selfsuff_region(h)                         Superregions eligible for the self-sufficiency floor (1=fully selected via policy_countries21) (1)
+ i21_min_selfsuff(t_all,h,k_trade)              Minimum self-sufficiency ratio floor applied to forcesuff21 commodities (1)
+ i21_trade_bal_reduction(t_all,h,k_trade)       Trade balance reduction (1)
  i21_exp_shr(t_all,h,k_trade)                   Trade export shr (1)
  i21_trade_margin(h,k_trade)                    Trade margins (USD17MER per tDM)
  i21_trade_tariff(h,k_trade)                    Trade tariffs (USD17MER per tDM)
@@ -28,6 +31,7 @@ equations
  q21_notrade(h,k_notrade)                Superregional production constraint of non-tradable commodities (mio. tDM per yr)
  q21_trade_reg(h,k_trade)                Superregional trade balances i.e. minimum self-sufficiency ratio (1)
  q21_trade_reg_up(h,k_trade)             Superregional trade balances i.e. maximum self-sufficiency ratio (1)
+ q21_min_selfsuff(h,k_trade)             Superregional minimum self-sufficiency floor (mio. tDM per yr)
  q21_excess_dem(k_trade)                 Global excess demand (mio. tDM per yr)
  q21_excess_supply(h,k_trade)            Superregional excess production (mio. tDM per yr)
  q21_cost_trade_tariff(h)                Superregional tariff costs (mio. USD17MER per yr)
@@ -47,6 +51,7 @@ parameters
  oq21_notrade(t,h,k_notrade,type)              Superregional production constraint of non-tradable commodities (mio. tDM per yr)
  oq21_trade_reg(t,h,k_trade,type)              Superregional trade balances i.e. minimum self-sufficiency ratio (1)
  oq21_trade_reg_up(t,h,k_trade,type)           Superregional trade balances i.e. maximum self-sufficiency ratio (1)
+ oq21_min_selfsuff(t,h,k_trade,type)           Superregional minimum self-sufficiency floor (mio. tDM per yr)
  oq21_excess_dem(t,k_trade,type)               Global excess demand (mio. tDM per yr)
  oq21_excess_supply(t,h,k_trade,type)          Superregional excess production (mio. tDM per yr)
  oq21_cost_trade_tariff(t,h,type)              Superregional tariff costs (mio. USD17MER per yr)

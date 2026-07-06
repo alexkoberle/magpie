@@ -83,6 +83,20 @@ scalars
   s56_emis_cap_start    First year the emissions cap is binding (yr) / 2025 /
   s56_emis_cap_penalty  Penalty cost for slack (mio USD17MER per Tg CO2eq per yr) / 1e+05 /
   s56_source_bounds_on  Switch for Archetype A source-specific bounds (1=on 0=off) / 0 /
+* ---- cap_apr26_reg: continuous parametric regional cap (overrides cs3 when on) ----
+*' Builds an arbitrary regional AFOLU cap trajectory from config scalars, flexible
+*' in time (no cs3 columns / capscen56 entries needed). The cap is free (1e6)
+*' before s56_emis_cap_start_year, ramps linearly from s56_emis_cap_start_value at
+*' that year to s56_emis_cap_target at s56_emis_cap_target_year, and is held at the
+*' target for all later years (so runs to 2100 are covered). It is applied to the
+*' region(s) selected via policy_countries56 (config-driven, no hard-coded region;
+*' set it to the target region's ISO codes). With s56_emis_cap_parametric=0
+*' (default) the cs3 path is used unchanged.
+  s56_emis_cap_parametric    Switch for continuous parametric regional cap (1=on overrides cs3 0=off) / 0 /
+  s56_emis_cap_start_year    Year the parametric cap starts ramping - free before (yr) / 2035 /
+  s56_emis_cap_start_value   Parametric cap level at the start year (Tg CO2eq per yr) / 600 /
+  s56_emis_cap_target_year   Year the parametric cap endpoint is reached and held (yr) / 2050 /
+  s56_emis_cap_target        Parametric AFOLU cap endpoint for the selected region(s) (Tg CO2eq per yr) / 0 /
 ;
 
 $setglobal c56_pollutant_prices  none

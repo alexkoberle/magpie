@@ -122,14 +122,17 @@ p56_c_price_aff(t_all,i,ac)$(ac.off >= s56_c_price_exp_aff/5) = sum(ac_exp, p56_
 *zero C price before starting year
 p56_c_price_aff(t_all,i,ac)$(m_year(t_all) <= max(m_year("%c56_mute_ghgprices_until%"),s56_fader_start*s56_ghgprice_fader)) = 0;
 
-* ---- cap_apr26_reg: GWP factors (AR5, 100-yr) ----
-*' CH4=28, N2O=265. co2_c is in Tg C so multiply by 44/12 for Tg CO2.
+* ---- cap_apr26_reg: GWP factors (AR6, 100-yr) ----
+*' AR6 GWP100 (IPCC AR6 WG1 Ch7): CH4(non-fossil)=27, N2O=273. Matches the
+*' magpie4 GWP100AR6 reporting convention (reportEmissions.R: ch4*27, n2o*273)
+*' so the cap quantity uses the SAME GWP basis as the reported GWP100AR6|Land.
+*' co2_c is in Tg C so multiply by 44/12 for Tg CO2.
 *' Non-GHG nitrogen forms (nh3_n, no2_n, no3_n) are zero.
 p56_gwp(pollutants) = 0;
 p56_gwp("co2_c")          = 44/12;
-p56_gwp("ch4")            = 28;
-p56_gwp("n2o_n_direct")   = 265 * 44/28;
-p56_gwp("n2o_n_indirect") = 265 * 44/28;
+p56_gwp("ch4")            = 27;
+p56_gwp("n2o_n_direct")   = 273 * 44/28;
+p56_gwp("n2o_n_indirect") = 273 * 44/28;
 
 * ---- cap_apr26_reg: cap policy scope mask ----
 *' Sources with mask=0 contribute zero CO2eq to q56_emis_cap(i).
@@ -143,6 +146,22 @@ p56_emis_cap(t_all,i) = 1e6;
 $ifthen not "%c56_emis_cap_scenario%" == "none"
   p56_emis_cap(t_all,i) = f56_emis_cap(t_all,i,"%c56_emis_cap_scenario%");
 $endif
+
+*' Continuous parametric regional cap (optional). When s56_emis_cap_parametric=1
+*' the cs3-selected trajectory above is replaced by a time-flexible ramp: free
+*' (1e6) before s56_emis_cap_start_year, then a linear interpolation from
+*' s56_emis_cap_start_value (at the start year) to s56_emis_cap_target (at
+*' s56_emis_cap_target_year), held at the target for all later years (so runs to
+*' 2100 are covered). It is applied only to regions FULLY composed of
+*' policy_countries56 (a hard cap on a partial region is not meaningful); set
+*' policy_countries56 to the target region's ISO codes. All other regions stay free.
+p56_cap_region(i) = 1$(sum(i_to_iso(i,iso), 1 - p56_country_switch(iso)) = 0);
+if(s56_emis_cap_parametric = 1,
+  m_linear_time_interpol(p56_emis_cap_param,s56_emis_cap_start_year,s56_emis_cap_target_year,s56_emis_cap_start_value,s56_emis_cap_target);
+  p56_emis_cap(t_all,i) = 1e6;
+  p56_emis_cap(t_all,i)$(p56_cap_region(i) AND m_year(t_all) >= s56_emis_cap_start_year) = p56_emis_cap_param(t_all);
+);
+
 p56_emis_cap(t_all,i)$(m_year(t_all) <= sm_fix_SSP2) = 1e6;
 p56_emis_cap(t_all,i)$(m_year(t_all) > sm_fix_SSP2
   AND m_year(t_all) < s56_emis_cap_start) = 1e6;

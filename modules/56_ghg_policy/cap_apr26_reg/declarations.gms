@@ -24,6 +24,8 @@ parameters
  p56_gwp(pollutants)                   AR5 GWP factors for CO2eq conversion (Tg CO2eq per Tg native unit)
  p56_cap_mask(emis_source,pollutants)  Policy mask for cap scope: 1=included 0=excluded (1)
  p56_emis_cap(t_all,i)                 Active regional AFOLU cap per region (Tg CO2eq per yr)
+ p56_cap_region(i)                     Regions the parametric cap applies to (1=capped derived from policy_countries56) (1)
+ p56_emis_cap_param(t_all)             Parametric cap trajectory over time (Tg CO2eq per yr)
  p56_emis_cap_slack(t,i)              Regional slack level — platform infeasibility signal (Tg CO2eq per yr)
 * ov56_emis_co2eq declared here (not in R section) because it is computed manually
 * in postsolve rather than copied from a GAMS variable attribute (.l/.m/.up/.lo).
