@@ -29,14 +29,21 @@
 ##
 ## LAUNCH (recommended) -- go via start.R so it runs piamenv::fixDeps() first, which
 ## initialises / repairs this checkout's renv (the safe path, esp. on a fresh checkout).
-## start.R auto-detects the NZB launch (NZB_SCENARIO is set) and SKIPS its interactive
-## "Update now? (Y/n)" renv prompt WITHOUT force-updating packages; pass submit=direct so
-## it does not prompt for a submission type either. Fully non-interactive:
+## start.R auto-detects the NZB launch (a scenario=/runscripts=nzb_launch CLI arg, or the
+## NZB_SCENARIO env var) and SKIPS its interactive "Update now? (Y/n)" renv prompt WITHOUT
+## force-updating packages; pass submit=direct so it does not prompt for a submission type
+## either. Fully non-interactive.
+##
+## Pass scenario + target/cap as R CLI args (needs submit=direct -- args reach the runscript
+## only via start.R's in-process source):
+##     Rscript start.R runscripts=nzb_launch submit=direct scenario=gF_freeze target=-100
+##     Rscript start.R runscripts=nzb_launch submit=direct scenario=gF_freeze cap=-37   # raw cap
+##     Rscript start.R runscripts=nzb_launch submit=direct scenario=g0_npi              # no cap -> ref
+##
+## ...or as NZB_* env vars, which ALSO work with background/SLURM submit modes (a spawned
+## Rscript inherits env vars but drops CLI args):
 ##     NZB_SCENARIO=gF_freeze NZB_TARGET=-100 Rscript start.R runscripts=nzb_launch submit=direct
-##     NZB_SCENARIO=gF_freeze NZB_CAP=-37     Rscript start.R runscripts=nzb_launch submit=direct  # raw cap
-##     NZB_SCENARIO=g0_npi                    Rscript start.R runscripts=nzb_launch submit=direct  # no cap -> ref
-##   Env vars are inherited by every submit mode. (To force non-interactive without an NZB
-##   launch, set NZB_NONINTERACTIVE=TRUE.)
+##   (To force non-interactive without an NZB launch, set NZB_NONINTERACTIVE=TRUE.)
 ##
 ## ALTERNATIVE -- run this script DIRECTLY (bypasses start.R AND its fixDeps). Skips the
 ## renv prompt too, but does NOT initialise renv -- only safe once renv is already set up

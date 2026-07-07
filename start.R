@@ -19,12 +19,15 @@ if (!is.null(renv::project())) {
   # launches via scripts/start/nzb_launch.R. When on, we SKIP the interactive
   # "Update now? (Y/n)" prompt WITHOUT force-updating packages (updateRenv is not
   # run), but still fix dependency versions non-interactively so a fresh
-  # checkout's renv is initialised the safe way (fixDeps). Triggered either by
-  # NZB_NONINTERACTIVE=TRUE, or automatically whenever an NZB launch is detected
-  # (the platform always sets NZB_SCENARIO). Interactive human runs (neither var
-  # set) keep the original prompting behaviour.
+  # checkout's renv is initialised the safe way (fixDeps). Triggered by
+  # NZB_NONINTERACTIVE=TRUE, the NZB_SCENARIO env var, or an nzb_launch invocation
+  # passed as CLI args (runscripts=nzb_launch / scenario=...). Interactive human
+  # runs (none of these) keep the original prompting behaviour.
+  .nzbArgs <- commandArgs(trailingOnly = TRUE)
   nzbNonInteractive <- tolower(Sys.getenv("NZB_NONINTERACTIVE")) %in% c("1", "true", "yes") ||
-    nzchar(Sys.getenv("NZB_SCENARIO"))
+    nzchar(Sys.getenv("NZB_SCENARIO")) ||
+    any(grepl("^scenario=", .nzbArgs)) ||
+    any(grepl("^runscripts=.*nzb_launch", .nzbArgs))
 
   message("Checking for updates... ", appendLF = FALSE)
   if (getOption("autoRenvUpdates", FALSE) ||
