@@ -105,7 +105,13 @@ cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5d
                calibration = "calibration_BRA_H13_C200_W3_MapbiomasIBGE_18Jun26.tgz")
 cfg$force_download <- FALSE; cfg$force_replace <- TRUE
 cfg$recalibrate <- FALSE; cfg$recalibrate_landconversion_cost <- FALSE
-cfg$output <- c("rds_report"); cfg$results_folder <- "output/:title:"; cfg$sequential <- FALSE
+cfg$output <- c("rds_report"); cfg$results_folder <- "output/:title:"
+# sequential = TRUE -> start_run runs GAMS in the FOREGROUND (system("Rscript submit.R",
+# wait = TRUE)). This is a single-run launcher, so there is nothing to parallelise; and the
+# background variant (sequential = FALSE -> system(wait = FALSE)) detaches poorly on Windows
+# -- the GAMS child is killed when this R session exits, so the run stops right after prep
+# (NPI/NDC calc) with no full.lst / full.log. Foreground is cross-platform.
+cfg$sequential <- TRUE
 
 # ---- local input-data repository -----------------------------------------------------
 # Read the BRA input tarballs from a local folder OUTSIDE the model root, so several
