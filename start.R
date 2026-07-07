@@ -15,16 +15,27 @@ if (!is.null(renv::project())) {
     return(tolower(gms::getLine()) %in% c("", "y", "yes"))
   }
 
+  # NZB (Net-Zero Brazil): opt-in non-interactive mode for automated / platform
+  # launches via scripts/start/nzb_launch.R. When on, we SKIP the interactive
+  # "Update now? (Y/n)" prompt WITHOUT force-updating packages (updateRenv is not
+  # run), but still fix dependency versions non-interactively so a fresh
+  # checkout's renv is initialised the safe way (fixDeps). Triggered either by
+  # NZB_NONINTERACTIVE=TRUE, or automatically whenever an NZB launch is detected
+  # (the platform always sets NZB_SCENARIO). Interactive human runs (neither var
+  # set) keep the original prompting behaviour.
+  nzbNonInteractive <- tolower(Sys.getenv("NZB_NONINTERACTIVE")) %in% c("1", "true", "yes") ||
+    nzchar(Sys.getenv("NZB_SCENARIO"))
+
   message("Checking for updates... ", appendLF = FALSE)
   if (getOption("autoRenvUpdates", FALSE) ||
-        (!is.null(piamenv::showUpdates()) && ask("Update now? (Y/n): "))) {
+        (!nzbNonInteractive && !is.null(piamenv::showUpdates()) && ask("Update now? (Y/n): "))) {
     updates <- piamenv::updateRenv()
     piamenv::stopIfLoaded(names(updates))
   }
   message("Update check done.")
 
   message("Checking package version requirements... ", appendLF = FALSE)
-  updates <- piamenv::fixDeps(ask = TRUE)
+  updates <- piamenv::fixDeps(ask = !nzbNonInteractive)
   piamenv::stopIfLoaded(names(updates))
   message("Requirements check done.")
 }

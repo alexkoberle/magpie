@@ -20,21 +20,29 @@
 ## excludes). Hence  cap = target + 63. The per-family spread is ~57-71 and the reachable-target
 ## range is per family -- see NZB_scenario_config_approach.md. Retune via OFFSET_MT below.
 ##
-## LAUNCH (recommended) -- run the script DIRECTLY, bypassing start.R. This avoids
-## start.R's interactive "Update now? (Y/n)" renv prompt entirely (that check lives only
-## in start.R, not .Rprofile); renv still activates via .Rprofile and start_run() submits
-## the model. No submit= needed.
-##     NZB_SCENARIO=gF_freeze NZB_TARGET=-100 Rscript scripts/start/nzb_launch.R  # target reported AFOLU
-##     NZB_SCENARIO=gF_freeze NZB_CAP=-37     Rscript scripts/start/nzb_launch.R  # raw cap (= -100 + 63)
-##     NZB_SCENARIO=g0_npi                    Rscript scripts/start/nzb_launch.R  # no cap -> ref run
-##   (CLI args also work here: Rscript scripts/start/nzb_launch.R scenario=gF_freeze target=-100)
+## INPUT DATA -- the BRA input tarballs are read from a local folder OUTSIDE the model
+## root (default: sibling ../BRA_input_data; override with NZB_INPUT_DIR), which this
+## script prepends to cfg$repositories. From that folder MAgPIE provisions everything on
+## the first launch -- it unpacks the input AND writes the BRA region into core/sets.gms /
+## main.gms -- so no separate data step is needed. renv is initialised by start.R's fixDeps
+## (see LAUNCH), which is why the start.R route is the safe one.
 ##
-## ALTERNATIVE via start.R -- pass submit=direct (else start.R prompts for a submission
-## type) and it will run the "Update now?" check first:
-##     NZB_SCENARIO=gF_freeze NZB_CAP=-37 Rscript start.R runscripts=nzb_launch submit=direct
-##   CLI scenario=/cap= reach the script only with submit=direct (in-process source);
-##   background/SLURM submit modes spawn a fresh Rscript that drops CLI args -- env vars
-##   are inherited and always work.
+## LAUNCH (recommended) -- go via start.R so it runs piamenv::fixDeps() first, which
+## initialises / repairs this checkout's renv (the safe path, esp. on a fresh checkout).
+## start.R auto-detects the NZB launch (NZB_SCENARIO is set) and SKIPS its interactive
+## "Update now? (Y/n)" renv prompt WITHOUT force-updating packages; pass submit=direct so
+## it does not prompt for a submission type either. Fully non-interactive:
+##     NZB_SCENARIO=gF_freeze NZB_TARGET=-100 Rscript start.R runscripts=nzb_launch submit=direct
+##     NZB_SCENARIO=gF_freeze NZB_CAP=-37     Rscript start.R runscripts=nzb_launch submit=direct  # raw cap
+##     NZB_SCENARIO=g0_npi                    Rscript start.R runscripts=nzb_launch submit=direct  # no cap -> ref
+##   Env vars are inherited by every submit mode. (To force non-interactive without an NZB
+##   launch, set NZB_NONINTERACTIVE=TRUE.)
+##
+## ALTERNATIVE -- run this script DIRECTLY (bypasses start.R AND its fixDeps). Skips the
+## renv prompt too, but does NOT initialise renv -- only safe once renv is already set up
+## in this checkout. CLI args also work here.
+##     NZB_SCENARIO=gF_freeze NZB_TARGET=-100 Rscript scripts/start/nzb_launch.R
+##     Rscript scripts/start/nzb_launch.R scenario=gF_freeze target=-100
 ##
 ## The CSV is the scenario registry; a platform edits/adds columns or just picks a
 ## column + cap. No config text is generated as code -> nothing to mis-template.
@@ -91,6 +99,23 @@ cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5d
 cfg$force_download <- FALSE; cfg$force_replace <- TRUE
 cfg$recalibrate <- FALSE; cfg$recalibrate_landconversion_cost <- FALSE
 cfg$output <- c("rds_report"); cfg$results_folder <- "output/:title:"; cfg$sequential <- FALSE
+
+# ---- local input-data repository -----------------------------------------------------
+# Read the BRA input tarballs from a local folder OUTSIDE the model root, so several
+# checkouts can share one copy and no remote download is needed at run time. The folder is
+# prepended to cfg$repositories, so download_distribute finds every tarball there first and
+# the repo loop stops as soon as all files are found. Default: sibling ../BRA_input_data;
+# override with the NZB_INPUT_DIR env var. If the folder is absent, the default
+# repositories are used.
+inputRepo <- Sys.getenv("NZB_INPUT_DIR", unset = "")
+if (!nzchar(inputRepo)) inputRepo <- file.path(dirname(normalizePath(".")), "BRA_input_data")
+if (dir.exists(inputRepo)) {
+  cfg$repositories <- c(stats::setNames(list(NULL), normalizePath(inputRepo)), cfg$repositories)
+  message("nzb_launch: local input repository checked first: ", normalizePath(inputRepo))
+} else {
+  message("nzb_launch: no local input repo at '", inputRepo,
+          "' -- using the default repositories.")
+}
 
 # ---- cap: from a reported-AFOLU target (cap = target + OFFSET_MT) or a raw cap value ------
 # OFFSET_MT is the reported<->cap offset (see header): reported GWP100AR6|Land AFOLU ~ cap -
