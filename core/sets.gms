@@ -15,13 +15,14 @@
 sets
 
   h all superregional economic regions
-    / CAZ, CHA, EUR, IND, JPN, LAM, MEA, NEU, OAS, REF, SSA, USA /
+    / BRA, CAZ, CHA, EUR, IND, JPN, LAM, MEA, NEU, OAS, REF, SSA, USA /
 
   i all economic regions
-    / CAZ, CHA, EUR, IND, JPN, LAM, MEA, NEU, OAS, REF, SSA, USA /
+    / BRA, CAZ, CHA, EUR, IND, JPN, LAM, MEA, NEU, OAS, REF, SSA, USA /
 
   supreg(h,i) mapping of superregions to its regions
-    / CAZ . (CAZ)
+    / BRA . (BRA)
+      CAZ . (CAZ)
       CHA . (CHA)
       EUR . (EUR)
       IND . (IND)
@@ -55,46 +56,49 @@ sets
       VEN, VGB, VIR, VNM, VUT, WLF, WSM, YEM, ZAF, ZMB, ZWE /
 
   j number of LPJ cells
-    / CAZ_1*CAZ_5,
-      CHA_6*CHA_24,
-      EUR_25*EUR_36,
-      IND_37*IND_48,
-      JPN_49*JPN_55,
-      LAM_56*LAM_88,
-      MEA_89*MEA_113,
-      NEU_114*NEU_121,
-      OAS_122*OAS_137,
-      REF_138*REF_149,
-      SSA_150*SSA_182,
-      USA_183*USA_200 /
+    / BRA_1*BRA_58,
+      CAZ_59*CAZ_61,
+      CHA_62*CHA_78,
+      EUR_79*EUR_85,
+      IND_86*IND_94,
+      JPN_95*JPN_100,
+      LAM_101*LAM_118,
+      MEA_119*MEA_136,
+      NEU_137*NEU_143,
+      OAS_144*OAS_154,
+      REF_155*REF_162,
+      SSA_163*SSA_186,
+      USA_187*USA_200 /
 
   cell(i,j) number of LPJ cells per region i
-    / CAZ . (CAZ_1*CAZ_5)
-      CHA . (CHA_6*CHA_24)
-      EUR . (EUR_25*EUR_36)
-      IND . (IND_37*IND_48)
-      JPN . (JPN_49*JPN_55)
-      LAM . (LAM_56*LAM_88)
-      MEA . (MEA_89*MEA_113)
-      NEU . (NEU_114*NEU_121)
-      OAS . (OAS_122*OAS_137)
-      REF . (REF_138*REF_149)
-      SSA . (SSA_150*SSA_182)
-      USA . (USA_183*USA_200) /
+    / BRA . (BRA_1*BRA_58)
+      CAZ . (CAZ_59*CAZ_61)
+      CHA . (CHA_62*CHA_78)
+      EUR . (EUR_79*EUR_85)
+      IND . (IND_86*IND_94)
+      JPN . (JPN_95*JPN_100)
+      LAM . (LAM_101*LAM_118)
+      MEA . (MEA_119*MEA_136)
+      NEU . (NEU_137*NEU_143)
+      OAS . (OAS_144*OAS_154)
+      REF . (REF_155*REF_162)
+      SSA . (SSA_163*SSA_186)
+      USA . (USA_187*USA_200) /
 
   i_to_iso(i,iso) mapping regions to iso countries
-    / CAZ . (AUS, CAN, HMD, NZL, SPM)
+    / BRA . (BRA)
+      CAZ . (AUS, CAN, HMD, NZL, SPM)
       CHA . (CHN, HKG, MAC, TWN)
       EUR . (ALA, AUT, BEL, BGR, CYP, CZE, DEU, DNK, ESP, EST, FIN, FRA, FRO)
       EUR . (GBR, GGY, GIB, GRC, HRV, HUN, IMN, IRL, ITA, JEY, LTU, LUX, LVA)
       EUR . (MLT, NLD, POL, PRT, ROU, SVK, SVN, SWE)
       IND . (IND)
       JPN . (JPN)
-      LAM . (ABW, AIA, ARG, ATA, ATG, BES, BHS, BLM, BLZ, BMU, BOL, BRA, BRB)
-      LAM . (BVT, CHL, COL, CRI, CUB, CUW, CYM, DMA, DOM, ECU, FLK, GLP, GRD)
-      LAM . (GTM, GUF, GUY, HND, HTI, JAM, KNA, LCA, MAF, MEX, MSR, MTQ, NIC)
-      LAM . (PAN, PER, PRI, PRY, SGS, SLV, SUR, SXM, TCA, TTO, URY, VCT, VEN)
-      LAM . (VGB, VIR)
+      LAM . (ABW, AIA, ARG, ATA, ATG, BES, BHS, BLM, BLZ, BMU, BOL, BRB, BVT)
+      LAM . (CHL, COL, CRI, CUB, CUW, CYM, DMA, DOM, ECU, FLK, GLP, GRD, GTM)
+      LAM . (GUF, GUY, HND, HTI, JAM, KNA, LCA, MAF, MEX, MSR, MTQ, NIC, PAN)
+      LAM . (PER, PRI, PRY, SGS, SLV, SUR, SXM, TCA, TTO, URY, VCT, VEN, VGB)
+      LAM . (VIR)
       MEA . (ARE, BHR, DZA, EGY, ESH, IRN, IRQ, ISR, JOR, KWT, LBN, LBY, MAR)
       MEA . (OMN, PSE, QAT, SAU, SDN, SYR, TUN, YEM)
       NEU . (ALB, AND, BIH, CHE, GRL, ISL, LIE, MCO, MKD, MNE, NOR, SJM, SMR)
@@ -196,6 +200,7 @@ $If "%c_timesteps%"== "5year2070" /y1995,y2000,y2005,y2010,y2015,y2020,y2025,y20
 $If "%c_timesteps%"== "quicktest" /y1995,y2010,y2025/;
 $If "%c_timesteps%"== "quicktest2" /y1995,y2020,y2050,y2100/;
 $If "%c_timesteps%"== "calib" /y1995,y2000,y2005,y2010,y2015/;
+$If "%c_timesteps%"== "calib_2020" /y1995,y2000,y2005,y2010,y2015,y2020/;
 $If "%c_timesteps%"== "1" /y1995/;
 $If "%c_timesteps%"== "2" /y1995,y2000/;
 $If "%c_timesteps%"== "3" /y1995,y2000,y2010/;
