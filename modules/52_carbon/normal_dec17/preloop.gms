@@ -115,4 +115,10 @@ if(s52_growingstock_calib = 1,
     fm_carbon_density(t_all,j,"secdforest","vegc")
     * (1 - exp(-sum(cell(i,j), i52_k_calib_plant(i)) * (ord(ac)-1) * 5))**sum(cell(i,j), i52_m_avg_plant(i));
 
+* Bypass FRA 2025 calibration for BRA (FAO/FRA growing stock targets not reliable for Brazil)
+  pm_carbon_density_secdforest_ac(t_all,j,ac,"vegc")$(cell("BRA",j)) =
+    pm_carbon_density_secdforest_ac_uncalib(t_all,j,ac,"vegc");
+  pm_carbon_density_plantation_ac(t_all,j,ac,"vegc")$(cell("BRA",j)) =
+    pm_carbon_density_plantation_ac_uncalib(t_all,j,ac,"vegc");
+
 );
