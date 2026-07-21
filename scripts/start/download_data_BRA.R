@@ -12,6 +12,11 @@
 
 source("scripts/start_functions.R")
 source("config/default.cfg")
+
+cfg$repositories <- append(list("https://rse.pik-potsdam.de/data/magpie/public"=NULL,
+                                "./patch_inputdata"=NULL),
+                           getOption("magpie_repos"))
+                           
 cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_magpie.tgz",
                cellular    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_d8411e75_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1_clusterweight-d0236589.tgz",
                validation  = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_92e02314_validation.tgz",
