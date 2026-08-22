@@ -15,6 +15,25 @@
 library(magclass)
 library(data.table)
 
+# ---- trajectory builder: linear BRA ramp from historical anchor to cap ------
+build_bra_trajectory <- function(cap_tg, target_year,
+                                  hist_2020 = 1490, hist_2025 = 1440) {
+  # Returns data.table(year, region, value) covering y2020:y2150 in 5-yr steps.
+  # Units: Tg CO2eq per yr (== Mt CO2eq per yr; 1 Tg = 1 Mt).
+  # cap_tg comes from nzb_launch.R: cap = target + OFFSET_MT, already in Tg.
+  target_year <- as.integer(target_year)
+  if (!target_year %in% c(2040L, 2045L, 2050L))
+    stop("build_bra_trajectory: target_year must be 2040, 2045, or 2050.")
+  years  <- seq(2020L, 2150L, by = 5L)
+  values <- vapply(years, function(y) {
+    if (y == 2020L)            hist_2020
+    else if (y <= 2025L)       hist_2025
+    else if (y <= target_year) hist_2025 + (cap_tg - hist_2025) * (y - 2025) / (target_year - 2025)
+    else                       cap_tg
+  }, numeric(1))
+  data.table(year = paste0("y", years), region = "BRA", value = values)
+}
+
 # ---- helper: magpie -> data.table (avoids NA column name issue) -----------
 magpie_to_dt <- function(x, scen) {
   df <- as.data.frame(x[, , scen], rev = TRUE)
@@ -71,7 +90,8 @@ add_cap_scenario <- function(
     scen_name = "user_scen",
     scen_dt   = NULL,
     cs3_file  = "modules/56_ghg_policy/cap_apr26_reg/input/f56_emis_cap.cs3",
-    dry_run   = TRUE
+    dry_run   = TRUE,
+    overwrite = FALSE
 ) {
 
   # 1. Validate scenario name
@@ -105,9 +125,12 @@ add_cap_scenario <- function(
     )
   }
 
-  # 3. Abort if scenario already exists
+  # 3. Abort or overwrite if scenario already exists
   if (scen_name %in% scens) {
-    stop("Scenario '", scen_name, "' already exists in the file.")
+    if (!overwrite)
+      stop("Scenario '", scen_name, "' already exists. Pass overwrite=TRUE to replace it.")
+    x <- x[, , scens[scens != scen_name], drop = FALSE]
+    cat("  Overwriting existing scenario '", scen_name, "'.\n", sep = "")
   }
 
   # 4. Build new scenario slice from data.table

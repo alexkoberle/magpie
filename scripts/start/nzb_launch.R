@@ -6,12 +6,14 @@
 ##
 ## INPUTS (env vars, or key=value CLI args):
 ##   scenario  (NZB_SCENARIO)  required. A column of scenario_config_nzb.csv:
-##             gC_wdpa | gC_30by30 | gC_half | gA_RoW2C | gB_price | gF_freeze | g0_npi
-##   target    (NZB_TARGET)    optional. Desired REPORTED AFOLU 2050 (GWP100AR6|Land, Mt CO2eq).
-##             The script sets the emissions cap to  cap = target + OFFSET_MT  (see OFFSET
-##             below) and enables the parametric ramp 2035->2050. This is the platform knob.
-##   cap       (NZB_CAP)       optional. RAW emissions cap value (s56_emis_cap_target, Mt CO2eq),
-##             set verbatim -- bypasses the offset. Reported AFOLU then comes out ~ cap - OFFSET_MT.
+##             nzb_user
+##   target    (NZB_TARGET)    optional. Desired REPORTED AFOLU at target_year (GWP100AR6|Land, Mt CO2eq).
+##             The script sets cap = target + OFFSET_MT (see OFFSET below), builds the BRA
+##             cap trajectory to reach that cap at target_year, and writes it to the CS3 file.
+##   cap       (NZB_CAP)       optional. RAW emissions cap value (Tg CO2eq), set verbatim --
+##             bypasses the offset. Reported AFOLU then comes out ~ cap - OFFSET_MT.
+##   target_year (NZB_TARGET_YEAR)  optional. Year the cap trajectory reaches cap (2040/2045/2050).
+##             Default: 2050.
 ##   -> Give EITHER target OR cap (not both). Omit both -> the scenario's no-cap reference run.
 ##
 ## OFFSET (reported <-> cap). The cap bounds vm_emissions_reg, a SUPERSET of the reported
@@ -32,17 +34,20 @@
 ## start.R auto-detects the NZB launch (NZB_SCENARIO is set) and SKIPS its interactive
 ## "Update now? (Y/n)" renv prompt WITHOUT force-updating packages; pass submit=direct so
 ## it does not prompt for a submission type either. Fully non-interactive:
-##     NZB_SCENARIO=gF_freeze NZB_TARGET=-100 Rscript start.R runscripts=nzb_launch submit=direct
-##     NZB_SCENARIO=gF_freeze NZB_CAP=-37     Rscript start.R runscripts=nzb_launch submit=direct  # raw cap
-##     NZB_SCENARIO=g0_npi                    Rscript start.R runscripts=nzb_launch submit=direct  # no cap -> ref
+##     NZB_SCENARIO=nzb_user NZB_TARGET=-100 Rscript start.R runscripts=nzb_launch submit=direct
+##     NZB_SCENARIO=nzb_user NZB_CAP=-37     Rscript start.R runscripts=nzb_launch submit=direct  # raw cap
+##     NZB_SCENARIO=nzb_user                  Rscript start.R runscripts=nzb_launch submit=direct  # no cap -> ref
 ##   Env vars are inherited by every submit mode. (To force non-interactive without an NZB
 ##   launch, set NZB_NONINTERACTIVE=TRUE.)
 ##
 ## ALTERNATIVE -- run this script DIRECTLY (bypasses start.R AND its fixDeps). Skips the
 ## renv prompt too, but does NOT initialise renv -- only safe once renv is already set up
 ## in this checkout. CLI args also work here.
-##     NZB_SCENARIO=gF_freeze NZB_TARGET=-100 Rscript scripts/start/nzb_launch.R
-##     Rscript scripts/start/nzb_launch.R scenario=gF_freeze target=-100
+##     NZB_SCENARIO=nzb_user NZB_TARGET=-100 Rscript scripts/start/nzb_launch.R
+##     Rscript scripts/start/nzb_launch.R scenario=nzb_user target=-100
+##     Rscript start.R runscripts=nzb_launch submit=direct scenario=nzb_user target=-100
+##     Rscript start.R runscripts=nzb_launch submit=direct scenario=nzb_user target=-100 calib=scen1 (for naming scenario folders)
+##     Rscript start.R runscripts=nzb_launch submit=direct scenario=nzb_user target=-100 target_year=2050 (for user defined target year 2040, 2045, 2050)
 ##
 ## The CSV is the scenario registry; a platform edits/adds columns or just picks a
 ## column + cap. No config text is generated as code -> nothing to mis-template.
@@ -61,7 +66,9 @@ getarg <- function(key) {
 }
 scenario   <- getarg("scenario")
 target_raw <- getarg("target")
-cap_raw    <- getarg("cap")
+cap_raw     <- getarg("cap")
+target_year <- getarg("target_year")
+calib       <- getarg("calib")
 have <- function(x) !is.na(x) && nzchar(x)
 
 valid <- setdiff(colnames(read.csv2(SCEN_CSV, check.names = FALSE, nrows = 1))[-1], c("", "nzb_base"))
@@ -96,9 +103,14 @@ cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5d
                validation  = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_92e02314_validation.tgz",
                additional  = "additional_data_rev4.65.tgz",
                calibration = "calibration_BRA_H13_C200_W3_MapbiomasIBGE_18Jun26.tgz")
+
+cfg$repositories <- append(list("https://rse.pik-potsdam.de/data/magpie/public"=NULL,
+                               "../BRA_input_data"=NULL),
+                           getOption("magpie_repos"))
+
 cfg$force_download <- FALSE; cfg$force_replace <- TRUE
 cfg$recalibrate <- FALSE; cfg$recalibrate_landconversion_cost <- FALSE
-cfg$output <- c("rds_report"); cfg$results_folder <- "output/:title:"; cfg$sequential <- FALSE
+cfg$output <- c("rds_report"); cfg$results_folder <- "output/:title::date:"; cfg$sequential <- FALSE
 
 # ---- local input-data repository -----------------------------------------------------
 # Read the BRA input tarballs from a local folder OUTSIDE the model root, so several
@@ -141,20 +153,43 @@ if (have(target_raw)) {
 if (is.finite(cap)) {
   if (cap < -300 || cap > 600)
     warning("nzb_launch: cap ", cap, " Mt is outside the tested band [-300, 600]; ",
-            "may be infeasible (on-slack) or non-binding. See the per-family reach table.")
-  cfg$gms$s56_emis_cap_parametric  <- 1
-  cfg$gms$s56_emis_cap_start_year  <- 2035
-  cfg$gms$s56_emis_cap_start_value <- 600
-  cfg$gms$s56_emis_cap_target_year <- 2050
-  cfg$gms$s56_emis_cap_target      <- cap
-  cfg$title <- sprintf("nzb_%s_%s", scenario,
+            "may be infeasible (on-slack) or non-binding.")
+  # Parse and validate target_year (default 2050)
+  target_yr <- if (have(target_year)) {
+    ty <- suppressWarnings(as.integer(target_year))
+    if (is.na(ty) || !ty %in% c(2040L, 2045L, 2050L))
+      stop("nzb_launch: target_year='", target_year, "' must be 2040, 2045, or 2050.")
+    ty
+  } else {
+    2050L
+  }
+  # Build BRA cap trajectory and write to CS3 file
+  source("helper_scripts/add_cap_scenario.R")
+  bra_dt <- build_bra_trajectory(cap_tg = cap, target_year = target_yr)
+  add_cap_scenario(
+    scen_name = "user_scen",
+    scen_dt   = bra_dt,
+    cs3_file  = "modules/56_ghg_policy/cap_apr26_reg/input/f56_emis_cap_reg.cs3",
+    dry_run   = FALSE,
+    overwrite = TRUE
+  )
+  cfg$gms$s56_emis_cap_parametric <- 0   # CS3 mode (also default.cfg default; explicit for clarity)
+  cfg$gms$c56_emis_cap_scenario   <- "user_scen"
+  yr_tag <- if (target_yr != 2050L) sprintf("_ty%d", target_yr) else ""
+  cfg$title <- sprintf("%s_%s%s", scenario,
     if (from_target) sprintf("tgt%s%d", if (target < 0) "M" else "P", abs(round(target)))
-    else             sprintf("cap%s%d", if (cap    < 0) "M" else "P", abs(round(cap))))
+    else             sprintf("cap%s%d", if (cap    < 0) "M" else "P", abs(round(cap))),
+    yr_tag)
 } else {
-  # neither target nor cap: honour whatever the CSV/default set (parametric off = ref run)
-  cfg$title <- if (isTRUE(cfg$gms$s56_emis_cap_parametric == 1))
-                 sprintf("nzb_%s_capCSV", scenario) else sprintf("nzb_%s_ref", scenario)
+  cfg$title <- sprintf("%s_ref", scenario)
 }
+
+# Append the calibration scenario name if set (e.g., "scen1", "calib2", etc.) -- this is
+# used to distinguish the same scenario run with different calibration settings. It can
+# be supplied via the Rscipt call in the command line or manually at the top of this script.
+if (!is.null(calib) && nzchar(calib))
+  cfg$title <- paste0(cfg$title, "_", calib)
+
 
 message("nzb_launch: scenario=", scenario, "  title=", cfg$title,
         "  cap=", if (is.finite(cap)) cap else "(none/ref)")
