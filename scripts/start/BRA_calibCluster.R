@@ -26,9 +26,9 @@ source("scripts/start_functions.R")
 source("config/default.cfg")
 
 
-cfg$repositories <- append(list("https://rse.pik-potsdam.de/data/magpie/public"=NULL,
-                                "./patch_inputdata"=NULL),
-                           getOption("magpie_repos"))
+# cfg$repositories <- append(list("https://rse.pik-potsdam.de/data/magpie/public"=NULL,
+#                                 "./patch_inputdata"=NULL),
+#                            getOption("magpie_repos"))
 
 #Input data files to be used for SecdForest data analysis
 # cfg$input <- c(regional    = "rev4.129.9001NZB_BRA_H13_C200_W2_SwpFun_5638d5dc_magpie.tgz",
@@ -41,16 +41,16 @@ cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5d
                cellular    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_d8411e75_cellularmagpie_c200_MRI-ESM2-0-ssp245_lpjml-8e6c5eb1_clusterweight-d0236589.tgz",
                validation  = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5dc_92e02314_validation.tgz",
                additional  = "additional_data_rev4.65.tgz",
-               calibration = "calibration_BRA_H13_C200_W2_MapbiomasIBGE_17Jun26.tgz")
+               calibration = "calibration_BRA_H13_C200_W3_MapbiomasIBGE_18Jun26.tgz")
 
 
 
 
 # cfg$title <- "calib_cluster_W3newTGZ_defaultValues"
-cfg$title <- "BRA_W3_MapbiomasIBGE_defaultValues"
-cfg$title <- "BRA_W3_MapbiomasIBGE_calibCluster_1stTry"
+# cfg$title <- "BRA_W3_MapbiomasIBGE_defaultValues"
+cfg$title <- "BRA_W3_MapbiomasIBGE_calibCluster_test"
 
-cfg$gms$c_timesteps          <- "5year2050"
+# cfg$gms$c_timesteps          <- "5year2050"
 
 # * (calib):    Costs for cropland expansion are scaled with a regional calibration factor
 # *       Costs for pasture and forestry expansion are global static
