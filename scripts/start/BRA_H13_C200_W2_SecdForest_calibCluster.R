@@ -46,18 +46,17 @@ cfg$input <- c(regional    = "rev4.131.9001BRA_H13_C200_W3_MapbiomasIBGE_5638d5d
 
 
 
-# cfg$title <- "calib_cluster_W3newTGZ_defaultValues"
-cfg$title <- "BRA_W3_MapbiomasIBGE_defaultValues"
-cfg$title <- "BRA_W3_MapbiomasIBGE_calibCluster_1stTry"
+# cfg$title <- "calib_cluster_test27jun_W3newTGZ"
+cfg$title <- "BRA_test27jun_W3_MapbiomasIBGE"
 
 cfg$gms$c_timesteps          <- "5year2050"
 
 # * (calib):    Costs for cropland expansion are scaled with a regional calibration factor
 # *       Costs for pasture and forestry expansion are global static
-# * (calib_cluster_crop_past): Costs for cropland expansion are scaled with a regional calibration factor, which is further scaled
+# * (calib_cluster): Costs for cropland expansion are scaled with a regional calibration factor, which is further scaled
 # * on cluster level with the share of cropland in the cluster. Costs for pasture expansion are scaled with a regional calibration factor, 
 # * which is further scaled on cluster level with the share of pasture in the cluster. Costs for forestry expansion are global static.
-cfg$gms$landconversion <- "calib_cluster_crop_past"           # def = calib
+# cfg$gms$landconversion <- "calib_cluster"           # def = calib
 
 # * Switch for ignoring land conversion cost calibration factors
 # * Options: 1 (ignore calibration factors)

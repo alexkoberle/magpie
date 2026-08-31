@@ -47,7 +47,7 @@ $offEmpty
 $onEmpty
 table f39_calib_cluster(t_all,j,type39) Cluster-level calibration factor for cropland expansion (1)
 $ondelim
-$if exist "./modules/39_landconversion/calib_cluster_crop_past/input/f39_calib_cluster.csv" $include "./modules/39_landconversion/calib_cluster_crop_past/input/f39_calib_cluster.csv"
+$if exist "./modules/39_landconversion/calib_cluster/input/f39_calib_cluster.csv" $include "./modules/39_landconversion/calib_cluster/input/f39_calib_cluster.csv"
 $offdelim
 ;
 $offEmpty
@@ -60,7 +60,7 @@ $offEmpty
 $onEmpty
 table f39_calib_past_cluster(t_all,j,type39) Cluster-level calibration factor for pasture expansion (1)
 $ondelim
-$if exist "./modules/39_landconversion/calib_cluster_crop_past/input/f39_calib_past_cluster.csv" $include "./modules/39_landconversion/calib_cluster_crop_past/input/f39_calib_past_cluster.csv"
+$if exist "./modules/39_landconversion/calib_cluster/input/f39_calib_past_cluster.csv" $include "./modules/39_landconversion/calib_cluster/input/f39_calib_past_cluster.csv"
 $offdelim
 ;
 $offEmpty

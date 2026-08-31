@@ -29,12 +29,12 @@
 *' Cluster-level calibration files must be prepared externally.
 
 *####################### R SECTION START (PHASES) ##############################
-$Ifi "%phase%" == "sets" $include "./modules/39_landconversion/calib_cluster_crop_past/sets.gms"
-$Ifi "%phase%" == "declarations" $include "./modules/39_landconversion/calib_cluster_crop_past/declarations.gms"
-$Ifi "%phase%" == "input" $include "./modules/39_landconversion/calib_cluster_crop_past/input.gms"
-$Ifi "%phase%" == "equations" $include "./modules/39_landconversion/calib_cluster_crop_past/equations.gms"
-$Ifi "%phase%" == "scaling" $include "./modules/39_landconversion/calib_cluster_crop_past/scaling.gms"
-$Ifi "%phase%" == "preloop" $include "./modules/39_landconversion/calib_cluster_crop_past/preloop.gms"
-$Ifi "%phase%" == "presolve" $include "./modules/39_landconversion/calib_cluster_crop_past/presolve.gms"
-$Ifi "%phase%" == "postsolve" $include "./modules/39_landconversion/calib_cluster_crop_past/postsolve.gms"
+$Ifi "%phase%" == "sets" $include "./modules/39_landconversion/calib_cluster/sets.gms"
+$Ifi "%phase%" == "declarations" $include "./modules/39_landconversion/calib_cluster/declarations.gms"
+$Ifi "%phase%" == "input" $include "./modules/39_landconversion/calib_cluster/input.gms"
+$Ifi "%phase%" == "equations" $include "./modules/39_landconversion/calib_cluster/equations.gms"
+$Ifi "%phase%" == "scaling" $include "./modules/39_landconversion/calib_cluster/scaling.gms"
+$Ifi "%phase%" == "preloop" $include "./modules/39_landconversion/calib_cluster/preloop.gms"
+$Ifi "%phase%" == "presolve" $include "./modules/39_landconversion/calib_cluster/presolve.gms"
+$Ifi "%phase%" == "postsolve" $include "./modules/39_landconversion/calib_cluster/postsolve.gms"
 *######################## R SECTION END (PHASES) ###############################
