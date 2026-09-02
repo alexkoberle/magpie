@@ -7,7 +7,7 @@
 
 
 # ----------------------------------------------------------
-# description: Script using BRA_H13_C200_W2 data (Secd Forest from MapBiomas) 
+# description: Script to start H12 calib_cluster MAgPIE run 
 # ----------------------------------------------------------
 
 
@@ -25,13 +25,12 @@ source("scripts/start_functions.R")
 #start MAgPIE run
 source("config/default.cfg")
 
-cfg$title <- "calib_cluster_testH12"
+cfg$title <- "calib_cluster_testH12_LAMscen"
 
 # * (calib):    Costs for cropland expansion are scaled with a regional calibration factor
 # *       Costs for pasture and forestry expansion are global static
-# * (calib_cluster): Costs for cropland expansion are scaled with a regional calibration factor, which is further scaled
-# * on cluster level with the share of cropland in the cluster. Costs for pasture expansion are scaled with a regional calibration factor, 
-# * which is further scaled on cluster level with the share of pasture in the cluster. Costs for forestry expansion are global static.
+# * (calib_cluster): Costs for cropland and pasture expansion are independently scaled with cluster-level calibration factors.
+# *       Costs for forestry expansion are global static
 cfg$gms$landconversion <- "calib_cluster"           # def = calib
 
 # * Switch for ignoring land conversion cost calibration factors
