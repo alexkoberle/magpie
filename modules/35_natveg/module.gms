@@ -18,4 +18,5 @@
 
 *###################### R SECTION START (MODULETYPES) ##########################
 $Ifi "%natveg%" == "pot_forest_may24" $include "./modules/35_natveg/pot_forest_may24/realization.gms"
+$Ifi "%natveg%" == "primf_harvest_aug26" $include "./modules/35_natveg/primf_harvest_aug26/realization.gms"
 *###################### R SECTION END (MODULETYPES) ############################
